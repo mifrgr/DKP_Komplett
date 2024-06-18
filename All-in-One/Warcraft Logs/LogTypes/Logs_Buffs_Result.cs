@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace All_in_One.Warcraft_Logs.LogTypes.Debuffs
+namespace All_in_One.Warcraft_Logs.LogTypes.Buffs
 {
-    public class Debuff_Rootobject
+
+    public class Buffs_Rootobject
     {
         public Aura[] auras { get; set; }
         public int totalTime { get; set; }
@@ -20,9 +21,10 @@ namespace All_in_One.Warcraft_Logs.LogTypes.Debuffs
     public class Aura
     {
         public string name { get; set; }
+        public int id { get; set; }
         public int guid { get; set; }
         public string type { get; set; }
-        public string abilityIcon { get; set; }
+        public string icon { get; set; }
         public int totalUptime { get; set; }
         public int totalUses { get; set; }
         public Band[] bands { get; set; }

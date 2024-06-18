@@ -13,7 +13,7 @@ namespace All_in_One.Logik_Side.Functions.BestPlayerFunctions
     {
         internal static PlayerOnlyName BestPala()
         {
-            return new PlayerOnlyName(Logs_Results.DebuffLogs[Spell_Category.Spell_CategoryType.Wisdom].auras?.ToList().Find(entry => (entry.totalUptime / Handlers.logshandler.GetFightTime() * 100) > Config.DKPRequirement[Spell_Category.Spell_CategoryType.Wisdom].MaxValue)?.name);
+            return new PlayerOnlyName(Logs_Results.DebuffLogs[Spell_Category.Spell_CategoryType.Wisdom].auras?.ToList().Find(entry => (entry.totalUptime / Handlers.logshandler.GetFightTime() * 100) > Config.DKPRequirement[Spell_Category.Spell_CategoryType.Wisdom].MinValue)?.name);
         }
     }
 }

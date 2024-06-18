@@ -1,9 +1,8 @@
 ﻿using All_in_One.Warcraft_Logs.Data;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using All_in_One.Warcraft_Logs.LogTypes.Healing;
+
 
 namespace All_in_One.Logik_Side.Functions.BestPlayerFunctions
 {
@@ -13,7 +12,7 @@ namespace All_in_One.Logik_Side.Functions.BestPlayerFunctions
         {
             List<PlayerOnlyName> BestHeal = new();
 
-            List<HealingLogs.Entry> entries = Logs_Results.HealingLogs.entries.ToList();
+            List<Entry> entries = Logs_Results.HealingLogs.entries.ToList();
             entries = entries.OrderByDescending(entry => entry.total).ToList();
 
 

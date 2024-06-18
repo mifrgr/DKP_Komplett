@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using All_in_One.Logik_Side;
+using All_in_One.Warcraft_Logs.LogTypes.Casts;
 
 namespace All_in_One.VisualLogic.Functions
 {

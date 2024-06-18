@@ -12,6 +12,7 @@ namespace All_in_One.Logik_Side.Data
         {
             Cast=0,
             Debuff =1,
+            Buffs =2,
         }
     }
 }

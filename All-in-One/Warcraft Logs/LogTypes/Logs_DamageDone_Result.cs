@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DamageLogs
+namespace All_in_One.Warcraft_Logs.LogTypes.Damage
 {
     public class Damage_Rootobject 
     {

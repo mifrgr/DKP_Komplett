@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HealingLogs
+namespace All_in_One.Warcraft_Logs.LogTypes.Healing
 {
 
     public class Healing_Rootobject

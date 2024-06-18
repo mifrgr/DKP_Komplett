@@ -44,7 +44,7 @@
             </DataGrid>
         </DockPanel>
         <StackPanel Name="PrepareLogs" Grid.Column="3">
-            <Button Height="30" Width="100" Content="DKP auslesen" Click="ReadLogs_Click_1"></Button>
+            <Button Height="30" Width="100" Content="DKP auslesen" Click="ReadFromSpreadSheet_Click"></Button>
             <ItemsControl Name="CheckBoxRaidSelection" >
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>

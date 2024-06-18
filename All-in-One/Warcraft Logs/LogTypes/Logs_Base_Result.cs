@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace All_in_One.Warcraft_Logs.LogTypes
+namespace All_in_One.Warcraft_Logs.LogTypes.Base
 {
     public class Base_Rootobject
     {

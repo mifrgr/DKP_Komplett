@@ -19,6 +19,8 @@ namespace All_in_One.Warcraft_Logs.Data
         /// </summary>
         internal long FightTime { get; set; }
 
+        internal int Encounters { get; set; }
+
         internal LogGetter getter;
     }
 }

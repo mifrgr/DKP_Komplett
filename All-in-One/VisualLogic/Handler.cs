@@ -24,8 +24,8 @@ namespace All_in_One.VisualLogic
 
         WaitForLogAnalyseHandler handler = new WaitForLogAnalyseHandler();
 
-        Task WaitWindow;
-        Task AddValueToBar;
+        //Task WaitWindow;
+        //Task AddValueToBar;
         
 
         public void ConvertSpreadsheetToDataGrid(SpreadSheets RaidType,List<Sheet> Sheet)

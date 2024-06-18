@@ -58,7 +58,7 @@ namespace All_in_One
         }
 
        
-        private void ReadLogs_Click_1(object sender, RoutedEventArgs e)
+        private void ReadFromSpreadSheet_Click(object sender, RoutedEventArgs e)
         {
             Handlers.spreadsheethandler.ConnectToSpreadsheet();
             Handlers.visualLogicHandler.ConvertSpreadsheetToDataGrid((SpreadSheets)Handlers.visualLogicHandler.UserControls.GetUserControl().IndexOf(Handlers.visualLogicHandler.UserControls.GetUserControl().Find(x => x.IsChecked == true)),Handlers.spreadsheethandler.Sheets);

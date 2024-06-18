@@ -13,15 +13,23 @@ namespace All_in_One.Logik_Side.Data
         /// </summary>
         public enum Spell_CategoryType
         {
-            SunderArmor = 0,
+            Casts = 0,
+            SunderArmor = 11597,
             Wisdom = 20355,
-            Decurse = 2,
+
             Recklessness = 11717,
             Elements = 11722,
             Shadow = 17937,
-            Dispell = 4,
-            Rapidfire = 5,
-            SliceDice = 6,
+
+            Decurse = 2,
+            Dispell = 988,
+            Decurse_Druid = 2782,
+            Decurse_Mage = 1176,
+            Cleanse = 4987,
+            Abolish_Poison = 2893,
+
+            Rapidfire = 3045,
+            SliceDice = 6774,
         }
     }
 }

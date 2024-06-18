@@ -25,8 +25,10 @@ namespace All_in_One.Warcraft_Logs
             //TODO: Fix that
             Handlers.visualLogicHandler.ChangeValue();
             data.endTime = Logs_Results.BaseLogs.end;
+            data.Encounters = Logs_Results.BaseLogs.fights.ToList().Where(x => x.boss != 0).Count();
+
             data.getter.GetLogs(LogID,data.endTime);
-            data.FightTime = Logs_Results.CastsLogs.totalTime;
+            data.FightTime = Logs_Results.SummaryLogs.totalTime;
         }
 
         public long GetFightTime()
@@ -34,6 +36,10 @@ namespace All_in_One.Warcraft_Logs
             return data.FightTime;
         }
 
+        public int GetEncounters()
+        {
+            return data.Encounters;
+        }
 
     }
 }
