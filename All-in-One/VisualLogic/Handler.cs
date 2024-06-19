@@ -13,7 +13,15 @@ namespace All_in_One.VisualLogic
 {
     public class Handler
     {
+        //TODO: Big rework. List need to be better documented. Multi use! Need to have a read List, write list and work list.
+        /// <summary>
+        /// This presents one Sheet from Spreadsheet.
+        /// </summary>
         public List<SpreadsheetEntry> PlayersFromSpreadsheet = new List<SpreadsheetEntry>();
+
+        /// <summary>
+        /// A List with every Player from the given Log.
+        /// </summary>
         public List<PlayerOnlyName> PlayersFromLogs = new List<PlayerOnlyName>();
 
         SpreadSheetToVisu sheetToVisu = new SpreadSheetToVisu();
@@ -43,6 +51,7 @@ namespace All_in_One.VisualLogic
             add.AddPlayers(TwinksOrNewPlayers, PlayersFromSpreadsheet, out PlayersFromSpreadsheet);
         }
         
+        //TODO: This need to be done by Propertychangedvalue.
         /// <summary>
         /// Change the Value of the ProgressPar
         /// </summary>
