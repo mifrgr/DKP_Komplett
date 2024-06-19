@@ -10,12 +10,12 @@ namespace All_in_One.Logik_Side.Functions.BestPlayerFunctions.BestByRole
 {
     internal class _Tanks
     {
-        internal static List<PlayerOnlyName> Tanks()
+        internal static List<PlayerDKP> Tanks()
         {
-            List<PlayerOnlyName> TankList = new List<PlayerOnlyName>();
+            List<PlayerDKP> TankList = new List<PlayerDKP>();
             foreach(var entry in Logs_Results.SummaryLogs.playerDetails.tanks)
             {
-                TankList.Add(new PlayerOnlyName(entry.name));
+                TankList.Add(new PlayerDKP(entry.name,"Tank"));
             }
             return TankList;
         }

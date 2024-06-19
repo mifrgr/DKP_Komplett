@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace All_in_One.Logik_Side
+namespace All_in_One.Logik_Side.Data
 {
     public class PlayerOnlyName
     {
@@ -13,6 +13,7 @@ namespace All_in_One.Logik_Side
         public PlayerOnlyName(string name)
         {
             Name = name;
+
         }
     }
 }

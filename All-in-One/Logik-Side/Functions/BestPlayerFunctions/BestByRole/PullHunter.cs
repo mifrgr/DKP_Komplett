@@ -9,8 +9,8 @@ namespace All_in_One.Logik_Side.Functions.BestPlayerFunctions.BestByRole
 {
     internal class _PullHunter
     {
-        static PlayerOnlyName pullHunter;
-        internal static PlayerOnlyName PullHunter()
+        static PlayerDKP pullHunter;
+        internal static PlayerDKP PullHunter()
         {
             GetPullHunterFromVisu();
             return pullHunter;
@@ -24,7 +24,7 @@ namespace All_in_One.Logik_Side.Functions.BestPlayerFunctions.BestByRole
 
         internal static void HunterConfirmed(string HunterName)
         {
-            pullHunter = new PlayerOnlyName(HunterName);
+            pullHunter = new PlayerDKP(HunterName,"Pull-Hunter");
         }
 
 

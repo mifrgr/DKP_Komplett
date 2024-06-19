@@ -11,9 +11,18 @@ namespace All_in_One.Logik_Side.Functions.BestPlayerFunctions
 {
     internal static class _Wisdom
     {
-        internal static PlayerOnlyName BestPala()
+        internal static PlayerDKP BestPala()
         {
-            return new PlayerOnlyName(Logs_Results.DebuffLogs[Spell_Category.Spell_CategoryType.Wisdom].auras?.ToList().Find(entry => (entry.totalUptime / Handlers.logshandler.GetFightTime() * 100) > Config.DKPRequirement[Spell_Category.Spell_CategoryType.Wisdom].MinValue)?.name);
+            var Aura = Logs_Results.DebuffLogs[Spell_Category.Spell_CategoryType.Wisdom].auras?.ToList().Find(entry => ((double)entry.totalUptime / (double)Handlers.logshandler.GetFightTime() * 100) > Config.DKPRequirement[Spell_Category.Spell_CategoryType.Wisdom].MinValue);
+            if (Aura == null)
+            {
+                return new PlayerDKP("", Spell_Category.Spell_CategoryType.Wisdom.ToString());
+            }
+            else
+            {
+                return new PlayerDKP(Logs_Results.DebuffLogs[Spell_Category.Spell_CategoryType.Wisdom].auras?.ToList().Find(entry => ((double)entry.totalUptime / (double)Handlers.logshandler.GetFightTime() * 100) > Config.DKPRequirement[Spell_Category.Spell_CategoryType.Wisdom].MinValue)?.name, Spell_Category.Spell_CategoryType.Wisdom.ToString());
+
+            }
         }
     }
 }

@@ -11,9 +11,18 @@ namespace All_in_One.Logik_Side.Functions.BestPlayerFunctions
 {
     internal class _Elements
     {
-        internal static PlayerOnlyName Best_Elem_Warlock()
+        internal static PlayerDKP Best_Elem_Warlock()
         {
-            return new PlayerOnlyName(Logs_Results.DebuffLogs[Spell_Category.Spell_CategoryType.Elements].auras?.ToList().Find(entry => (entry.totalUptime / Handlers.logshandler.GetFightTime() * 100) > Config.DKPRequirement[Spell_Category.Spell_CategoryType.Elements].MinValue)?.name);
+            var Aura = Logs_Results.DebuffLogs[Spell_Category.Spell_CategoryType.Elements].auras?.ToList().Find(entry => ((double)entry.totalUptime / (double)Handlers.logshandler.GetFightTime() * 100) > Config.DKPRequirement[Spell_Category.Spell_CategoryType.Elements].MinValue);
+            if(Aura == null)
+            {
+                return new PlayerDKP("", Spell_Category.Spell_CategoryType.Elements.ToString());
+            }
+            else
+            {
+                return new PlayerDKP(Logs_Results.DebuffLogs[Spell_Category.Spell_CategoryType.Elements].auras?.ToList().Find(entry => ((double)entry.totalUptime / (double)Handlers.logshandler.GetFightTime() * 100) > Config.DKPRequirement[Spell_Category.Spell_CategoryType.Elements].MinValue)?.name, Spell_Category.Spell_CategoryType.Elements.ToString());
+
+            }
         }
     }
 }

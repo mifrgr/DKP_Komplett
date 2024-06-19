@@ -14,16 +14,27 @@ namespace All_in_One.Logik_Side
 {
     internal class AnalyseLog
     {
-        List<PlayerOnlyName> DKPPlayer = new List<PlayerOnlyName>();
-        public List<PlayerOnlyName> GetDKP_Player()
+        List<PlayerDKP> DKPPlayer = new List<PlayerDKP>();
+        public List<SpreadsheetEntry> GetDKP_Player(List<SpreadsheetEntry> WorkingSpreadsheet)
         {
+            List<SpreadsheetEntry> intern = WorkingSpreadsheet;
             DKPPlayer.Clear();
             TopInLogs();
             BestbyRole();
             BestBuffs();
             BestDebuffs();
             BestDecurse();
-            return DKPPlayer;
+            foreach (SpreadsheetEntry entry in intern)
+            {
+                foreach(PlayerDKP player in DKPPlayer) 
+                {
+                    if(entry.Spieler == player.Name) 
+                    {
+                        entry.BesonderePunkte = player.Category;
+                    }
+                }
+            }
+            return intern;
 
         }
         void TopInLogs()
@@ -55,10 +66,10 @@ namespace All_in_One.Logik_Side
 
         void BestDecurse()
         {
-            DKPPlayer.Add(_Cleanse.BestDispell());
+            DKPPlayer.Add(_Cleanse.BestCleanse());
             DKPPlayer.Add(_Decurse.BestDecurser());
             DKPPlayer.Add(_Dispell.BestDispell());
-            DKPPlayer.Add(_Poison.BestDispell());
+            DKPPlayer.Add(_Poison.BestPoison());
         }
     }
 }

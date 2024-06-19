@@ -7,9 +7,18 @@ namespace All_in_One.Logik_Side.Functions.BestPlayerFunctions
 {
     internal class _RapidFire
     {
-        internal static PlayerOnlyName BestHunter()
+        internal static PlayerDKP BestHunter()
         {
-            return new PlayerOnlyName(Logs_Results.BuffsLogs[Spell_Category.Spell_CategoryType.Rapidfire].auras?.ToList().OrderByDescending(entry => entry.totalUses).ToList().Find(entry => entry.totalUses >= Handlers.logshandler.GetEncounters())?.name);
+            var Aura = Logs_Results.BuffsLogs[Spell_Category.Spell_CategoryType.Rapidfire].auras.ToList().OrderByDescending(entry => entry.totalUses).ToList().Find(entry => entry.totalUses >= Handlers.logshandler.GetEncounters());
+            if(Aura == null)
+            {
+                return new PlayerDKP("",Spell_Category.Spell_CategoryType.Rapidfire.ToString());
+            }
+            else
+            {
+                return new PlayerDKP(Logs_Results.BuffsLogs[Spell_Category.Spell_CategoryType.Rapidfire].auras?.ToList().OrderByDescending(entry => entry.totalUses).ToList().Find(entry => entry.totalUses >= Handlers.logshandler.GetEncounters())?.name, Spell_Category.Spell_CategoryType.Rapidfire.ToString());
+
+            }
         }
     }
 }

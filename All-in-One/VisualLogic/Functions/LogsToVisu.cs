@@ -4,18 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using All_in_One.Logik_Side;
+using All_in_One.Logik_Side.Data;
+using All_in_One.Warcraft_Logs.LogTypes.Base;
 using All_in_One.Warcraft_Logs.LogTypes.Casts;
+using All_in_One.Warcraft_Logs.LogTypes.Summary;
 
 namespace All_in_One.VisualLogic.Functions
 {
     internal class LogsToVisu
     {
-        public void LogsToList(Casts_Rootobject Logs, out List<PlayerOnlyName> PlayersFromLogs)
+        public void LogsToList(Base_Rootobject Logs, out List<PlayerOnlyName> PlayersFromLogs)
         {
             PlayersFromLogs = new List<PlayerOnlyName>();
-            foreach (var LogsItem in Logs.entries)
+            foreach (Friendly Player in Logs.friendlies)
             {
-                PlayersFromLogs.Add(new PlayerOnlyName(LogsItem.name));
+                if(Player.fights.Count() > Logs.fights.Count()/2)
+                {
+                    PlayersFromLogs.Add(new PlayerOnlyName(Player.name));
+                }
+                
             }
 
         }

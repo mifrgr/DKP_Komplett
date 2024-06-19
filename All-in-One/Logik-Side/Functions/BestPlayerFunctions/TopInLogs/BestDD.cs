@@ -7,16 +7,16 @@ namespace All_in_One.Logik_Side.Functions.BestPlayerFunctions
 {
     internal static class _BestDD
     {
-        internal static List<PlayerOnlyName> BestDD()
+        internal static List<PlayerDKP> BestDD()
         {
-            List<PlayerOnlyName> BestDD = new ();
+            List<PlayerDKP> BestDD = new ();
             if (Logs_Results.BaseLogs.title.Contains("AQ20") | Logs_Results.BaseLogs.title.Contains("ZG"))
             {
                 List<Entry> entries = Logs_Results.DamageLogs.entries.ToList();
                 entries = entries.OrderByDescending(entry => entry.total).ToList();
                 for (int i = 0; i < 1; i++)
                 {
-                    BestDD.Add(new PlayerOnlyName(entries[i].name));
+                    BestDD.Add(new PlayerDKP(entries[i].name,"DD"));
                 }
             }
             else
@@ -25,7 +25,7 @@ namespace All_in_One.Logik_Side.Functions.BestPlayerFunctions
                 entries = entries.OrderByDescending(entry => entry.total).ToList();
                 for (int i = 0; i < 5; i++)
                 {
-                    BestDD.Add(new PlayerOnlyName(entries[i].name));
+                    BestDD.Add(new PlayerDKP(entries[i].name,"DD"));
                 }
             }
 

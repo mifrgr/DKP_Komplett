@@ -1,7 +1,11 @@
 ﻿using All_in_One.Entrys;
 using All_in_One.Logik_Side;
+using All_in_One.Logik_Side.Data;
 using All_in_One.Spreadsheet_Side;
 using All_in_One.VisualLogic.Functions;
+using All_in_One.Warcraft_Logs.Data;
+using All_in_One.Warcraft_Logs.LogTypes.Base;
+using All_in_One.Warcraft_Logs.LogTypes.Summary;
 using Google.Apis.Sheets.v4.Data;
 using System;
 using System.Collections.Generic;
@@ -20,9 +24,20 @@ namespace All_in_One.VisualLogic
         public List<SpreadsheetEntry> PlayersFromSpreadsheet = new List<SpreadsheetEntry>();
 
         /// <summary>
-        /// A List with every Player from the given Log.
+        /// A List with every Player from the given Log. Will be compared to the Spreadsheet-List to find new Player/Twinks
         /// </summary>
         public List<PlayerOnlyName> PlayersFromLogs = new List<PlayerOnlyName>();
+
+
+        /// <summary>
+        /// Intern Working list. Holds the player-names to update the dkp list.
+        /// </summary>
+        public List<PlayerDKP> DKPPlayers = new List<PlayerDKP>();
+
+        /// <summary>
+        /// Updatet DKP. Ready to write to the Spreadsheet.
+        /// </summary>
+        public List<SpreadsheetEntry> PlayersToSpreadsheet = new List<SpreadsheetEntry>();
 
         SpreadSheetToVisu sheetToVisu = new SpreadSheetToVisu();
         LogsToVisu logsToVisu = new LogsToVisu();
@@ -41,7 +56,7 @@ namespace All_in_One.VisualLogic
             sheetToVisu.SpreadSheetToList(RaidType,PlayersFromSpreadsheet,Sheet, out PlayersFromSpreadsheet);
         }
 
-        public void ConvertLogsToDataGrid(Casts_Rootobject Logs)
+        public void ConvertLogsToDataGrid(Base_Rootobject Logs)
         {
             logsToVisu.LogsToList(Logs, out PlayersFromLogs);
         }

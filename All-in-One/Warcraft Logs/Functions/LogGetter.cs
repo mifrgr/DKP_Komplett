@@ -35,7 +35,7 @@ namespace All_in_One.Warcraft_API
             //Summary Logs. Need that for MT DKP
             HttpClient Get_Client = new HttpClient()
             {
-                BaseAddress = new Uri("https://www.warcraftlogs.com/v1/report/tables/summary/" + LogID + "?end=" + endTime + "?api_key=28bcab4294b92c0fac4df90ea4c3c59a"),
+                BaseAddress = new Uri("https://www.warcraftlogs.com/v1/report/tables/summary/" + LogID + "?end=" + endTime + "&api_key=28bcab4294b92c0fac4df90ea4c3c59a"),
             };
 
             Logs_Results.SummaryLogs = (Summary_Rootobject)System.Text.Json.JsonSerializer.Deserialize(Get_Client.GetStreamAsync(Get_Client.BaseAddress).Result, typeof(Summary_Rootobject));
@@ -67,22 +67,11 @@ namespace All_in_One.Warcraft_API
             Handlers.visualLogicHandler.ChangeValue();
 
 
-            //Sunder Armor
-            Get_Client = new HttpClient()
-            {
-                BaseAddress = new Uri("https://www.warcraftlogs.com/v1/report/tables/casts/" + LogID + "?end=" + endTime + "&by=target&abilityid=" + (int)Spell_Category.Spell_CategoryType.SunderArmor + "&api_key=28bcab4294b92c0fac4df90ea4c3c59a"),
-            };
-
-            Logs_Results.CastsLogs[Spell_Category.Spell_CategoryType.SunderArmor] = (Casts_Rootobject)System.Text.Json.JsonSerializer.Deserialize(Get_Client.GetStreamAsync(Get_Client.BaseAddress).Result, typeof(Casts_Rootobject));
-
-
-            Handlers.visualLogicHandler.ChangeValue();
-
 
             //Dispell
             Get_Client = new HttpClient()
             {
-                BaseAddress = new Uri("https://www.warcraftlogs.com/v1/report/tables/casts/" + LogID + "?end=" + endTime + "&by=target&abilityid=" + (int)Spell_Category.Spell_CategoryType.Dispell + "&api_key=28bcab4294b92c0fac4df90ea4c3c59a"),
+                BaseAddress = new Uri("https://www.warcraftlogs.com/v1/report/tables/casts/" + LogID + "?end=" + endTime + "&abilityid=" + (int)Spell_Category.Spell_CategoryType.Dispell + "&api_key=28bcab4294b92c0fac4df90ea4c3c59a"),
             };
 
             Logs_Results.CastsLogs[Spell_Category.Spell_CategoryType.Dispell] = (Casts_Rootobject)System.Text.Json.JsonSerializer.Deserialize(Get_Client.GetStreamAsync(Get_Client.BaseAddress).Result, typeof(Casts_Rootobject));
@@ -94,7 +83,7 @@ namespace All_in_One.Warcraft_API
             //Decurse-Mage. Same List as Decurse-Druid
             Get_Client = new HttpClient()
             {
-                BaseAddress = new Uri("https://www.warcraftlogs.com/v1/report/tables/casts/" + LogID + "?end=" + endTime + "&by=target&abilityid=" + (int)Spell_Category.Spell_CategoryType.Decurse_Mage + "&api_key=28bcab4294b92c0fac4df90ea4c3c59a"),
+                BaseAddress = new Uri("https://www.warcraftlogs.com/v1/report/tables/casts/" + LogID + "?end=" + endTime + "&abilityid=" + (int)Spell_Category.Spell_CategoryType.Decurse_Mage + "&api_key=28bcab4294b92c0fac4df90ea4c3c59a"),
             };
 
             Logs_Results.CastsLogs[Spell_Category.Spell_CategoryType.Decurse] = (Casts_Rootobject)System.Text.Json.JsonSerializer.Deserialize(Get_Client.GetStreamAsync(Get_Client.BaseAddress).Result, typeof(Casts_Rootobject));
@@ -105,7 +94,7 @@ namespace All_in_One.Warcraft_API
             //Decurse-Druid. Same List as Decurse-Mage
             Get_Client = new HttpClient()
             {
-                BaseAddress = new Uri("https://www.warcraftlogs.com/v1/report/tables/casts/" + LogID + "?end=" + endTime + "&by=target&abilityid=" + (int)Spell_Category.Spell_CategoryType.Decurse_Druid + "&api_key=28bcab4294b92c0fac4df90ea4c3c59a"),
+                BaseAddress = new Uri("https://www.warcraftlogs.com/v1/report/tables/casts/" + LogID + "?end=" + endTime + "&abilityid=" + (int)Spell_Category.Spell_CategoryType.Decurse_Druid + "&api_key=28bcab4294b92c0fac4df90ea4c3c59a"),
             };
 
             Logs_Results.CastsLogs[Spell_Category.Spell_CategoryType.Decurse].entries.Concat(((Casts_Rootobject)System.Text.Json.JsonSerializer.Deserialize(Get_Client.GetStreamAsync(Get_Client.BaseAddress).Result, typeof(Casts_Rootobject))).entries);
@@ -116,7 +105,7 @@ namespace All_in_One.Warcraft_API
             //Cleanse Pala
             Get_Client = new HttpClient()
             {
-                BaseAddress = new Uri("https://www.warcraftlogs.com/v1/report/tables/casts/" + LogID + "?end=" + endTime + "&by=target&abilityid=" + (int)Spell_Category.Spell_CategoryType.Cleanse + "&api_key=28bcab4294b92c0fac4df90ea4c3c59a"),
+                BaseAddress = new Uri("https://www.warcraftlogs.com/v1/report/tables/casts/" + LogID + "?end=" + endTime + "&abilityid=" + (int)Spell_Category.Spell_CategoryType.Cleanse + "&api_key=28bcab4294b92c0fac4df90ea4c3c59a"),
             };
 
             Logs_Results.CastsLogs[Spell_Category.Spell_CategoryType.Cleanse] = (Casts_Rootobject)System.Text.Json.JsonSerializer.Deserialize(Get_Client.GetStreamAsync(Get_Client.BaseAddress).Result, typeof(Casts_Rootobject));
@@ -127,7 +116,7 @@ namespace All_in_One.Warcraft_API
             //Poison - Druid
             Get_Client = new HttpClient()
             {
-                BaseAddress = new Uri("https://www.warcraftlogs.com/v1/report/tables/casts/" + LogID + "?end=" + endTime + "&by=target&abilityid=" + (int)Spell_Category.Spell_CategoryType.Abolish_Poison + "&api_key=28bcab4294b92c0fac4df90ea4c3c59a"),
+                BaseAddress = new Uri("https://www.warcraftlogs.com/v1/report/tables/casts/" + LogID + "?end=" + endTime + "&abilityid=" + (int)Spell_Category.Spell_CategoryType.Abolish_Poison + "&api_key=28bcab4294b92c0fac4df90ea4c3c59a"),
             };
 
             Logs_Results.CastsLogs[Spell_Category.Spell_CategoryType.Abolish_Poison] = (Casts_Rootobject)System.Text.Json.JsonSerializer.Deserialize(Get_Client.GetStreamAsync(Get_Client.BaseAddress).Result, typeof(Casts_Rootobject));
@@ -206,7 +195,7 @@ namespace All_in_One.Warcraft_API
 
             //Buffs. Need to be filtered, too. Slice and Dice
             Get_Client = new HttpClient();
-            Get_Client.BaseAddress = new Uri("https://www.warcraftlogs.com/v1/buffs/tables/buffs/" + LogID + "?end=" + endTime + "&abilityid=" + (int)Spell_Category.Spell_CategoryType.SliceDice + "&api_key=28bcab4294b92c0fac4df90ea4c3c59a");
+            Get_Client.BaseAddress = new Uri("https://www.warcraftlogs.com/v1/report/tables/buffs/" + LogID + "?end=" + endTime + "&abilityid=" + (int)Spell_Category.Spell_CategoryType.SliceDice + "&api_key=28bcab4294b92c0fac4df90ea4c3c59a");
 
 
             Logs_Results.BuffsLogs[Spell_Category.Spell_CategoryType.SliceDice] = (Buffs_Rootobject)System.Text.Json.JsonSerializer.Deserialize(Get_Client.GetStreamAsync(Get_Client.BaseAddress).Result, typeof(Buffs_Rootobject));
@@ -216,7 +205,7 @@ namespace All_in_One.Warcraft_API
             Get_Client = new HttpClient();
 
             //Buffs. Need to be filtered, too. Rapidfire
-            Get_Client.BaseAddress = new Uri("https://www.warcraftlogs.com/v1/buffs/tables/buffs/" + LogID + "?end=" + endTime + "&abilityid=" + (int)Spell_Category.Spell_CategoryType.Rapidfire + "&api_key=28bcab4294b92c0fac4df90ea4c3c59a");
+            Get_Client.BaseAddress = new Uri("https://www.warcraftlogs.com/v1/report/tables/buffs/" + LogID + "?end=" + endTime + "&abilityid=" + (int)Spell_Category.Spell_CategoryType.Rapidfire + "&api_key=28bcab4294b92c0fac4df90ea4c3c59a");
 
 
             Logs_Results.BuffsLogs[Spell_Category.Spell_CategoryType.Rapidfire] = (Buffs_Rootobject)System.Text.Json.JsonSerializer.Deserialize(Get_Client.GetStreamAsync(Get_Client.BaseAddress).Result, typeof(Buffs_Rootobject));

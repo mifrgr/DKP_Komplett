@@ -8,9 +8,9 @@ namespace All_in_One.Logik_Side.Functions.BestPlayerFunctions
 {
     internal static class _BestHeal
     {
-        internal static List<PlayerOnlyName> BestHeal()
+        internal static List<PlayerDKP> BestHeal()
         {
-            List<PlayerOnlyName> BestHeal = new();
+            List<PlayerDKP> BestHeal = new();
 
             List<Entry> entries = Logs_Results.HealingLogs.entries.ToList();
             entries = entries.OrderByDescending(entry => entry.total).ToList();
@@ -20,14 +20,14 @@ namespace All_in_One.Logik_Side.Functions.BestPlayerFunctions
             {
                 for (int i = 0; i < 1; i++)
                 {
-                    BestHeal.Add(new PlayerOnlyName(entries[i].name));
+                    BestHeal.Add(new PlayerDKP(entries[i].name,"Heal"));
                 }
             }
             else
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    BestHeal.Add(new PlayerOnlyName(entries[i].name));
+                    BestHeal.Add(new PlayerDKP(entries[i].name,"Heal"));
                 }
             }
 

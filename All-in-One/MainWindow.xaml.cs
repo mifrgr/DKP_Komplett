@@ -27,6 +27,7 @@ using All_in_One.Spreadsheet_Side;
 using All_in_One.Static.Data;
 using All_in_One.VisualLogic;
 using System.Threading;
+using All_in_One.Warcraft_Logs.Data;
 
 namespace All_in_One
 {
@@ -68,14 +69,11 @@ namespace All_in_One
             Tabelle.EndInit();
         }
 
-        private void FindPlayers_Click(object sender, RoutedEventArgs e)
+        private void CompareLogPlayersWithDKPList_Click(object sender, RoutedEventArgs e)
         {
-            Handlers.logshandler.GetLogfromWarcraftLogs("dRwCjAP6bL4tGY2M");
-            //TODO: Need big Rework!!!!
-            Handlers.logikHandler.FindBestPlayers(out Handlers.visualLogicHandler.PlayersFromLogs);
-            //Handlers.logikHandler.FindNewOrUnknownPlayer(Handlers.visualLogicHandler.PlayersFromSpreadsheet, Handlers.visualLogicHandler.PlayersFromLogs);
-            //NewUnknownPlayers.ItemsSource = Handlers.logikHandler.TwinksOrNewPlayers;
-            //NewUnknownPlayers.EndInit();
+            Handlers.logikHandler.FindNewOrUnknownPlayer(Handlers.visualLogicHandler.PlayersFromSpreadsheet, Handlers.visualLogicHandler.PlayersFromLogs);
+            NewUnknownPlayers.ItemsSource = Handlers.logikHandler.TwinksOrNewPlayers;
+            NewUnknownPlayers.EndInit();
         }
 
 
@@ -86,14 +84,16 @@ namespace All_in_One
             Tabelle.EndInit();
         }
         string reportCode;
+
+
         private void DrapAndDropBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if(DrapAndDropBox.Text .Length > 0)
             {
                 reportCode = DrapAndDropBox.Text.Substring(DrapAndDropBox.Text.IndexOf("reports/") + 8);
                 Handlers.logshandler.GetLogfromWarcraftLogs(DrapAndDropBox.Text.Substring(DrapAndDropBox.Text.IndexOf("reports/") + 8));
-                //Handlers.visualLogicHandler.ConvertLogsToDataGrid(Handlers.logshandler.GetCastLogs());
                 PlayersFromLogs.BeginInit();
+                Handlers.visualLogicHandler.ConvertLogsToDataGrid(Logs_Results.BaseLogs);
                 PlayersFromLogs.ItemsSource = Handlers.visualLogicHandler.PlayersFromLogs;
                 PlayersFromLogs.EndInit();
                DrapAndDropBox.Text = "";
@@ -101,12 +101,12 @@ namespace All_in_One
             
         }
 
-        private void AddDKP_Click(object sender, RoutedEventArgs e)
+        private void MarkPlayerForDKP_Click(object sender, RoutedEventArgs e)
         {
+            //TODO: Need big Rework!!!!
             Tabelle.BeginInit();
-            Handlers.logikHandler.MarkPlayerAsPresent(Handlers.visualLogicHandler.PlayersFromSpreadsheet, Handlers.visualLogicHandler.PlayersFromLogs, out Handlers.visualLogicHandler.PlayersFromSpreadsheet);
-            //Handlers.logshandler.GetLogsBestInCategorie(Warcraft_Logs.LogsType.DamageDone, reportCode);
-            //Handlers.logikHandler.FindBestDDInLogs(Handlers.logshandler.GetDamageLogs(),Handlers.visualLogicHandler.PlayersFromSpreadsheet,out  Handlers.visualLogicHandler.PlayersFromSpreadsheet);
+            Handlers.logikHandler.MarkPlayerAsPresent(Handlers.visualLogicHandler.PlayersFromSpreadsheet, Handlers.visualLogicHandler.PlayersFromLogs, out Handlers.visualLogicHandler.PlayersToSpreadsheet);
+            Handlers.logikHandler.FindBestPlayers(Handlers.visualLogicHandler.PlayersToSpreadsheet,out Handlers.visualLogicHandler.PlayersToSpreadsheet);
             Tabelle.EndInit();
         }
     }
