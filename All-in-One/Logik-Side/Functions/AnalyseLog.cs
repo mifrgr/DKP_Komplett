@@ -1,4 +1,4 @@
-﻿using All_in_One.Entrys;
+﻿using All_in_One.Spreadsheet_Side.Data;
 using All_in_One.Logik_Side.Functions.BestPlayerFunctions;
 using All_in_One.Logik_Side.Functions.BestPlayerFunctions.BestByRole;
 using All_in_One.Logik_Side.Functions.BestPlayerFunctions.Decurse;
@@ -9,33 +9,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using All_in_One.Static.Data;
 
 namespace All_in_One.Logik_Side
 {
-    internal class AnalyseLog
+    public class AnalyseLog
     {
         List<PlayerDKP> DKPPlayer = new List<PlayerDKP>();
-        public List<SpreadsheetEntry> GetDKP_Player(List<SpreadsheetEntry> WorkingSpreadsheet)
+
+        internal List<PlayerDKP> GetDKP_Player()
         {
-            List<SpreadsheetEntry> intern = WorkingSpreadsheet;
             DKPPlayer.Clear();
             TopInLogs();
             BestbyRole();
             BestBuffs();
             BestDebuffs();
             BestDecurse();
-            foreach (SpreadsheetEntry entry in intern)
+            CheckForTwinkGetForMainDKP();
+            return DKPPlayer;
+
+        }
+
+        int CheckForTwinkGetForMainDKP()
+        {
+            int count = 0;
+            foreach(var Entry in Handlers.logikHandler.TwinksOrNewPlayers)
             {
-                foreach(PlayerDKP player in DKPPlayer) 
+                if(Entry.AssociatedMain != null && Entry.AssociatedMain != "")
                 {
-                    if(entry.Spieler == player.Name) 
-                    {
-                        entry.BesonderePunkte = player.Category;
-                    }
+                    DKPPlayer.Find(player => player.Name == Entry.TwinkName).Category += " (Umgeloggt)" ;
+                    count++;
                 }
             }
-            return intern;
-
+            return count;
         }
         void TopInLogs()
         {

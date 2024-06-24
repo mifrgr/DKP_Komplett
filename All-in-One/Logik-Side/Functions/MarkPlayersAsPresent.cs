@@ -1,16 +1,18 @@
-﻿using All_in_One.Entrys;
+﻿using All_in_One.Spreadsheet_Side.Data;
 using All_in_One.Logik_Side.Data;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace All_in_One.Logik_Side
 {
-    internal class MarkPlayersAsPresent
+    public static class MarkPlayersAsPresent
     {
-        public List<SpreadsheetEntry> MarkPlayer(List<SpreadsheetEntry> inPlayersFromSpreadsheet, List<PlayerOnlyName> PlayersFromLogs)
+        public static void MarkPlayer(this ObservableCollection<SpreadsheetEntry> inPlayersFromSpreadsheet, ObservableCollection<PlayerOnlyName> PlayersFromLogs)
         {
             foreach(SpreadsheetEntry spreadsheetEntry in inPlayersFromSpreadsheet) 
             {
@@ -28,7 +30,6 @@ namespace All_in_One.Logik_Side
                 
             }
 
-            return inPlayersFromSpreadsheet;
         }
     }
 }

@@ -28,11 +28,17 @@ namespace All_in_One.Logik_Side
 
         private void Confirm_Click(object sender, RoutedEventArgs e)
         {
-            if(PullHunterList.SelectedItem != null && MessageBox.Show("Auswahl richtig? Es wurde gewählt:" + Environment.NewLine + PullHunterList.SelectedItem.ToString(),"Bitte bestätigen",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            if(PullHunterList.SelectedItem == null)
+            {
+                MessageBox.Show("Kein Pullhunter ausgewählt!", "Fehler!");
+                return;
+            }
+            if(MessageBox.Show("Auswahl richtig? Es wurde gewählt:" + Environment.NewLine + PullHunterList.SelectedItem.ToString(),"Bitte bestätigen",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 _PullHunter.HunterConfirmed(PullHunterList.SelectedItem.ToString());
+                Close();
             }
-            Close();
+            
         }
 
 

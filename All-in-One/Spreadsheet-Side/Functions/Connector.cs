@@ -9,6 +9,9 @@ using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using System.IO;
 using System.Windows;
+using System.Text.Json;
+using All_in_One.Spreadsheet_Side.Data;
+using All_in_One.Static.Data;
 
 namespace All_in_One.Spreadsheet
 {
@@ -31,14 +34,16 @@ namespace All_in_One.Spreadsheet
         public List<Sheet> Connect()
         {
             SpreadsheetsResource.GetRequest request = sheetsService.Spreadsheets.Get(spreadId);
-            //resource = sheetsService.Spreadsheets;
             request.IncludeGridData = true;
             return ExecuteReading(request);
         }
 
         public List<Sheet> ExecuteReading(SpreadsheetsResource.GetRequest request)
         {
-            return request.Execute().Sheets.ToList();
+            List<Sheet> spreadsheets = new List<Sheet>();
+            var sheets = request.Execute().Sheets;
+            Handlers.spreadsheethandler.SpreadsheetAsJson= JsonSerializer.Deserialize<List<JsonSheetEntry>>(JsonSerializer.Serialize(sheets));
+            return spreadsheets;
         }
     }
 }

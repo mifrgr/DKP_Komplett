@@ -1,33 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Microsoft.Win32;
-using System.Text.Json;
-using Newtonsoft.Json;
-using Google.Apis.Sheets.v4.Data;
-using Aspose.Cells.Drawing;
-using All_in_One.Entrys;
-using All_in_One.StaticFunctions;
-using System.Runtime.InteropServices;
-using All_in_One.Warcraft_API;
-using All_in_One.Spreadsheet_Side;
+using All_in_One.Logik_Side.Data;
 using All_in_One.Static.Data;
-using All_in_One.VisualLogic;
-using System.Threading;
-using All_in_One.Warcraft_Logs.Data;
+using All_in_One.VisualLogic.Data;
+using All_in_One.Spreadsheet_Side.Data;
+using System;
+using All_in_One.VisualLogic.Functions.ExtensionMethods;
+using System.ComponentModel;
+using All_in_One.Logik_Side.Functions;
 
 namespace All_in_One
 {
@@ -43,45 +27,72 @@ namespace All_in_One
         {
             InitializeComponent();
             Handlers.spreadsheethandler.ConnectToSpreadsheet();
-            InitVisualLogic();
+            InitVisual();
+            SetBindings();
         }
 
-        void InitVisualLogic()
+        private void SetBindings()
+        {
+            Binding Logs_binding = new Binding();
+            Logs_binding.Source = Handlers.visualLogicHandler.PlayersFromLogs;
+            PlayersFromLogs.SetBinding(DataGrid.ItemsSourceProperty, Logs_binding);
+
+            Binding LastRaid_binding = new Binding();
+            LastRaid_binding.Source = Handlers.visualLogicHandler.LastRaids;
+            LastRaids.SetBinding(ComboBox.ItemsSourceProperty, LastRaid_binding);
+            LastRaids.DisplayMemberPath = nameof(LastRaidComboboxItem.DisplayName);
+
+            Binding Spreadsheet_binding = new Binding();
+            Spreadsheet_binding.Source = Handlers.visualLogicHandler.PlayersFromSpreadsheet;
+            PlayersFromSpreadsheet.SetBinding(DataGrid.ItemsSourceProperty, Spreadsheet_binding);
+
+            Binding NewOrUnknownPlayer_binding = new Binding();
+            NewOrUnknownPlayer_binding.Source = Handlers.logikHandler.TwinksOrNewPlayers;
+            NewUnknownPlayers.SetBinding(DataGrid.ItemsSourceProperty, NewOrUnknownPlayer_binding);
+
+            NewUnknownPlayers.SelectionChanged += NewUnknownPlayers_SelectionChanged;
+
+            ListCollectionView view = new ListCollectionView(Handlers.visualLogicHandler.PlayersFromSpreadsheet);
+            view.SortDescriptions.Add(new SortDescription(nameof(SpreadsheetEntry.Spieler), ListSortDirection.Ascending));
+            ListPotentialMain.ItemsSource = view;
+            ListPotentialMain.DisplayMemberPath = nameof(SpreadsheetEntry.Spieler);
+        }
+
+        private void NewUnknownPlayers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UnknownPlayer clickedPlayer = NewUnknownPlayers.SelectedItem as UnknownPlayer;
+            SelectedTwink.Text = clickedPlayer.TwinkName;
+        }
+
+        void InitVisual()
         {
             CheckBoxRaidSelection.ItemsSource = Handlers.visualLogicHandler.UserControls.GetUserControl();
+            Handlers.logshandler.GetLastRaids();
         }
 
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
-            Tabelle.BeginInit();
             Handlers.logikHandler.CalculateDKP(Handlers.visualLogicHandler.PlayersFromSpreadsheet);
-            Tabelle.EndInit();
         }
 
         
         private void ReadFromSpreadSheet_Click(object sender, RoutedEventArgs e)
         {
             ///Get the Raid DKP List from Spreadsheet.
-            Handlers.spreadsheethandler.ConnectToSpreadsheet();
-            Handlers.visualLogicHandler.ConvertSpreadsheetToDataGrid((SpreadSheets)Handlers.visualLogicHandler.UserControls.GetUserControl().IndexOf(Handlers.visualLogicHandler.UserControls.GetUserControl().Find(x => x.IsChecked == true)),Handlers.spreadsheethandler.Sheets);
-            Tabelle.BeginInit();
-            Tabelle.ItemsSource = Handlers.visualLogicHandler.PlayersFromSpreadsheet;
-            Tabelle.EndInit();
+            //Handlers.visualLogicHandler.ConvertSpreadsheetToDataGrid(Handlers.visualLogicHandler.UserControls.GetUserControl().IndexOf(Handlers.visualLogicHandler.UserControls.GetUserControl().Find(x => x.IsChecked == true)),Handlers.spreadsheethandler.Sheets);
         }
 
         private void CompareLogPlayersWithDKPList_Click(object sender, RoutedEventArgs e)
         {
             Handlers.logikHandler.FindNewOrUnknownPlayer(Handlers.visualLogicHandler.PlayersFromSpreadsheet, Handlers.visualLogicHandler.PlayersFromLogs);
-            NewUnknownPlayers.ItemsSource = Handlers.logikHandler.TwinksOrNewPlayers;
-            NewUnknownPlayers.EndInit();
         }
+
+ 
 
 
         private void AddPlayer_Click(object sender, RoutedEventArgs e)
         {
-            Tabelle.BeginInit();
             Handlers.visualLogicHandler.AddPlayerToSpreadsheet(Handlers.logikHandler.TwinksOrNewPlayers);            
-            Tabelle.EndInit();
         }
         string reportCode;
 
@@ -92,10 +103,6 @@ namespace All_in_One
             {
                 reportCode = DrapAndDropBox.Text.Substring(DrapAndDropBox.Text.IndexOf("reports/") + 8);
                 Handlers.logshandler.GetLogfromWarcraftLogs(DrapAndDropBox.Text.Substring(DrapAndDropBox.Text.IndexOf("reports/") + 8));
-                PlayersFromLogs.BeginInit();
-                Handlers.visualLogicHandler.ConvertLogsToDataGrid(Logs_Results.BaseLogs);
-                PlayersFromLogs.ItemsSource = Handlers.visualLogicHandler.PlayersFromLogs;
-                PlayersFromLogs.EndInit();
                DrapAndDropBox.Text = "";
             }
             
@@ -104,10 +111,44 @@ namespace All_in_One
         private void MarkPlayerForDKP_Click(object sender, RoutedEventArgs e)
         {
             //TODO: Need big Rework!!!!
-            Tabelle.BeginInit();
-            Handlers.logikHandler.MarkPlayerAsPresent(Handlers.visualLogicHandler.PlayersFromSpreadsheet, Handlers.visualLogicHandler.PlayersFromLogs, out Handlers.visualLogicHandler.PlayersToSpreadsheet);
-            Handlers.logikHandler.FindBestPlayers(Handlers.visualLogicHandler.PlayersToSpreadsheet,out Handlers.visualLogicHandler.PlayersToSpreadsheet);
-            Tabelle.EndInit();
+            Handlers.visualLogicHandler.PlayersFromLogs.SwitchTwinkForMainInLogs(Handlers.logikHandler.TwinksOrNewPlayers);
+            Handlers.logikHandler.MarkPlayerAsPresent(Handlers.visualLogicHandler.PlayersFromSpreadsheet, Handlers.visualLogicHandler.PlayersFromLogs);
+            Handlers.logikHandler.FindBestPlayers(Handlers.visualLogicHandler.PlayersToSpreadsheet);
         }
+
+        private void LastRaids_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Handlers.logshandler.GetLogfromWarcraftLogs(Handlers.visualLogicHandler.LastRaids.Where(Raid => Raid.Guild_Rootobject == ((LastRaidComboboxItem)((ComboBox)sender).SelectedItem).Guild_Rootobject).First().Guild_Rootobject.id) ;
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            CheckBox Box = sender as CheckBox;
+            Handlers.visualLogicHandler.UserControls.GetUserControl().ForEach(userControl =>
+            {
+                if (Box.Content.ToString() != userControl.Content)
+                {
+                    userControl.IsChecked = false;
+                }
+            });
+            Handlers.visualLogicHandler.ConvertSpreadsheetToDataGrid(Box.Content.ToString(), Handlers.spreadsheethandler.SpreadsheetAsJson);
+
+        }
+
+
+        private void NewUnknownPlayers_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            DataGridColumn PotMain = sender as DataGridColumn;
+            if(e.Column.Header.ToString() == "PotentialMain")
+            {
+                DataGridComboBoxColumn boxColumn = new DataGridComboBoxColumn();
+            }
+        }
+
+        private void ConfirmTwinkAsMain_Click(object sender, RoutedEventArgs e)
+        {
+            Handlers.logikHandler.TwinksOrNewPlayers.ToList().Find(x => x.TwinkName == SelectedTwink.Text).AssociatedMain = ((SpreadsheetEntry)ListPotentialMain.SelectedItem).Spieler;
+        }
+
     }
 }

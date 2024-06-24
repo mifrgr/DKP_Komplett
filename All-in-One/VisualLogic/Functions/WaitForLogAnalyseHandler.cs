@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -15,37 +17,48 @@ namespace All_in_One.VisualLogic.Functions
     /// </summary>
     internal class WaitForLogAnalyseHandler : INotifyPropertyChanged
     {
-        int addvalue = 5;
-        WaitForReportAnalys dialog;
-        public bool IsDiagOpen { get; set; }
+        int addvalue = 6;
+        static WaitForReportAnalys dialog;
+        public bool IsDiagOpen { get; set; } = false;
 
-        internal void ShowDialog()
+        Task ShowWindow;
+
+        internal void InitDiag()
         {
-            if(dialog == null)
+            
+            if(dialog == null | IsDiagOpen == false)
             {
                 dialog = new WaitForReportAnalys();
-                //Binding binding = new Binding("ProgressBarValue");
-                //dialog.ProgressLogAnalyse.SetBinding(ProgressBar.ValueProperty, binding);
-            }
-            dialog.Show();
-            IsDiagOpen = true;
-        }
-        //TODO: Get this done by binding
-        internal void AddValue(int Value) 
-        {
+                Binding ProgressBarBinding = new Binding("ProgressBarValue");
+                ProgressBarBinding.Source = this;
+                dialog.ProgressLogAnalyse.SetBinding(ProgressBar.ValueProperty, ProgressBarBinding);
 
-            dialog.BeginInit();
+                Binding LabelBinding = new Binding("ActualLogReadStep");
+                LabelBinding.Source = this;
+                dialog.ActualStep.SetBinding(Label.ContentProperty, LabelBinding);
+            }
+            
+            IsDiagOpen = true;
+            dialog.Show();
+        }
+
+
+        internal void CloseDiag()
+        {
+            dialog.Close();
+            IsDiagOpen = false;
+        }
+
+        //TODO: Get this done by binding
+        internal void AddValue(string Step) 
+        {
             ProgressBarValue += addvalue;
-            dialog.ProgressLogAnalyse.Value = addvalue;
-            dialog.EndInit();
+            ActualLogReadStep = "Aktuell wird ausgelesen: " + Step;
         }
 
         internal void SetValue(int Value) 
         {
-            dialog.BeginInit();
             ProgressBarValue = Value;
-            dialog.ProgressLogAnalyse.Value = Value;
-            dialog.EndInit();
         }
 
         internal int GetValue() 
@@ -67,6 +80,17 @@ namespace All_in_One.VisualLogic.Functions
             {
                 pvalue = value;
                 OnPropertyChanged("ProgressBarValue");
+            }
+        }
+
+        string avalue = "";
+        public string ActualLogReadStep
+        {
+            get { return avalue; }
+            set 
+            {
+                avalue = value;
+                OnPropertyChanged("ActualLogReadStep");
             }
         }
         public event PropertyChangedEventHandler PropertyChanged;

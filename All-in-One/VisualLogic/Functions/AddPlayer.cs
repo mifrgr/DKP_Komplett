@@ -1,26 +1,26 @@
-﻿using All_in_One.Entrys;
-using All_in_One.Logik_Side;
-using All_in_One.Spreadsheet_Side;
+﻿using All_in_One.Spreadsheet_Side.Data;
+using All_in_One.Logik_Side.Data;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace All_in_One.VisualLogic.Functions
 {
-    internal class AddPlayer
+    public static  class AddPlayer
     {
-        public void AddPlayers(List<UnknownPlayer> TwinksOrNewPlayers, List<SpreadsheetEntry> inPlayersFromSpreadsheet, out List<SpreadsheetEntry> PlayersFromSpreadsheet)
+        public static void AddPlayers(this ObservableCollection<SpreadsheetEntry> entries, ObservableCollection<UnknownPlayer> TwinksOrNewPlayers)
         {
 
             foreach (var entry in TwinksOrNewPlayers)
             {
                 if (entry.AddNewPlayer)
                 {
-                    inPlayersFromSpreadsheet.Add(new SpreadsheetEntry
+                    entries.Add(new SpreadsheetEntry
                     {
-                        Spieler = entry.Name,
+                        Spieler = entry.TwinkName,
                         Teilgenommen = "x",
                         Punkte = "0",
 
@@ -29,7 +29,6 @@ namespace All_in_One.VisualLogic.Functions
                 }
             }
 
-            PlayersFromSpreadsheet = inPlayersFromSpreadsheet;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace All_in_One.Logik_Side.Data
             {Spell_Category.Spell_CategoryType.Shadow, new BestCategorieBaseClass(50,100,Effect_Category.Effect_CategoryType.Debuff)},
             {Spell_Category.Spell_CategoryType.Rapidfire, new BestCategorieBaseClass(0,25,Effect_Category.Effect_CategoryType.Buffs)},
             {Spell_Category.Spell_CategoryType.SliceDice, new BestCategorieBaseClass(50,25,Effect_Category.Effect_CategoryType.Buffs)},
-            {Spell_Category.Spell_CategoryType.Decurse, new BestCategorieBaseClass(5,1000,Effect_Category.Effect_CategoryType.Cast)}
+            {Spell_Category.Spell_CategoryType.Decurse, new BestCategorieBaseClass(15,1000,Effect_Category.Effect_CategoryType.Cast)}
         };
     }
 }

@@ -7,12 +7,13 @@ using All_in_One.Warcraft_Logs.LogTypes.Damage;
 using All_in_One.Warcraft_Logs.LogTypes.Debuffs;
 using All_in_One.Warcraft_Logs.LogTypes.Healing;
 using All_in_One.Warcraft_Logs.LogTypes.Summary;
-
+using All_in_One.Warcraft_Logs.LogTypes.Guild;
 
 namespace All_in_One.Warcraft_Logs.Data
 {
     public static class Logs_Results
     {
+        public static List<Guild_Rootobject> GuildLogs = new();
         public static Summary_Rootobject SummaryLogs = new();
         public static Base_Rootobject BaseLogs = new ();
 

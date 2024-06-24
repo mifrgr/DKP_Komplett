@@ -26,7 +26,7 @@ namespace All_in_One.VisualLogic.Functions
         {
             RaidSelections = new List<RaidSelection>();
 
-            foreach (var Sheet in Handlers.spreadsheethandler.Sheets)
+            foreach (var Sheet in Handlers.spreadsheethandler.SpreadsheetAsJson)
             {
                 RaidSelections.Add(new RaidSelection(Sheet.Properties.Title));
                 

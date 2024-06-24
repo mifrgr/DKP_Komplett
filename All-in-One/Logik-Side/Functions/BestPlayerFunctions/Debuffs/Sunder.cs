@@ -14,16 +14,17 @@ namespace All_in_One.Logik_Side.Functions.BestPlayerFunctions
         internal static PlayerDKP BestWarry()
         {
             PlayerDKP bestPlayer = new("", Spell_Category.Spell_CategoryType.SunderArmor.ToString());
-            foreach(var entry in Logs_Results.CastsLogs[Spell_Category.Spell_CategoryType.SunderArmor].entries.OrderByDescending(entry => entry.total).ToList()) 
+            foreach(var entry in Logs_Results.CastsLogs[Spell_Category.Spell_CategoryType.SunderArmor].entries.OrderByDescending(entry => entry.total)) 
             {
-                var Aura = Logs_Results.CastsLogs[Spell_Category.Spell_CategoryType.Casts].entries.ToList().Find(casts_entry => casts_entry.name == entry.name && (entry.total / casts_entry.total * 100) > Config.DKPRequirement[Spell_Category.Spell_CategoryType.SunderArmor].MinValue && (entry.total / casts_entry.total * 100) < Config.DKPRequirement[Spell_Category.Spell_CategoryType.SunderArmor].MaxValue);
+                var Aura = Logs_Results.CastsLogs[Spell_Category.Spell_CategoryType.Casts].entries.ToList().Find(casts_entry => casts_entry.name == entry.name && ((float)entry.total / (float)casts_entry.total * 100) > Config.DKPRequirement[Spell_Category.Spell_CategoryType.SunderArmor].MinValue && ((float)entry.total / (float)casts_entry.total * 100) < Config.DKPRequirement[Spell_Category.Spell_CategoryType.SunderArmor].MaxValue && !Logs_Results.SummaryLogs.playerDetails.tanks.ToList().Exists(tank => tank.name == entry.name));
                 if (Aura == null)
                 {
                    
                 }
                 else
-                {
-                    bestPlayer.Name = Logs_Results.CastsLogs[Spell_Category.Spell_CategoryType.Casts].entries.ToList().Find(casts_entry => casts_entry.name == entry.name && (entry.total / casts_entry.total * 100) > Config.DKPRequirement[Spell_Category.Spell_CategoryType.SunderArmor].MinValue && (entry.total / casts_entry.total * 100) < Config.DKPRequirement[Spell_Category.Spell_CategoryType.SunderArmor].MaxValue).name;
+                {                    
+                    bestPlayer.Name = Logs_Results.CastsLogs[Spell_Category.Spell_CategoryType.Casts].entries.ToList().Find(casts_entry => casts_entry.name == entry.name && ((float)entry.total / (float)casts_entry.total * 100) > Config.DKPRequirement[Spell_Category.Spell_CategoryType.SunderArmor].MinValue && ((float)entry.total / (float)casts_entry.total * 100) < Config.DKPRequirement[Spell_Category.Spell_CategoryType.SunderArmor].MaxValue).name;
+                    break;
                 }
             }
             return bestPlayer;

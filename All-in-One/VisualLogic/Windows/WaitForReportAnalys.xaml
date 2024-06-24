@@ -10,6 +10,7 @@
         <StackPanel>
             <Label Content="Die Logs werden ausgewertet, bitte warten..."></Label>
             <ProgressBar Name="ProgressLogAnalyse" Minimum="0" Maximum="100" Height="20" Margin="5" ></ProgressBar>
+            <Label Name="ActualStep"></Label>
         </StackPanel>
     </Grid>
 </Window>

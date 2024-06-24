@@ -1,9 +1,10 @@
-﻿<Window x:Class="All_in_One.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:All_in_One"
+        xmlns:local="clr-namespace:All_in_One" xmlns:data="clr-namespace:All_in_One.Logik_Side.Data" 
+        xmlns:Data="clr-namespace:All_in_One.Spreadsheet_Side.Data" x:Class="All_in_One.MainWindow" 
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1400">
     <Grid>
@@ -12,53 +13,53 @@
             <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <StackPanel>
-            <Button Height="30" Width="100" Content="Berechnen" Click="Calculate_Click" ></Button>
+            <Button Height="30" Width="100" Content="Berechnen" Click="Calculate_Click" />
         </StackPanel>
         <DockPanel Grid.Row="1">
-            <DataGrid Name="Tabelle" >
-            </DataGrid>
+            <DataGrid x:Name="PlayersFromSpreadsheet"/>
         </DockPanel>
         <DockPanel Grid.Column="1">
-            <Label Content="Spieler aus den Logs:" VerticalAlignment="Bottom" ></Label>
+            <Label Content="Spieler aus den Logs:" VerticalAlignment="Bottom" />
         </DockPanel>
         <DockPanel Grid.Row="1" Grid.Column="1">
-            <DataGrid Name="PlayersFromLogs"></DataGrid>
+            <DataGrid x:Name="PlayersFromLogs" AutoGenerateColumns="True"/>
         </DockPanel>
         <DockPanel Grid.Column="2">
-            <Label Content="Neue oder unbekannte Spieler:" VerticalAlignment="Bottom" ></Label>
+            <Label Content="Neue oder unbekannte Spieler:" VerticalAlignment="Bottom" />
         </DockPanel>
         <DockPanel Grid.Row="1" Grid.Column="2">
-            <DataGrid Name="NewUnknownPlayers" AutoGenerateColumns="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
-                    <DataGridCheckBoxColumn Header="Spieler neu anlegen" Binding="{Binding AddNewPlayer}"></DataGridCheckBoxColumn>
-                    <DataGridComboBoxColumn x:Name="MaincharComboBox" Header="Möglicher Main"></DataGridComboBoxColumn>
-                </DataGrid.Columns>
+            <DataGrid Name="NewUnknownPlayers" AutoGeneratingColumn="NewUnknownPlayers_AutoGeneratingColumn">
             </DataGrid>
         </DockPanel>
-        <StackPanel Name="PrepareLogs" Grid.Column="3">
-            <Button Height="30" Width="100" Content="DKP auslesen" Click="ReadFromSpreadSheet_Click"></Button>
-            <ItemsControl Name="CheckBoxRaidSelection" >
+        <StackPanel x:Name="PrepareLogs" Grid.Column="3">
+            <Button Height="30" Width="100" Content="DKP auslesen" Click="ReadFromSpreadSheet_Click"/>
+            <ItemsControl x:Name="CheckBoxRaidSelection">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <CheckBox Content="{Binding Content}" IsChecked="{Binding IsChecked, Mode=TwoWay}" />
+                        <CheckBox Content="{Binding Content}" IsChecked="{Binding IsChecked, Mode=TwoWay}" Checked="CheckBox_Checked" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </StackPanel>
-        <StackPanel Grid.Column="3" Grid.Row="1" Name="ShowRaiders">
-            <Label Content="Hier reinziehen" Height="30"  ></Label>
-            <TextBox Name="DrapAndDropBox" Width="250" Height="50" Margin="10" AllowDrop="True" TextChanged="DrapAndDropBox_TextChanged"></TextBox>
-            <Button Name="CompareLogPlayersWithDKPList" Content="Vergleiche Liste" Width="100" Height="30" Margin="10" Click="CompareLogPlayersWithDKPList_Click"></Button>
-            <Button Name="MarkPlayerForDKP" Content="Verteile DKP" Width="100" Height="30" Margin="10" Click="MarkPlayerForDKP_Click" ></Button>
-            <Button Name="AddPlayer" Content="Spieler hinzufügen" Width="100" Height="30" Margin="10" Click="AddPlayer_Click"></Button>
+        <StackPanel Grid.Column="3" Grid.Row="1" x:Name="ShowRaiders">
+            <Label Content="Hier reinziehen" Height="30"  />
+            <TextBox x:Name="DrapAndDropBox" Width="250" Height="50" Margin="10" AllowDrop="True" TextChanged="DrapAndDropBox_TextChanged"/>
+            <Label Content="Oder hier aus der Liste auswählen:"/>
+            <ComboBox x:Name="LastRaids" SelectionChanged="LastRaids_SelectionChanged"/>
+            <Button x:Name="CompareLogPlayersWithDKPList" Content="Vergleiche Liste" Width="100" Height="30" Margin="10" Click="CompareLogPlayersWithDKPList_Click"/>
+            <Button x:Name="MarkPlayerForDKP" Content="Verteile DKP" Width="100" Height="30" Margin="10" Click="MarkPlayerForDKP_Click" />
+            <Button x:Name="AddPlayer" Content="Spieler hinzufügen" Width="100" Height="30" Margin="10" Click="AddPlayer_Click"/>
+            <Separator></Separator>
+            <TextBlock Name="SelectedTwink"></TextBlock>
+            <ComboBox Name="ListPotentialMain">
+            </ComboBox>
+            <Button Name="ConfirmTwinkAsMain" Content="Übernehme Twink als Main" Click="ConfirmTwinkAsMain_Click" Height="30" Width="100" Margin="10"></Button>
         </StackPanel>
     </Grid>
 </Window>

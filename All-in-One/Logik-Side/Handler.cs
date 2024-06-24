@@ -1,8 +1,11 @@
-﻿using All_in_One.Entrys;
+﻿using All_in_One.Spreadsheet_Side.Data;
 using All_in_One.Logik_Side.Data;
-using All_in_One.StaticFunctions;
+using All_in_One.Logik_Side.Functions.ExtensionsMethods;
+using All_in_One.Static.Data;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,30 +14,26 @@ namespace All_in_One.Logik_Side
 {
     public class Handler
     {
-        DKP_Calc calc = new DKP_Calc();
-        PlayerFinder finder = new PlayerFinder();
-        MarkPlayersAsPresent mark = new MarkPlayersAsPresent();
         AnalyseLog find = new AnalyseLog();
 
-        public List<UnknownPlayer> TwinksOrNewPlayers = new List<UnknownPlayer>();
+        public ObservableCollection<UnknownPlayer> TwinksOrNewPlayers = new();
 
         /// <summary>
         /// Adds or reduce the DKP from players
         /// </summary>
         /// <param name="entries"></param>
-        public void CalculateDKP(List<SpreadsheetEntry> entries)
+        public void CalculateDKP(ObservableCollection<SpreadsheetEntry> entries)
         {
-            calc.CalcPoints(entries);
+            Handlers.visualLogicHandler.PlayersFromSpreadsheet.CalcPoints();
         }
-
         /// <summary>
         /// Get every Player that is in loglist, but not in DKP-List.
         /// </summary>
         /// <param name="PlayersFromSpreadsheet"></param>
         /// <param name="PlayersFromLogs"></param>
-        public void FindNewOrUnknownPlayer(List<SpreadsheetEntry> PlayersFromSpreadsheet, List<PlayerOnlyName> PlayersFromLogs)
+        public void FindNewOrUnknownPlayer(ObservableCollection<SpreadsheetEntry> PlayersFromSpreadsheet, ObservableCollection<PlayerOnlyName> PlayerFromLogs)
         {
-            finder.FindPlayer(PlayersFromSpreadsheet,PlayersFromLogs,out TwinksOrNewPlayers);
+            TwinksOrNewPlayers.FindPlayer(PlayersFromSpreadsheet, PlayerFromLogs);
         }
 
         /// <summary>
@@ -43,18 +42,18 @@ namespace All_in_One.Logik_Side
         /// <param name="inPlayersFromSpreadsheet"></param>
         /// <param name="PlayersFromLogs"></param>
         /// <param name="PlayersFromSpreadsheet"></param>
-        public void MarkPlayerAsPresent(List<SpreadsheetEntry> inPlayersFromSpreadsheet,List<PlayerOnlyName> PlayersFromLogs, out List<SpreadsheetEntry> WorkingSpreadsheet_PresentPlayer)
+        public void MarkPlayerAsPresent(ObservableCollection<SpreadsheetEntry> inPlayersFromSpreadsheet, ObservableCollection<PlayerOnlyName> PlayersFromLogs)
         {
-            WorkingSpreadsheet_PresentPlayer = mark.MarkPlayer(inPlayersFromSpreadsheet, PlayersFromLogs);
+            inPlayersFromSpreadsheet.MarkPlayer(PlayersFromLogs);
         }
 
         /// <summary>
         /// Get the player from logs who will get dkp points
         /// </summary>
         /// <param name="BestPlayers"></param>
-        public void FindBestPlayers(List<SpreadsheetEntry> WorkingSpreadsheet,out List<SpreadsheetEntry> WorkingSpreadsheet_BestPlayer)
+        public void FindBestPlayers(List<SpreadsheetEntry> WorkingSpreadsheet)
         {
-            WorkingSpreadsheet_BestPlayer = find.GetDKP_Player(WorkingSpreadsheet);
+            Handlers.visualLogicHandler.PlayersFromSpreadsheet.UpdateSpreadSheet(find.GetDKP_Player());
         }
     }
 }

@@ -24,7 +24,7 @@ namespace All_in_One.Logik_Side.Data
             Decurse = 2,
             Dispell = 988,
             Decurse_Druid = 2782,
-            Decurse_Mage = 1176,
+            Decurse_Mage = 475,
             Cleanse = 4987,
             Abolish_Poison = 2893,
 

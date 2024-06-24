@@ -1,18 +1,98 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace All_in_One.Entrys
+namespace All_in_One.Spreadsheet_Side.Data
 {
-    public class SpreadsheetEntry
+    public class SpreadsheetEntry : INotifyPropertyChanged
     {
-        public string Spieler { get; set; }
-        public string Punkte { get; set; }
-        public string Teilgenommen { get; set; }
-        public string BesonderePunkte { get; set; }
-        public string Stand { get; set; }
-        public string Datum { get; set; }
+        string _spieler;
+        string _punkte;
+        string _teilgenommen;
+        string _besonderepunkte;
+        string _stand;
+        string _datum;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        
+        public string Spieler
+        {
+            get
+            {
+                return _spieler;
+            }
+            set
+            {
+                _spieler = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Spieler)));
+            }
+        }
+
+        public string Punkte 
+        {
+            get
+            {
+                return _punkte;
+            }
+            set
+            {
+                _punkte = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Punkte)));
+            }
+        }
+
+        public string Teilgenommen 
+        {
+            get
+            {
+                return _teilgenommen;
+            }
+            set
+            {
+                _teilgenommen = value;
+                PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(nameof(Teilgenommen)));
+            }
+
+        }
+        public string BesonderePunkte 
+        {
+            get
+            {
+                return _besonderepunkte;
+            }
+            set
+            {
+                _besonderepunkte = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BesonderePunkte)));
+            }
+        }
+        public string Stand 
+        {
+            get
+            {
+                return _stand;
+            }
+            set
+            {
+                _stand = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Stand)));
+            }
+        }
+        public string Datum 
+        {
+            get
+            {
+                return _datum;
+            }
+            set
+            {
+                _datum = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Datum)));
+            }
+
+        }
     }
 }

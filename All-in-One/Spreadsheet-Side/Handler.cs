@@ -1,4 +1,4 @@
-﻿using All_in_One.Entrys;
+﻿using All_in_One.Spreadsheet_Side.Data;
 using Google.Apis.Sheets.v4.Data;
 using System;
 using System.Collections.Generic;
@@ -12,6 +12,7 @@ namespace All_in_One.Spreadsheet
     {
         Connector connector = new();
         public List<Sheet> Sheets = new List<Sheet>();
+        public List<JsonSheetEntry> SpreadsheetAsJson = new();
 
         public void ConnectToSpreadsheet()
         {

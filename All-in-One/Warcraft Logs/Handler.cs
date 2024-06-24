@@ -1,4 +1,5 @@
-﻿using All_in_One.Static.Data;
+﻿using All_in_One.Logik_Side.Functions.ExtensionsMethods;
+using All_in_One.Static.Data;
 using All_in_One.Warcraft_API;
 using All_in_One.Warcraft_Logs.Data;
 using System;
@@ -17,18 +18,40 @@ namespace All_in_One.Warcraft_Logs
         {
             data.getter = new LogGetter();
         }
+        
+
+        public void GetLastRaids()
+        {
+            Handlers.visualLogicHandler.ShowWaitWindow();
+            data.getter.GetGuildLogs();
+        }
 
         public void GetLogfromWarcraftLogs(string LogID)
         {
-            Handlers.visualLogicHandler.ChangeValue(0, false);
-            data.getter.GetBaseLogs(LogID);
-            //TODO: Fix that
-            Handlers.visualLogicHandler.ChangeValue();
+            data.getter.GetAllLogs(LogID);
+
+        }
+
+        internal void SetBaseData()
+        {
             data.endTime = Logs_Results.BaseLogs.end;
             data.Encounters = Logs_Results.BaseLogs.fights.ToList().Where(x => x.boss != 0).Count();
+            
+        }
 
-            data.getter.GetLogs(LogID,data.endTime);
+        internal void SetFightData()
+        {
             data.FightTime = Logs_Results.SummaryLogs.totalTime;
+        }
+
+        public long GetEndTime()
+        {
+            return data.endTime;
+        }
+
+        public string GetRaidDate()
+        {
+            return DateTimeOffset.FromUnixTimeMilliseconds(data.endTime).DateTime.ToShortDateString();
         }
 
         public long GetFightTime()
