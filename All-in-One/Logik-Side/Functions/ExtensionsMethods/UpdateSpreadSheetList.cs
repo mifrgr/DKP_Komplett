@@ -38,7 +38,7 @@ namespace All_in_One.Logik_Side.Functions.ExtensionsMethods
         public static void UpdateSpreadSheet(this ObservableCollection<SpreadsheetEntry> spreadsheets, List<PlayerDKP> Players, ObservableCollection<UnknownPlayer> unknownPlayers)
         {
             //Update Header
-            spreadsheets[0].Datum = Handlers.logshandler.GetRaidDate();
+            spreadsheets[0].Stand = Handlers.logshandler.GetRaidDate();
             //TODO: FIX that, lazy shit!
             foreach (UnknownPlayer player in unknownPlayers)
             {
