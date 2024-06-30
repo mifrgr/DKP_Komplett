@@ -51,6 +51,10 @@ namespace All_in_One.VisualLogic.Functions
                         Punkte = entry.Values[1].FormattedValue,
                     };
 
+                    if(entry.Values.Count() > 4)
+                    {
+                        spreadsheetEntry.Stand = entry.Values[4].FormattedValue;
+                    }
 
                     if (entry.Values.Count() > 2 && entry.Values[2].FormattedValue == "x")
                     {
