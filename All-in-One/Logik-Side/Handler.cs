@@ -53,7 +53,7 @@ namespace All_in_One.Logik_Side
         /// <param name="BestPlayers"></param>
         public void FindBestPlayers(List<SpreadsheetEntry> WorkingSpreadsheet)
         {
-            Handlers.visualLogicHandler.PlayersFromSpreadsheet.UpdateSpreadSheet(find.GetDKP_Player());
+            Handlers.visualLogicHandler.PlayersFromSpreadsheet.UpdateSpreadSheet(find.GetDKP_Player(),Handlers.logikHandler.TwinksOrNewPlayers);
         }
     }
 }

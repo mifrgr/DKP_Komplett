@@ -25,24 +25,10 @@ namespace All_in_One.Logik_Side
             BestBuffs();
             BestDebuffs();
             BestDecurse();
-            CheckForTwinkGetForMainDKP();
             return DKPPlayer;
 
         }
 
-        int CheckForTwinkGetForMainDKP()
-        {
-            int count = 0;
-            foreach(var Entry in Handlers.logikHandler.TwinksOrNewPlayers)
-            {
-                if(Entry.AssociatedMain != null && Entry.AssociatedMain != "")
-                {
-                    DKPPlayer.Find(player => player.Name == Entry.TwinkName).Category += " (Umgeloggt)" ;
-                    count++;
-                }
-            }
-            return count;
-        }
         void TopInLogs()
         {
             DKPPlayer.AddRange(_BestDD.BestDD());

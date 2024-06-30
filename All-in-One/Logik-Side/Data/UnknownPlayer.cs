@@ -16,6 +16,7 @@ namespace All_in_One.Logik_Side.Data
         string _name;
         bool _AddNewPlayer;
         string _associatedMain;
+        public bool mainAssociated = false;
 
         public string TwinkName
         {
@@ -51,6 +52,7 @@ namespace All_in_One.Logik_Side.Data
             set
             {
                 _associatedMain = value;
+                mainAssociated = true;
                 OnNotifyChanged(nameof(AssociatedMain));
             }
         }

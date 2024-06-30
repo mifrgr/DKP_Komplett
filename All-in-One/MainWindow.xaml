@@ -34,7 +34,7 @@
             <Label Content="Neue oder unbekannte Spieler:" VerticalAlignment="Bottom" />
         </DockPanel>
         <DockPanel Grid.Row="1" Grid.Column="2">
-            <DataGrid Name="NewUnknownPlayers" AutoGeneratingColumn="NewUnknownPlayers_AutoGeneratingColumn">
+            <DataGrid Name="NewUnknownPlayers" >
             </DataGrid>
         </DockPanel>
         <StackPanel x:Name="PrepareLogs" Grid.Column="3">

@@ -11,8 +11,6 @@ namespace All_in_One.Logik_Side.Data
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public bool loggedFlag = false;
-
         private string _name;
         private int _id;
 

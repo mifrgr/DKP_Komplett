@@ -111,7 +111,6 @@ namespace All_in_One
         private void MarkPlayerForDKP_Click(object sender, RoutedEventArgs e)
         {
             //TODO: Need big Rework!!!!
-            Handlers.visualLogicHandler.PlayersFromLogs.SwitchTwinkForMainInLogs(Handlers.logikHandler.TwinksOrNewPlayers);
             Handlers.logikHandler.MarkPlayerAsPresent(Handlers.visualLogicHandler.PlayersFromSpreadsheet, Handlers.visualLogicHandler.PlayersFromLogs);
             Handlers.logikHandler.FindBestPlayers(Handlers.visualLogicHandler.PlayersToSpreadsheet);
         }
@@ -135,15 +134,6 @@ namespace All_in_One
 
         }
 
-
-        private void NewUnknownPlayers_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
-        {
-            DataGridColumn PotMain = sender as DataGridColumn;
-            if(e.Column.Header.ToString() == "PotentialMain")
-            {
-                DataGridComboBoxColumn boxColumn = new DataGridComboBoxColumn();
-            }
-        }
 
         private void ConfirmTwinkAsMain_Click(object sender, RoutedEventArgs e)
         {

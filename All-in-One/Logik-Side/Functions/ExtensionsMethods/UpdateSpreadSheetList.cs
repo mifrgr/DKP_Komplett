@@ -1,4 +1,5 @@
-﻿using All_in_One.Spreadsheet_Side.Data;
+﻿using All_in_One.Logik_Side.Data;
+using All_in_One.Spreadsheet_Side.Data;
 using All_in_One.Static.Data;
 using All_in_One.Warcraft_Logs.Data;
 using System;
@@ -34,10 +35,17 @@ namespace All_in_One.Logik_Side.Functions.ExtensionsMethods
 
         }
 
-        public static void UpdateSpreadSheet(this ObservableCollection<SpreadsheetEntry> spreadsheets, List<PlayerDKP> Players)
+        public static void UpdateSpreadSheet(this ObservableCollection<SpreadsheetEntry> spreadsheets, List<PlayerDKP> Players, ObservableCollection<UnknownPlayer> unknownPlayers)
         {
             //Update Header
             spreadsheets[0].Datum = Handlers.logshandler.GetRaidDate();
+            //TODO: FIX that, lazy shit!
+            foreach (UnknownPlayer player in unknownPlayers)
+            {
+                PlayerDKP ModifiedPlayer = Players.Find(dkpPlayer => dkpPlayer.Name == player.TwinkName);
+                ModifiedPlayer.Name = player.AssociatedMain;
+                ModifiedPlayer.Category += " | Umgeloggt -> " + player.TwinkName;
+            }
             foreach(PlayerDKP player in Players)
             {
                 if(spreadsheets.ToList().Exists(entry => entry.Spieler == player.Name))
