@@ -42,9 +42,9 @@ namespace All_in_One.Logik_Side
         /// <param name="inPlayersFromSpreadsheet"></param>
         /// <param name="PlayersFromLogs"></param>
         /// <param name="PlayersFromSpreadsheet"></param>
-        public void MarkPlayerAsPresent(ObservableCollection<SpreadsheetEntry> inPlayersFromSpreadsheet, ObservableCollection<PlayerOnlyName> PlayersFromLogs)
+        public void MarkPlayerAsPresent(ObservableCollection<SpreadsheetEntry> inPlayersFromSpreadsheet, ObservableCollection<PlayerOnlyName> PlayersFromLogs, ObservableCollection<UnknownPlayer> unknownPlayers)
         {
-            inPlayersFromSpreadsheet.MarkPlayer(PlayersFromLogs);
+            inPlayersFromSpreadsheet.MarkPlayer(PlayersFromLogs, unknownPlayers);
         }
 
         /// <summary>

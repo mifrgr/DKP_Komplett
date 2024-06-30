@@ -92,7 +92,7 @@ namespace All_in_One
 
         private void AddPlayer_Click(object sender, RoutedEventArgs e)
         {
-            Handlers.visualLogicHandler.AddPlayerToSpreadsheet(Handlers.logikHandler.TwinksOrNewPlayers);            
+            Handlers.visualLogicHandler.AddPlayerToSpreadsheet(Handlers.logikHandler.TwinksOrNewPlayers);
         }
         string reportCode;
 
@@ -111,7 +111,7 @@ namespace All_in_One
         private void MarkPlayerForDKP_Click(object sender, RoutedEventArgs e)
         {
             //TODO: Need big Rework!!!!
-            Handlers.logikHandler.MarkPlayerAsPresent(Handlers.visualLogicHandler.PlayersFromSpreadsheet, Handlers.visualLogicHandler.PlayersFromLogs);
+            Handlers.logikHandler.MarkPlayerAsPresent(Handlers.visualLogicHandler.PlayersFromSpreadsheet, Handlers.visualLogicHandler.PlayersFromLogs, Handlers.logikHandler.TwinksOrNewPlayers);
             Handlers.logikHandler.FindBestPlayers(Handlers.visualLogicHandler.PlayersToSpreadsheet);
         }
 

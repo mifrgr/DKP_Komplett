@@ -42,9 +42,13 @@ namespace All_in_One.Logik_Side.Functions.ExtensionsMethods
             //TODO: FIX that, lazy shit!
             foreach (UnknownPlayer player in unknownPlayers)
             {
-                PlayerDKP ModifiedPlayer = Players.Find(dkpPlayer => dkpPlayer.Name == player.TwinkName);
-                ModifiedPlayer.Name = player.AssociatedMain;
-                ModifiedPlayer.Category += " | Umgeloggt -> " + player.TwinkName;
+                PlayerDKP ModifiedPlayer = Players.Find(dkpPlayer => dkpPlayer.Name == player.TwinkName && !player.AddNewPlayer);
+                if(ModifiedPlayer != null)
+                {
+                    ModifiedPlayer.Name = player.AssociatedMain;
+                    ModifiedPlayer.Category += " | Umgeloggt -> " + player.TwinkName;
+                }
+
             }
             foreach(PlayerDKP player in Players)
             {
