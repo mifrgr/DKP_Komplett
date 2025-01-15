@@ -25,7 +25,7 @@ namespace All_in_One.Logik_Side.Functions.ExtensionsMethods
                     int index = spreadsheets.IndexOf(workingentry);
                     spreadsheets[index].Spieler = workingentry.Spieler;
                     spreadsheets[index].Teilgenommen = workingentry.Teilgenommen;
-                    spreadsheets[index].BesonderePunkte = workingentry.BesonderePunkte;
+                    spreadsheets[index].ActiveTime = workingentry.ActiveTime;
                     spreadsheets[index].Datum = workingentry.Datum;
                     spreadsheets[index].Stand = workingentry.Stand;
 
@@ -57,13 +57,13 @@ namespace All_in_One.Logik_Side.Functions.ExtensionsMethods
                     SpreadsheetEntry entryToUpdate = spreadsheets.ToList().Find(entry => entry.Spieler == player.Name);
                     int indexToUpdate = spreadsheets.IndexOf(entryToUpdate);
                     //TODO: This should be the Category!
-                    if(spreadsheets[indexToUpdate].BesonderePunkte == "")
+                    if(spreadsheets[indexToUpdate].ActiveTime == "")
                     {
-                        spreadsheets[indexToUpdate].BesonderePunkte = player.Category;
+                        spreadsheets[indexToUpdate].ActiveTime = player.Category;
                     }
                     else
                     {
-                        spreadsheets[indexToUpdate].BesonderePunkte += " | " +player.Category;
+                        spreadsheets[indexToUpdate].ActiveTime += " | " +player.Category;
                     }
 
                 }

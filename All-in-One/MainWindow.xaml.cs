@@ -12,6 +12,7 @@ using System;
 using All_in_One.VisualLogic.Functions.ExtensionMethods;
 using System.ComponentModel;
 using All_in_One.Logik_Side.Functions;
+using System.IO;
 
 namespace All_in_One
 {
@@ -120,7 +121,6 @@ namespace All_in_One
         {
             //TODO: Need big Rework!!!!
             Handlers.logikHandler.MarkPlayerAsPresent(Handlers.visualLogicHandler.PlayersFromSpreadsheet, Handlers.visualLogicHandler.PlayersFromLogs, Handlers.logikHandler.TwinksOrNewPlayers);
-            Handlers.logikHandler.FindBestPlayers(Handlers.visualLogicHandler.PlayersToSpreadsheet);
         }
 
         private void LastRaids_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -148,5 +148,10 @@ namespace All_in_One
             Handlers.logikHandler.TwinksOrNewPlayers.ToList().Find(x => x.TwinkName == SelectedTwink.Text).AssociatedMain = ((SpreadsheetEntry)ListPotentialMain.SelectedItem).Spieler;
         }
 
+        private void Rectangle_Drop(object sender, DragEventArgs e)
+        {
+            string[] fileName = (string[])e.Data.GetData(DataFormats.FileDrop);
+            Handlers.logshandler.ReadLogsFromTextFile(fileName[0]);
+        }
     }
 }

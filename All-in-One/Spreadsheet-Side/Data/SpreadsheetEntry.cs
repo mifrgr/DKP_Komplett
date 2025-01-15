@@ -12,7 +12,9 @@ namespace All_in_One.Spreadsheet_Side.Data
         string _spieler;
         string _punkte;
         string _teilgenommen;
-        string _besonderepunkte;
+        string _activeTime;
+        string _consumables;
+        string _enchants;
         string _stand;
         string _datum;
 
@@ -57,16 +59,16 @@ namespace All_in_One.Spreadsheet_Side.Data
             }
 
         }
-        public string BesonderePunkte 
+        public string ActiveTime 
         {
             get
             {
-                return _besonderepunkte;
+                return _activeTime;
             }
             set
             {
-                _besonderepunkte = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BesonderePunkte)));
+                _activeTime = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActiveTime)));
             }
         }
         public string Stand 

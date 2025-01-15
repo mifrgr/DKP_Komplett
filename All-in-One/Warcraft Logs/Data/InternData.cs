@@ -1,4 +1,5 @@
 ﻿using All_in_One.Warcraft_API;
+using All_in_One.Warcraft_Logs.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,5 +23,6 @@ namespace All_in_One.Warcraft_Logs.Data
         internal int Encounters { get; set; }
 
         internal LogGetter getter;
+        internal LogTextFileReader logTextFileReader;
     }
 }

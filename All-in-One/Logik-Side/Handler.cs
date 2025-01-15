@@ -14,7 +14,6 @@ namespace All_in_One.Logik_Side
 {
     public class Handler
     {
-        AnalyseLog find = new AnalyseLog();
 
         public ObservableCollection<UnknownPlayer> TwinksOrNewPlayers = new();
 
@@ -47,13 +46,5 @@ namespace All_in_One.Logik_Side
             inPlayersFromSpreadsheet.MarkPlayer(PlayersFromLogs, unknownPlayers);
         }
 
-        /// <summary>
-        /// Get the player from logs who will get dkp points
-        /// </summary>
-        /// <param name="BestPlayers"></param>
-        public void FindBestPlayers(List<SpreadsheetEntry> WorkingSpreadsheet)
-        {
-            Handlers.visualLogicHandler.PlayersFromSpreadsheet.UpdateSpreadSheet(find.GetDKP_Player(),Handlers.logikHandler.TwinksOrNewPlayers);
-        }
     }
 }

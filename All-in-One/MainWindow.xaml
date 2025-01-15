@@ -48,8 +48,10 @@
             </ItemsControl>
         </StackPanel>
         <StackPanel Grid.Column="3" Grid.Row="1" x:Name="ShowRaiders">
-            <Label Content="Hier reinziehen" Height="30"  />
+            <Label Content="Hier Link reinziehen" Height="30"  />
             <TextBox x:Name="DrapAndDropBox" Width="250" Height="50" Margin="10" AllowDrop="True" TextChanged="DrapAndDropBox_TextChanged"/>
+            <Label Content="Hier Text-Dateí reinziehen" Height="30"  />
+            <Rectangle Width="250" Height="50" Margin="10" AllowDrop="True" Fill="AliceBlue" Drop="Rectangle_Drop"></Rectangle>
             <Label Content="Oder hier aus der Liste auswählen:"/>
             <ComboBox x:Name="LastRaids" SelectionChanged="LastRaids_SelectionChanged"/>
             <Button x:Name="CompareLogPlayersWithDKPList" Content="Vergleiche Liste" Width="100" Height="30" Margin="10" Click="CompareLogPlayersWithDKPList_Click"/>

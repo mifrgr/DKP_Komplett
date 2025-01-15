@@ -61,7 +61,7 @@ namespace All_in_One.VisualLogic.Functions
                         if (entry.Values.Count() > 3 && entry.Values[3].FormattedValue != "")
                         {
                             spreadsheetEntry.Teilgenommen = "x";
-                            spreadsheetEntry.BesonderePunkte = entry.Values[3].FormattedValue;
+                            spreadsheetEntry.ActiveTime = entry.Values[3].FormattedValue;
 
                         }
                         else
@@ -72,7 +72,7 @@ namespace All_in_One.VisualLogic.Functions
                     else
                     {
                         spreadsheetEntry.Teilgenommen = "";
-                        spreadsheetEntry.BesonderePunkte = "";
+                        spreadsheetEntry.ActiveTime = "";
                     }
                     entries.Add(spreadsheetEntry);
                 }

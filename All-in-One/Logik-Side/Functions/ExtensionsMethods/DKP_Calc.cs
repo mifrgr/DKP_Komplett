@@ -46,29 +46,7 @@ public static class DKP_Calc
                 }
 
             }
-            if (entry.BesonderePunkte.Length > 0)
-            {
-                if (double.Parse(entry.Punkte) < 101 && !IsSixOrOne(double.Parse(entry.Punkte)))
-                {
-                    entry.Punkte = Math.Round(double.Parse(entry.Punkte) + 0.1, 1).ToString();
-                }
-                else if (IsSixOrOne(double.Parse(entry.Punkte)))
-                {
-
-                }
-                else
-                {
-                    entry.Punkte = "101";
-                }
-            }
         }
 
-
-        bool IsSixOrOne(double points)
-        {
-            double pointes = Math.Truncate(points);
-            return pointes.ToString().EndsWith("6") | pointes.ToString().EndsWith("1");
-
-        }
     }
 }

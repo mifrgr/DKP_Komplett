@@ -4,6 +4,7 @@ using All_in_One.Warcraft_API;
 using All_in_One.Warcraft_Logs.Data;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,17 @@ namespace All_in_One.Warcraft_Logs
         public void GetLogfromWarcraftLogs(string LogID)
         {
             data.getter.GetAllLogs(LogID);
+
+        }
+
+        public void ReadLogsFromTextFile(string path)
+        {
+            StreamReader sr = new StreamReader(File.OpenRead(path));
+            while (!sr.EndOfStream)
+            {
+                string line = sr.ReadLine();
+                if(line.Contains("Spell_Aura_Applied") && )
+            }
 
         }
 

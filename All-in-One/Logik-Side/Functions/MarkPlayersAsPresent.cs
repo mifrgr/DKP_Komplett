@@ -17,7 +17,7 @@ namespace All_in_One.Logik_Side
             foreach(SpreadsheetEntry spreadsheetEntry in inPlayersFromSpreadsheet) 
             {
                 spreadsheetEntry.Teilgenommen = "";
-                spreadsheetEntry.BesonderePunkte = "";
+                spreadsheetEntry.ActiveTime = "";
                 //TODO: Fix that, lazy shit!
                 foreach (UnknownPlayer player in unknownPlayers)
                 {
