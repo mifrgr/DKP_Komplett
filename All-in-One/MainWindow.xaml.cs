@@ -60,8 +60,12 @@ namespace All_in_One
 
         private void NewUnknownPlayers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UnknownPlayer clickedPlayer = NewUnknownPlayers.SelectedItem as UnknownPlayer;
-            SelectedTwink.Text = clickedPlayer.TwinkName;
+            if(NewUnknownPlayers.SelectedItem != null)
+            {
+                UnknownPlayer clickedPlayer = NewUnknownPlayers.SelectedItem as UnknownPlayer;
+                SelectedTwink.Text = clickedPlayer.TwinkName;
+            }
+
         }
 
         void InitVisual()
@@ -72,7 +76,11 @@ namespace All_in_One
 
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
-            Handlers.logikHandler.CalculateDKP(Handlers.visualLogicHandler.PlayersFromSpreadsheet);
+            if (MessageBox.Show("Alle Sonderpunkte vergeben?" + Environment.NewLine + "Hexertank / Magetank...", "Achtung", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                Handlers.logikHandler.CalculateDKP(Handlers.visualLogicHandler.PlayersFromSpreadsheet);
+            }
+
         }
 
         

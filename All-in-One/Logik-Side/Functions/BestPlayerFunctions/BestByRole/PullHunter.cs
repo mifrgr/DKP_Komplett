@@ -19,7 +19,9 @@ namespace All_in_One.Logik_Side.Functions.BestPlayerFunctions.BestByRole
         static void GetPullHunterFromVisu()
         {
             ChoosePullHunter pullHunterWindow = new ChoosePullHunter();
-            pullHunterWindow.PullHunterList.ItemsSource = Logs_Results.SummaryLogs.playerDetails.dps.Where(dps => dps.type == "Hunter").ToList().Select(hunter => hunter.name);
+            List<string> ItemsSourceList = Logs_Results.SummaryLogs.playerDetails.dps.Where(dps => dps.type == "Hunter").ToList().Select(hunter => hunter.name).ToList();
+            ItemsSourceList.Add("None");
+            pullHunterWindow.PullHunterList.ItemsSource = ItemsSourceList;
             pullHunterWindow.ShowDialog();
         }
 
