@@ -1,11 +1,11 @@
-﻿using All_in_One.Spreadsheet_Side.Data;
-using All_in_One.Logik_Side.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using All_in_One.DataModels.PlayerModels;
+using All_in_One.DataModels.SpreadSheetModels;
 
 namespace All_in_One.VisualLogic.Functions
 {

@@ -1,4 +1,4 @@
-﻿using All_in_One.Static.Data;
+﻿using All_in_One.DataModels.SpreadSheetModels;
 using Aspose.Cells.Drawing;
 using System;
 using System.Collections.Generic;
@@ -14,25 +14,17 @@ namespace All_in_One.VisualLogic.Functions
 {
     public class UserControls
     {
-        List<RaidSelection> RaidSelections;
-
-        public List<RaidSelection> GetUserControl()
+        public ObservableCollection<RaidSelection> GetUserControl(List<JsonSheetEntry> SpreadSheetAsJson)
         {
-            if (RaidSelections == null)
-                Init();
-            return RaidSelections;
-        }
-        void Init()
-        {
-            RaidSelections = new List<RaidSelection>();
+            ObservableCollection<RaidSelection> result = new ObservableCollection<RaidSelection>();
 
-            foreach (var Sheet in Handlers.spreadsheethandler.SpreadsheetAsJson)
+            foreach (var Sheet in SpreadSheetAsJson)
             {
-                RaidSelections.Add(new RaidSelection(Sheet.Properties.Title));
-                
-            }
-        }
+                result.Add(new RaidSelection(Sheet.Properties.Title));
 
+            }
+            return result;
+        }
 
     }
 

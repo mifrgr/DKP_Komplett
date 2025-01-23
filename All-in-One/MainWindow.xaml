@@ -1,45 +1,45 @@
-﻿<Window
+﻿<Window x:Class="All_in_One.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:All_in_One" xmlns:data="clr-namespace:All_in_One.Logik_Side.Data" 
-        xmlns:Data="clr-namespace:All_in_One.Spreadsheet_Side.Data" x:Class="All_in_One.MainWindow" 
+        xmlns:local="clr-namespace:All_in_One" 
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="1400">
+        Title="MainWindow" Height="800" Width="1600">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.5*" />
             <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <StackPanel>
             <Button Height="30" Width="100" Content="Berechnen" Click="Calculate_Click" />
         </StackPanel>
         <DockPanel Grid.Row="1">
-            <DataGrid x:Name="PlayersFromSpreadsheet"/>
+            <DataGrid x:Name="PlayersFromSpreadsheet" ItemsSource="{Binding DKPListFromSpreadSheet}" AutoGenerateColumns="True"/>
         </DockPanel>
-        <DockPanel Grid.Column="1">
-            <Label Content="Spieler aus den Logs:" VerticalAlignment="Bottom" />
-        </DockPanel>
+        <StackPanel Grid.Column="1">
+            <Label FontSize="14" Content="{Binding LoadingDataMessage}" Margin="20"></Label>
+            <ProgressBar IsIndeterminate="True" Visibility="{Binding ShowProgressBar}" Height="20" Margin="20"></ProgressBar>
+            <Label Content="Spieler aus den Logs:" Margin="20"/>
+        </StackPanel>
         <DockPanel Grid.Row="1" Grid.Column="1">
-            <DataGrid x:Name="PlayersFromLogs" AutoGenerateColumns="True"/>
+            <DataGrid x:Name="PlayersFromLogs" AutoGenerateColumns="True" ItemsSource="{Binding PlayersDKPRequirement}"/>
         </DockPanel>
         <DockPanel Grid.Column="2">
             <Label Content="Neue oder unbekannte Spieler:" VerticalAlignment="Bottom" />
         </DockPanel>
         <DockPanel Grid.Row="1" Grid.Column="2">
-            <DataGrid Name="NewUnknownPlayers" >
+            <DataGrid Name="NewUnknownPlayers" ItemsSource="{Binding UnknownPlayers}" >
             </DataGrid>
         </DockPanel>
         <StackPanel x:Name="PrepareLogs" Grid.Column="3">
-            <Button Height="30" Width="100" Content="DKP auslesen" Click="ReadFromSpreadSheet_Click"/>
-            <ItemsControl x:Name="CheckBoxRaidSelection">
+            <ItemsControl x:Name="CheckBoxRaidSelection" ItemsSource="{Binding RaidCheckBoxCollection}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <CheckBox Content="{Binding Content}" IsChecked="{Binding IsChecked, Mode=TwoWay}" Checked="CheckBox_Checked" />
@@ -51,15 +51,13 @@
             <Label Content="Hier Link reinziehen" Height="30"  />
             <TextBox x:Name="DrapAndDropBox" Width="250" Height="50" Margin="10" AllowDrop="True" TextChanged="DrapAndDropBox_TextChanged"/>
             <Label Content="Hier Text-Dateí reinziehen" Height="30"  />
-            <Rectangle Width="250" Height="50" Margin="10" AllowDrop="True" Fill="AliceBlue" Drop="Rectangle_Drop"></Rectangle>
+            <Rectangle x:Name="LogFileDropBox" Width="250" Height="50" Margin="10" AllowDrop="True" Fill="AliceBlue" Drop="LogFileDropBox_Drop"></Rectangle>
             <Label Content="Oder hier aus der Liste auswählen:"/>
-            <ComboBox x:Name="LastRaids" SelectionChanged="LastRaids_SelectionChanged"/>
-            <Button x:Name="CompareLogPlayersWithDKPList" Content="Vergleiche Liste" Width="100" Height="30" Margin="10" Click="CompareLogPlayersWithDKPList_Click"/>
+            <ComboBox x:Name="LastRaids" SelectionChanged="LastRaids_SelectionChanged" ItemsSource="{Binding LastGuildsRaids}"/>
             <Button x:Name="MarkPlayerForDKP" Content="Verteile DKP" Width="100" Height="30" Margin="10" Click="MarkPlayerForDKP_Click" />
-            <Button x:Name="AddPlayer" Content="Spieler hinzufügen" Width="100" Height="30" Margin="10" Click="AddPlayer_Click"/>
             <Separator></Separator>
             <TextBlock Name="SelectedTwink"></TextBlock>
-            <ComboBox Name="ListPotentialMain">
+            <ComboBox Name="ListPotentialMain" ItemsSource="{Binding ListOfMains}">
             </ComboBox>
             <Button Name="ConfirmTwinkAsMain" Content="Übernehme Twink als Main" Click="ConfirmTwinkAsMain_Click" Height="30" Width="100" Margin="10"></Button>
         </StackPanel>

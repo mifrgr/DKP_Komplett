@@ -1,4 +1,4 @@
-﻿using All_in_One.Warcraft_Logs.LogTypes.Guild;
+﻿using All_in_One.DataModels.WarcraftLogsModels.LogTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
