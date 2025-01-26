@@ -42,6 +42,7 @@ namespace All_in_One.Spreadsheet
         {
             List<Sheet> spreadsheets = new List<Sheet>();
             var sheets = request.Execute().Sheets;
+            sheets.RemoveAt(7);
             Handlers.spreadsheethandler.SpreadsheetAsJson= JsonSerializer.Deserialize<List<JsonSheetEntry>>(JsonSerializer.Serialize(sheets));
             return spreadsheets;
         }
