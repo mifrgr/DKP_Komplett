@@ -12,8 +12,8 @@ namespace All_in_One.DataModels.DKPModels
         string _PlayerName;
         public int CountOfNotEnchantetItems = 0;
         string _Enchantment;
-        string _Consumable;
-        string _WeaponEnchantment;
+        string _Consumable1;
+        string _Consumable2;
         float _ActiveTime;
 
 
@@ -27,15 +27,15 @@ namespace All_in_One.DataModels.DKPModels
             get { return _Enchantment; }
             set { _Enchantment = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Enchantment))); }
         }
-        public string Consumable 
+        public string Consumable1
         {
-            get { return _Consumable; }
-            set { _Consumable = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Consumable))); } 
+            get { return _Consumable1; }
+            set { _Consumable1 = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Consumable1))); } 
         }
-        public string WeaponEnchantment 
+        public string Consumable2
         { 
-            get { return _WeaponEnchantment; }
-            set { _WeaponEnchantment = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WeaponEnchantment))); } 
+            get { return _Consumable2; }
+            set { _Consumable2 = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Consumable2))); } 
         }
         public float ActiveTime 
         {

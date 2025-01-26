@@ -21,9 +21,9 @@ namespace All_in_One.Services.CalculateService
                 entry.Teilgenommen = "x";
                 entry.ActiveTime = item.ActiveTime.ToString();
                 entry.Verzauberungen = item.Enchantment;
-                entry.Waffenverzauberungen = item.WeaponEnchantment;
-                entry.Consumables = item.Consumable;
-                if(item.CountOfNotEnchantetItems <= 2 && item.Consumable != "" && item.WeaponEnchantment != "" && item.ActiveTime > 50)
+                entry.Consumables1 = item.Consumable1;
+                entry.Consumable2 = item.Consumable2;
+                if(item.CountOfNotEnchantetItems <= 2 && item.Consumable1 != "" && item.Consumable2 != "" && item.ActiveTime > 50)
                 {
                     entry.GetDKP = true;
                 }

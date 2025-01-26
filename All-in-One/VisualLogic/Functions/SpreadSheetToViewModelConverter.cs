@@ -24,9 +24,9 @@ namespace All_in_One.VisualLogic.Functions
                     Punkte = data.Values.Count() < 2 ? "" : data.Values[1].FormattedValue,
                     Teilgenommen = data.Values.Count() < 3 ? "" : data.Values[2].FormattedValue,
                     ActiveTime = data.Values.Count() < 4 ? "" : data.Values[3].FormattedValue,
-                    Consumables = data.Values.Count() < 5 ? "" : data.Values[4].FormattedValue,
+                    Consumables1 = data.Values.Count() < 5 ? "" : data.Values[4].FormattedValue,
                     Verzauberungen = data.Values.Count() < 6 ? "" : data.Values[5].FormattedValue,
-                    Waffenverzauberungen = data.Values.Count() < 7 ? "" : data.Values[6].FormattedValue,
+                    Consumable2 = data.Values.Count() < 7 ? "" : data.Values[6].FormattedValue,
                     Datum = data.Values.Count() < 8 ? "" : data.Values[7].FormattedValue,
 
                 });

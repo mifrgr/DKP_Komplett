@@ -1,6 +1,8 @@
 ﻿using All_in_One.DataModels.DKPModels;
+using All_in_One.DataModels.PlayerModels;
 using All_in_One.DataModels.WarcraftlogsModels;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,15 +22,36 @@ namespace All_in_One.Services.CalculateService
             {
                 PlayerDKPEntry entry = new PlayerDKPEntry();
 
+                int[] ints = (int[])Enum.GetValues(typeof(PlayerItemSlots.ItemSlots));
+
                 entry.PlayerName = logentry.name;
                 entry.ActiveTime = (float)logentry.activeTime / (float)logs.castsLogs.totalTime * 100f;
 
                 foreach (var item in logentry.gear)
                 {
-                    if (item.permanentEnchantName == null && (item.slot == 0 || item.slot == 2 || item.slot == 4 || item.slot == 6 || item.slot == 7 || item.slot == 8 || item.slot == 9 || item.slot == 14 || item.slot == 15 || (item.slot == 16 && (item.icon.Contains("sword")|| item.icon.Contains("mace") || item.icon.Contains("axe") || item.icon.Contains("knife") || item.icon.Contains("blade")))))
+                    if (((int[])Enum.GetValues(typeof(PlayerItemSlots.ItemSlots))).Contains(item.slot))
                     {
-                        entry.Enchantment += item.name + Environment.NewLine;
-                        entry.CountOfNotEnchantetItems++;
+
+                        if (item.permanentEnchantName == null)
+                        {
+                            if(item.slot != 16)
+                            {
+                                entry.Enchantment += item.name + Environment.NewLine;
+                                entry.CountOfNotEnchantetItems++;
+                            }
+                            else if(item.icon.Contains("sword") || item.icon.Contains("mace") || item.icon.Contains("axe") || item.icon.Contains("knife") || item.icon.Contains("blade"))
+                            {
+                                entry.Enchantment += item.name + Environment.NewLine;
+                                entry.CountOfNotEnchantetItems++;
+
+                            }
+                        }
+
+                        if (item.permanentEnchantName != null && Enchantments.AcceptedEnchantments.Where(enchant => enchant.ID == item.permanentEnchant).Count() == 0)
+                        {
+                            entry.Enchantment += item.name + " [" + item.permanentEnchantName + "]" + Environment.NewLine;
+                            entry.CountOfNotEnchantetItems++;
+                        }
                     }
                 }
 

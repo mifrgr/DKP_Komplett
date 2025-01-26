@@ -70,7 +70,7 @@ namespace All_in_One
 
         private void LastRaids_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            mainService.GetDataFromLog(((ComboBox)sender).SelectedValue.ToString().Split("|")[2].Trim());
+            mainService.GetDataFromLog(((ComboBox)sender).SelectedValue.ToString());
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)

@@ -30,11 +30,17 @@ namespace All_in_One.Services.CalculateService
                             
                             if (!result.Exists(entry => entry.PlayerName == player))
                             {
-                                result.Add(new PlayerDKPEntry() { PlayerName = player, Consumable = line.Split(',')[10] });
+                                result.Add(new PlayerDKPEntry() { PlayerName = player, Consumable1 = line.Split(',')[10] });
                             }
                             else
                             {
-                                result.Find(entry => entry.PlayerName == player).Consumable = line.Split(',')[10];
+                                var PlayerDKPEntry = result.Find(entry => entry.PlayerName == player);
+
+                                if (!PlayerDKPEntry.Consumable1.Contains(consumable) && PlayerDKPEntry.Consumable2 == null)
+                                {
+                                    PlayerDKPEntry.Consumable2 = line.Split(',')[10];
+                                }
+
                             }
                         }
                     });
@@ -44,11 +50,16 @@ namespace All_in_One.Services.CalculateService
                         {
                             if (!result.Exists(entry => entry.PlayerName == player))
                             {
-                                result.Add(new PlayerDKPEntry() { PlayerName = player, WeaponEnchantment = line.Split(',')[10] });
+                                result.Add(new PlayerDKPEntry() { PlayerName = player, Consumable1 = line.Split(',')[10] });
                             }
                             else
                             {
-                                result.Find(entry => entry.PlayerName == player).WeaponEnchantment = line.Split(',')[10];
+                                var PlayerDKPEntry = result.Find(entry => entry.PlayerName == player);
+
+                                if(!PlayerDKPEntry.Consumable1.Contains(enchant) && PlayerDKPEntry.Consumable2 == null)
+                                {
+                                    PlayerDKPEntry.Consumable2 = line.Split(',')[10];
+                                }
                             }
                         }
                     });

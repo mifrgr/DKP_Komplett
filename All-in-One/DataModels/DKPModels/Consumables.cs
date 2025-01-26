@@ -19,14 +19,30 @@ namespace All_in_One.DataModels.DKPModels
             "Arkanes Elixier",
             "Fläschchen",
             "Destil",
+            "Gesegnete Sonnenfrucht",
+            "Feuerwasser der Winterfelle",
+            "Juju",
+            "kotellets",
+            "Runn Tum",
+            "Kalmar",
+            "knödel",
+            "Feuermacht",
+            "Schattenmacht",
+            "Elixier der Riesen",
+            "Schwarzer Rumsey Rum",
+            "Wut der Zeiten",
+            "Stoß des Skorpoks",
+
+
         };
 
         public static List<string> AcceptedWeaponEnchants = new List<string>()
         {
-            "Gift",
+            "wirkendes Gift",
             "Manaöl",
             "Zauberöl",
             "schärfen",
         };
+
     }
 }

@@ -13,9 +13,9 @@ namespace All_in_One.DataModels.SpreadSheetModels
         string _punkte;
         string _teilgenommen;
         string _activeTime;
-        string _consumables;
+        string _consumable1;
         string _enchants;
-        string _weaponEnchant;
+        string _consumable2;
         string _stand;
         string _datum;
 
@@ -74,16 +74,16 @@ namespace All_in_One.DataModels.SpreadSheetModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActiveTime)));
             }
         }
-        public string Consumables
+        public string Consumables1
         {
             get
             {
-                return _consumables;
+                return _consumable1;
             }
             set
             {
-                _consumables = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Consumables)));
+                _consumable1 = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Consumables1)));
             }
         }
         public string Verzauberungen
@@ -98,16 +98,16 @@ namespace All_in_One.DataModels.SpreadSheetModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Verzauberungen)));
             }
         }
-        public string Waffenverzauberungen
+        public string Consumable2
         {
             get
             {
-                return _weaponEnchant;
+                return _consumable2;
             }
             set
             {
-                _weaponEnchant = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Waffenverzauberungen)));
+                _consumable2 = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Consumable2)));
             }
         }
         public string Stand

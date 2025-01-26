@@ -16,6 +16,8 @@ using System.Windows.Navigation;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
+using System.IO;
+using System.Windows.Shapes;
 
 namespace All_in_One.Services
 {
@@ -153,17 +155,17 @@ namespace All_in_One.Services
             ProgressBarControll();
         }
 
-        public async void GetDataFromLog(string reportCode)
+        public async void GetDataFromLog(string SelectedRaid)
         {
             ProgressBarControll(true);
-            logs = await logsHandler.GetLogfromWarcraftLogs(reportCode);
+            logs = await logsHandler.GetLogfromWarcraftLogs(SelectedRaid.Split("|")[2].Trim());
 
             foreach (var item in DKPListFromSpreadSheet)
             {
                 item.Teilgenommen = "";
                 item.ActiveTime = "";
-                item.Consumables = "";
-                item.Waffenverzauberungen = "";
+                item.Consumables1 = "";
+                item.Consumable2 = "";
                 item.Verzauberungen = "";
             }
             UnknownPlayers.Clear();
@@ -180,6 +182,23 @@ namespace All_in_One.Services
                 PlayersDKPRequirement.Add(player);
             }
             ProgressBarControll();
+            GetLocalLogTextFile(SelectedRaid.Split("|")[1].Trim());
+        }
+
+        public void GetLocalLogTextFile(string date)
+        {
+            try
+            {
+                var logTextFiles = Directory.GetFiles("C:\\Program Files (x86)\\World of Warcraft\\_classic_era_\\Logs");
+                var subpath = date.Split(".")[1] + date.Split(".")[0] + date.Split(".")[2][2] + date.Split(".")[2][3];
+                var path = logTextFiles.Where(localpath => localpath.Contains(subpath)).First();
+                GetDataFromLogTextFile(path);
+            }
+            catch (Exception ex) 
+            {
+                ProgressBarControll(true, ex.Message);
+            }
+
         }
 
         public void GetDataFromLogTextFile(string path)
@@ -190,6 +209,7 @@ namespace All_in_One.Services
                 MessageBox.Show("Erst Log-Analyse einlesen!");
                 return;
             }
+
             List<PlayerDKPEntry> dkpPlayers = calculateHandler.GetPlayerDKPRequirements(path);        
             foreach (var player in dkpPlayers)
             {
@@ -197,12 +217,16 @@ namespace All_in_One.Services
                 {
                     if(entry.PlayerName == player.PlayerName)
                     {
-                        entry.Consumable = player.Consumable;
-                        entry.WeaponEnchantment = player.WeaponEnchantment;
+                        entry.Consumable1 = player.Consumable1;
+                        entry.Consumable2 = player.Consumable2;
                     }
                 }
             }
             ProgressBarControll();
+            if (UnknownPlayers.Count == 0)
+            {
+                SetDKPForPlayers();
+            }
         }
 
         public void SetDKPForPlayers()
@@ -226,8 +250,8 @@ namespace All_in_One.Services
                             item.Teilgenommen = player.Teilgenommen;
                         }
                         item.Verzauberungen = player.Verzauberungen;                      
-                        item.Consumables = player.Consumables;
-                        item.Waffenverzauberungen = player.Waffenverzauberungen;
+                        item.Consumables1 = player.Consumables1;
+                        item.Consumable2 = player.Consumable2;
                         item.ActiveTime = player.ActiveTime;
                         item.GetDKP = player.GetDKP;
                     }
