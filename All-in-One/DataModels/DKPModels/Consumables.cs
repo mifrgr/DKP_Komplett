@@ -29,7 +29,6 @@ namespace All_in_One.DataModels.DKPModels
             "Feuermacht",
             "Schattenmacht",
             "Elixier der Riesen",
-            "Schwarzer Rumsey Rum",
             "Wut der Zeiten",
             "Stoß des Skorpoks",
 

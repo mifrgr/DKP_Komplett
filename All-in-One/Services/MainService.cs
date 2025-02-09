@@ -18,6 +18,8 @@ using System.Runtime.CompilerServices;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Shapes;
+using static All_in_One.MainWindow;
+using All_in_One.DataModels.RaidModels;
 
 namespace All_in_One.Services
 {
@@ -52,6 +54,8 @@ namespace All_in_One.Services
         public ObservableCollection<string> ListOfMains { get; set; } = new ObservableCollection<string> { };
 
         LogsDataObject logs;
+
+        string selectedRaid = "";
 
         public List<JsonSheetEntry> SpreadsheetAsJson = new();
 
@@ -158,6 +162,7 @@ namespace All_in_One.Services
         public async void GetDataFromLog(string SelectedRaid)
         {
             ProgressBarControll(true);
+            selectedRaid = SelectedRaid;
             logs = await logsHandler.GetLogfromWarcraftLogs(SelectedRaid.Split("|")[2].Trim());
 
             foreach (var item in DKPListFromSpreadSheet)
@@ -196,7 +201,7 @@ namespace All_in_One.Services
             }
             catch (Exception ex) 
             {
-                ProgressBarControll(true, ex.Message);
+                ProgressBarControll(true, ex.Message + " " + nameof(GetLocalLogTextFile));
             }
 
         }
@@ -223,10 +228,124 @@ namespace All_in_One.Services
                 }
             }
             ProgressBarControll();
+
+            foreach(var playerAddon in GetDataFromWoWAddon())
+            {
+                foreach(var entry in PlayersDKPRequirement)
+                {
+                    if(entry.PlayerName == playerAddon.Name)
+                    {
+                        foreach (KeyValuePair<DateTime,string> pair in playerAddon.TimeStamp)
+                        {
+                            if(pair.Key.Date == DateTime.Parse(selectedRaid.Split("|")[1]).Date)
+                            {
+                                if (entry.Consumable1 == null)
+                                {
+                                    entry.Consumable1 = pair.Value;
+                                }
+                                else if (entry.Consumable2 == null)
+                                {
+                                    entry.Consumable2 = pair.Value;
+                                }
+                            }
+                            
+                        }
+                        
+                    }
+                }
+            }
             if (UnknownPlayers.Count == 0)
             {
                 SetDKPForPlayers();
             }
+        }
+
+        private List<PlayerWoWAddon> GetDataFromWoWAddon()
+        {
+            ProgressBarControll(true);
+
+            List<PlayerWoWAddon> players = new List<PlayerWoWAddon>();
+            StreamReader sr = new StreamReader(File.Open("C:\\Program Files (x86)\\World of Warcraft\\_classic_era_\\WTF\\Account\\496316485#1\\SavedVariables\\NovaRaidCompanion.lua", FileMode.Open));
+
+            string data = sr.ReadToEnd();
+
+            string RaidName = selectedRaid.Split("|")[0];
+
+            string[] datablocks = data.Split("[\"instanceID\"] = " + Enum.Parse(typeof(RaidIDs), RaidName) + ",");
+            foreach (string block in datablocks)
+            {
+                string[] playerBuffs = block.Split("Player");
+                foreach (string player in playerBuffs)
+                {
+                    PlayerWoWAddon playerToAdd = new PlayerWoWAddon();
+                    if (player.Contains("race") && !player.Contains("NRC"))
+                    {
+                        string nameSeperated = player.Split(",").ToList().Find(s => s.Contains("name"));
+                        int startindex = nameSeperated.IndexOf("= \"") + 3;
+                        string playerName = nameSeperated.Substring(startindex, nameSeperated.Length - startindex - 1);
+                        if (!players.Exists(p => p.Name == playerName))
+                        {
+                            playerToAdd.Name = playerName;
+                            playerToAdd.ID = player.Substring(0, player.IndexOf("]") - 1);
+                        }
+                    }
+                    else if (player.Contains("instanceName"))
+                    {
+
+                    }
+                    if (player.Contains("24363") && player.Contains("timestamp"))
+                    {
+                        int startindexBuff = player.IndexOf("24363") + 5;
+                        string searchvalue = "[\"timestamp\"] = ";
+                        int startindex = player.IndexOf(searchvalue,startindexBuff) + searchvalue.Length;
+                        int endindex = player.IndexOf(",", startindex);
+
+                        string timestamp = player.Substring(startindex, endindex - startindex);
+
+                        string playerID = player.Substring(0, player.IndexOf("]") - 1);
+
+                        if (playerToAdd.Name != null || playerToAdd.ID != null)
+                        {
+                            playerToAdd.TimeStamp.Add(DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(double.Parse(timestamp.Replace('.', ',')))).DateTime,"Magierbluttrank");
+                            players.Add(playerToAdd);
+                        }                      
+                        else if(players.Exists(p => p.ID == playerID) && startindex-searchvalue.Length != -1)
+                        {
+                            players.Find(p => p.ID == playerID).TimeStamp.Add(DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(double.Parse(timestamp.Replace('.', ',')))).DateTime,"Magierbluttrank");
+                        }
+                    }
+                    if (player.Contains("25941"))
+                    {
+                        int startindexBuff = player.IndexOf("25941") + 5;
+                        string searchvalue = "[\"endTime\"] = ";
+                        int startindex = player.IndexOf(searchvalue, startindexBuff) + searchvalue.Length;
+                        int endindex = player.IndexOf(",", startindex);
+
+                        string timestamp = player.Substring(startindex, endindex - startindex);
+
+                        DateTime timestampDT = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(double.Parse(timestamp.Replace('.', ',')))).DateTime;
+
+                        string playerID = player.Substring(0, player.IndexOf("]") - 1);
+
+                        if (playerToAdd.Name != null || playerToAdd.ID != null)
+                        {
+                            playerToAdd.TimeStamp.Add(timestampDT,"Weisenfisch");
+                            players.Add(playerToAdd);
+                        }
+                        else if (players.Exists(p => p.ID == playerID && !p.TimeStamp.ContainsKey(timestampDT) && startindex - searchvalue.Length != -1 ))
+                        {
+                            players.Find(p => p.ID == playerID).TimeStamp.Add(timestampDT,"Weisenfisch");
+                        }
+                    }
+
+                    if (player.Contains("-5242-01E9F6AC"))
+                    {
+
+                    }
+                }
+            }
+            ProgressBarControll();
+            return players;
         }
 
         public void SetDKPForPlayers()

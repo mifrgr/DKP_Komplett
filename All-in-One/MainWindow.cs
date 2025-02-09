@@ -12,6 +12,8 @@ using System.ComponentModel;
 using System.IO;
 using All_in_One.DataModels.PlayerModels;
 using All_in_One.DataModels.SpreadSheetModels;
+using Aspose.Cells;
+using System.Xml.Linq;
 
 namespace All_in_One
 {
@@ -71,7 +73,11 @@ namespace All_in_One
         private void LastRaids_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             mainService.GetDataFromLog(((ComboBox)sender).SelectedValue.ToString());
+
+           
         }
+
+
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
