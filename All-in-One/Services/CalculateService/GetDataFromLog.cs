@@ -23,10 +23,8 @@ namespace All_in_One.Services.CalculateService
                 PlayerDKPEntry entry = new PlayerDKPEntry();
 
                 int[] ints = (int[])Enum.GetValues(typeof(PlayerItemSlots.ItemSlots));
-
                 entry.PlayerName = logentry.name;
-                entry.ActiveTime = (float)logentry.activeTime / (float)logs.castsLogs.totalTime * 100f;
-
+                entry.CountPerMinutes = (float)logentry.total / (((float)logs.castsLogs.totalTime)/60000);
                 foreach (var item in logentry.gear)
                 {
                     if (((int[])Enum.GetValues(typeof(PlayerItemSlots.ItemSlots))).Contains(item.slot))

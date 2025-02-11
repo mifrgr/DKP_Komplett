@@ -72,6 +72,7 @@ namespace All_in_One.DataModels.DKPModels
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Heilungsbonus,55)},2505),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Waffenschaden,5)},804),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Sonstiges,0)},1898),
+            new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Sonstiges,2,true)},863), //geringes blocken
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Stärke,15)},2563),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Beweglichkeit,15)},2564),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Sonstiges,0)},803),

@@ -168,7 +168,7 @@ namespace All_in_One.Services
             foreach (var item in DKPListFromSpreadSheet)
             {
                 item.Teilgenommen = "";
-                item.ActiveTime = "";
+                item.CountsPerMinutes = "";
                 item.Consumables1 = "";
                 item.Consumable2 = "";
                 item.Verzauberungen = "";
@@ -371,7 +371,7 @@ namespace All_in_One.Services
                         item.Verzauberungen = player.Verzauberungen;                      
                         item.Consumables1 = player.Consumables1;
                         item.Consumable2 = player.Consumable2;
-                        item.ActiveTime = player.ActiveTime;
+                        item.CountsPerMinutes = player.CountsPerMinutes;
                         item.GetDKP = player.GetDKP;
                     }
                 }

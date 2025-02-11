@@ -27,14 +27,28 @@ namespace All_in_One.Services.CalculateService
                     {
                         if(line.Contains(consumable))
                         {
+                            bool isFlask = false;
+                            Consumables.AcceptedDoubleConsumables.ForEach(flask => { if (line.Contains(flask)) { isFlask = true; };});
                             
                             if (!result.Exists(entry => entry.PlayerName == player))
                             {
-                                result.Add(new PlayerDKPEntry() { PlayerName = player, Consumable1 = line.Split(',')[10] });
+                                if(isFlask)
+                                {
+                                    result.Add(new PlayerDKPEntry() { PlayerName = player, Consumable1 = line.Split(',')[10], Consumable2 = line.Split(',')[10] });
+                                }
+                                else
+                                {
+                                    result.Add(new PlayerDKPEntry() { PlayerName = player, Consumable1 = line.Split(',')[10] });
+                                }
                             }
                             else
                             {
                                 var PlayerDKPEntry = result.Find(entry => entry.PlayerName == player);
+
+                                if(isFlask)
+                                {
+                                    PlayerDKPEntry.Consumable2 = line.Split(',')[10];
+                                }
 
                                 if (!PlayerDKPEntry.Consumable1.Contains(consumable) && PlayerDKPEntry.Consumable2 == null)
                                 {

@@ -12,7 +12,7 @@ namespace All_in_One.DataModels.SpreadSheetModels
         string _spieler;
         string _punkte;
         string _teilgenommen;
-        string _activeTime;
+        string _countsPerMinute;
         string _consumable1;
         string _enchants;
         string _consumable2;
@@ -62,16 +62,16 @@ namespace All_in_One.DataModels.SpreadSheetModels
             }
 
         }
-        public string ActiveTime
+        public string Verzauberungen
         {
             get
             {
-                return _activeTime;
+                return _enchants;
             }
             set
             {
-                _activeTime = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActiveTime)));
+                _enchants = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Verzauberungen)));
             }
         }
         public string Consumables1
@@ -86,18 +86,6 @@ namespace All_in_One.DataModels.SpreadSheetModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Consumables1)));
             }
         }
-        public string Verzauberungen
-        {
-            get
-            {
-                return _enchants;
-            }
-            set
-            {
-                _enchants = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Verzauberungen)));
-            }
-        }
         public string Consumable2
         {
             get
@@ -108,6 +96,18 @@ namespace All_in_One.DataModels.SpreadSheetModels
             {
                 _consumable2 = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Consumable2)));
+            }
+        }
+        public string CountsPerMinutes
+        {
+            get
+            {
+                return _countsPerMinute;
+            }
+            set
+            {
+                _countsPerMinute = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CountsPerMinutes)));
             }
         }
         public string Stand

@@ -19,11 +19,11 @@ namespace All_in_One.Services.CalculateService
                 SpreadsheetEntry entry = new SpreadsheetEntry();
                 entry.Spieler = item.PlayerName;
                 entry.Teilgenommen = "x";
-                entry.ActiveTime = item.ActiveTime.ToString();
+                entry.CountsPerMinutes = item.CountPerMinutes.ToString();
                 entry.Verzauberungen = item.Enchantment;
                 entry.Consumables1 = item.Consumable1;
                 entry.Consumable2 = item.Consumable2;
-                if(item.CountOfNotEnchantetItems <= 2 && item.Consumable1 != "" && item.Consumable2 != "" && item.ActiveTime > 50)
+                if(item.CountOfNotEnchantetItems <= 2 && item.Consumable1 != "" && item.Consumable2 != "" && item.CountPerMinutes >= 10)
                 {
                     entry.GetDKP = true;
                 }

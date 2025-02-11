@@ -14,7 +14,7 @@ namespace All_in_One.DataModels.DKPModels
         string _Enchantment;
         string _Consumable1;
         string _Consumable2;
-        float _ActiveTime;
+        float _CountPerMinutes;
 
 
         public string PlayerName 
@@ -37,10 +37,10 @@ namespace All_in_One.DataModels.DKPModels
             get { return _Consumable2; }
             set { _Consumable2 = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Consumable2))); } 
         }
-        public float ActiveTime 
+        public float CountPerMinutes 
         {
-            get { return _ActiveTime; }
-            set { _ActiveTime = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActiveTime))); } 
+            get { return _CountPerMinutes; }
+            set { _CountPerMinutes = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CountPerMinutes))); } 
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
