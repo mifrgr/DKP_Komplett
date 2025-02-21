@@ -11,7 +11,7 @@ namespace All_in_One.Services.CalculateService
     {
         public float CalculateDKPPoints(SpreadsheetEntry entry)
         {
-            if (entry.Teilgenommen != "")
+            if (entry.VersäumteIDs.Contains("Umgeloggt") || int.Parse(entry.VersäumteIDs) < 2)
             {
                 if (entry.GetDKP)
                 {
@@ -29,7 +29,12 @@ namespace All_in_One.Services.CalculateService
                     return float.Parse(entry.Punkte);
                 }
             }
-            else 
+            else if (int.Parse(entry.VersäumteIDs) >= 10)
+            {
+                return 0;
+
+            }
+            else if(int.Parse(entry.VersäumteIDs) >= 2)
             {
                 if (float.Parse(entry.Punkte) - 5 >= 0)
                 {

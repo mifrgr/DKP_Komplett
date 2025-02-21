@@ -18,7 +18,6 @@ namespace All_in_One.Services.CalculateService
             {
                 SpreadsheetEntry entry = new SpreadsheetEntry();
                 entry.Spieler = item.PlayerName;
-                entry.Teilgenommen = "x";
                 entry.CountsPerMinutes = item.CountPerMinutes.ToString();
                 entry.Verzauberungen = item.Enchantment;
                 entry.Consumables1 = item.Consumable1;

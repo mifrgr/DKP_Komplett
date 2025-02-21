@@ -21,7 +21,7 @@ namespace All_in_One.VisualLogic.Functions
                     entries.Add(new SpreadsheetEntry
                     {
                         Spieler = entry.TwinkName,
-                        Teilgenommen = "x",
+                        VersäumteIDs = 0.ToString(),
                         Punkte = "0",
 
 

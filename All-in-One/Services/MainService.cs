@@ -68,11 +68,12 @@ namespace All_in_One.Services
 
         public void CalculateDKP()
         {
+            DKPListFromSpreadSheet[0].Stand = selectedRaid.Split("|")[1].Trim();
             foreach(var item in  DKPListFromSpreadSheet)
             {
                 item.Punkte = calculateHandler.CalculateDKPPoints(item).ToString();
             }
-
+            TidyUp();
         }
 
         void ProgressBarControll(bool Show = false, [CallerMemberName] string memberName = "")
@@ -167,7 +168,6 @@ namespace All_in_One.Services
 
             foreach (var item in DKPListFromSpreadSheet)
             {
-                item.Teilgenommen = "";
                 item.CountsPerMinutes = "";
                 item.Consumables1 = "";
                 item.Consumable2 = "";
@@ -201,7 +201,7 @@ namespace All_in_One.Services
             }
             catch (Exception ex) 
             {
-                ProgressBarControll(true, ex.Message + " " + nameof(GetLocalLogTextFile));
+                ProgressBarControll(true, ex.Message + ex.StackTrace + " " + nameof(GetLocalLogTextFile));
             }
 
         }
@@ -269,7 +269,7 @@ namespace All_in_One.Services
 
             string data = sr.ReadToEnd();
 
-            string RaidName = selectedRaid.Split("|")[0];
+            string RaidName = selectedRaid.Split("|")[0].Trim() == "Naxx" ? "Naxxramas" : selectedRaid.Split("|")[0];
 
             string[] datablocks = data.Split("[\"instanceID\"] = " + Enum.Parse(typeof(RaidIDs), RaidName) + ",");
             foreach (string block in datablocks)
@@ -314,11 +314,11 @@ namespace All_in_One.Services
                             players.Find(p => p.ID == playerID).TimeStamp.Add(DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(double.Parse(timestamp.Replace('.', ',')))).DateTime,"Magierbluttrank");
                         }
                     }
-                    if (player.Contains("25941"))
+                    if (player.Contains("25941") && player.Contains("endTime"))
                     {
                         int startindexBuff = player.IndexOf("25941") + 5;
                         string searchvalue = "[\"endTime\"] = ";
-                        int startindex = player.IndexOf(searchvalue, startindexBuff) + searchvalue.Length;
+                        int startindex = player.IndexOf(searchvalue, startindexBuff) + searchvalue.Length ;
                         int endindex = player.IndexOf(",", startindex);
 
                         string timestamp = player.Substring(startindex, endindex - startindex);
@@ -355,26 +355,35 @@ namespace All_in_One.Services
             {
                 if(newEntry.AddNewPlayer)
                 {
-                    DKPListFromSpreadSheet.Add(new SpreadsheetEntry() { Spieler = newEntry.TwinkName, Teilgenommen = "x", Punkte = "0"});
+                    DKPListFromSpreadSheet.Add(new SpreadsheetEntry() { Spieler = newEntry.TwinkName, VersäumteIDs = 0.ToString(), Punkte = "0"});
                 }
             }
-            foreach (var player in calculateHandler.SetDKPForPlayers(PlayersDKPRequirement))
+
+            foreach (var item in DKPListFromSpreadSheet)
             {
-                foreach(var item in DKPListFromSpreadSheet)
+                bool playerFound = false;
+                foreach (var player in calculateHandler.SetDKPForPlayers(PlayersDKPRequirement))
                 {
-                    if(player.Spieler == item.Spieler || (item.Teilgenommen != null && item.Teilgenommen.Contains(player.Spieler)))
+                    if (player.Spieler == item.Spieler || (item.VersäumteIDs != null && item.VersäumteIDs.Contains(player.Spieler)))
                     {
-                        if(!item.Teilgenommen.Contains("Umgeloggt"))
-                        {
-                            item.Teilgenommen = player.Teilgenommen;
-                        }
-                        item.Verzauberungen = player.Verzauberungen;                      
+                        playerFound = true;
+                        item.Verzauberungen = player.Verzauberungen;
                         item.Consumables1 = player.Consumables1;
                         item.Consumable2 = player.Consumable2;
                         item.CountsPerMinutes = player.CountsPerMinutes;
                         item.GetDKP = player.GetDKP;
                     }
                 }
+                if(!playerFound)
+                {
+                    item.VersäumteIDs = (int.Parse(item.VersäumteIDs) + 1).ToString();
+                }
+            }
+
+
+            foreach (var player in calculateHandler.SetDKPForPlayers(PlayersDKPRequirement))
+            {
+                
             }
             ProgressBarControll();
             CalculateDKP();
@@ -387,7 +396,7 @@ namespace All_in_One.Services
             {
                 if(item.Spieler == SelectedMain)
                 {
-                    item.Teilgenommen = "Umgeloggt -> " + SelectedTwink.TwinkName;
+                    item.VersäumteIDs = "Umgeloggt -> " + SelectedTwink.TwinkName;
                 }
             }
 
@@ -399,6 +408,24 @@ namespace All_in_One.Services
                 }
             }
             ProgressBarControll();
+        }
+
+        private void TidyUp()
+        {
+            var Worklist = DKPListFromSpreadSheet.Where(entry =>
+            {
+                var ids = 0;
+                if (int.TryParse(entry.VersäumteIDs, out ids))
+                {
+                    return ids >= 10;
+                }
+                return false;
+            }).ToList();
+
+            foreach (var item in Worklist)
+            {
+                DKPListFromSpreadSheet.Remove(item);
+            }
         }
 
     }

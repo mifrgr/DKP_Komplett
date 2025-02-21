@@ -11,7 +11,7 @@ namespace All_in_One.DataModels.SpreadSheetModels
     {
         string _spieler;
         string _punkte;
-        string _teilgenommen;
+        string _idsohneteilname;
         string _countsPerMinute;
         string _consumable1;
         string _enchants;
@@ -49,16 +49,16 @@ namespace All_in_One.DataModels.SpreadSheetModels
             }
         }
 
-        public string Teilgenommen
+        public string VersäumteIDs
         {
             get
             {
-                return _teilgenommen;
+                return _idsohneteilname;
             }
             set
             {
-                _teilgenommen = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Teilgenommen)));
+                _idsohneteilname = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(VersäumteIDs)));
             }
 
         }
