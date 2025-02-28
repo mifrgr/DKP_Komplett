@@ -127,7 +127,7 @@ namespace All_in_One.Services
                     item.IsChecked = false;
                 }
             }
-            spreadSheetHandler.GetSpreadSheets();
+            SpreadsheetAsJson = await spreadSheetHandler.GetSpreadSheets();
             DKPListFromSpreadSheet.Clear();
             foreach (var item in visualLogicHandler.ConvertSpreadsheetToDataGrid(SpreadsheetAsJson.Find(entry => entry.Properties.Title == SelectedRaid)))
             {
@@ -192,17 +192,17 @@ namespace All_in_One.Services
 
         public void GetLocalLogTextFile(string date)
         {
-            try
-            {
+            //try
+            //{
                 var logTextFiles = Directory.GetFiles("C:\\Program Files (x86)\\World of Warcraft\\_classic_era_\\Logs");
                 var subpath = date.Split(".")[1] + date.Split(".")[0] + date.Split(".")[2][2] + date.Split(".")[2][3];
                 var path = logTextFiles.Where(localpath => localpath.Contains(subpath)).First();
                 GetDataFromLogTextFile(path);
-            }
-            catch (Exception ex) 
-            {
-                ProgressBarControll(true, ex.Message + ex.StackTrace + " " + nameof(GetLocalLogTextFile));
-            }
+            //}
+            //catch (Exception ex) 
+            //{
+            //    ProgressBarControll(true, ex.Message + ex.StackTrace + " " + nameof(GetLocalLogTextFile));
+            //}
 
         }
 
@@ -314,7 +314,7 @@ namespace All_in_One.Services
                             players.Find(p => p.ID == playerID).TimeStamp.Add(DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(double.Parse(timestamp.Replace('.', ',')))).DateTime,"Magierbluttrank");
                         }
                     }
-                    if (player.Contains("25941") && player.Contains("endTime"))
+                    if (player.Contains("[25941") && player.Contains("endTime"))
                     {
                         int startindexBuff = player.IndexOf("25941") + 5;
                         string searchvalue = "[\"endTime\"] = ";
@@ -345,6 +345,7 @@ namespace All_in_One.Services
                 }
             }
             ProgressBarControll();
+            sr.Close();
             return players;
         }
 
@@ -364,7 +365,7 @@ namespace All_in_One.Services
                 bool playerFound = false;
                 foreach (var player in calculateHandler.SetDKPForPlayers(PlayersDKPRequirement))
                 {
-                    if (player.Spieler == item.Spieler || (item.VersäumteIDs != null && item.VersäumteIDs.Contains(player.Spieler)))
+                    if (player.Spieler == item.Spieler || (item.VersäumteIDs != null && item.Spieler.Contains(player.Spieler)))
                     {
                         playerFound = true;
                         item.Verzauberungen = player.Verzauberungen;
@@ -396,7 +397,21 @@ namespace All_in_One.Services
             {
                 if(item.Spieler == SelectedMain)
                 {
-                    item.VersäumteIDs = "Umgeloggt -> " + SelectedTwink.TwinkName;
+                    string playername = item.Spieler;
+                    if(playername.Contains (" | "))
+                    {
+                        item.Spieler = playername.Remove(item.Spieler.IndexOf(" | "));
+                    }
+                    if(item.Spieler == SelectedTwink.TwinkName)
+                    {
+
+                    }
+                    else
+                    {
+                        item.Spieler += " | Umgeloggt -> " + SelectedTwink.TwinkName;
+                        ListOfMains[ListOfMains.IndexOf(playername)] = item.Spieler;
+                    }
+
                 }
             }
 
