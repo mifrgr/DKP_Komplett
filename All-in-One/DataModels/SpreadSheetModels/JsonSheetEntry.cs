@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace All_in_One.DataModels.SpreadSheetModels
+﻿namespace All_in_One.DataModels.SpreadSheetModels
 {
-
+    /// <summary>
+    /// Die Daten aus den Logs werden als Json zur Verfügung gestellt.
+    /// </summary>
     public class JsonSheetEntry
     {
         public object BandedRanges { get; set; }

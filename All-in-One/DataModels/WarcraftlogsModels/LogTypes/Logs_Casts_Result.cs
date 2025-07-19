@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace All_in_One.DataModels.WarcraftLogsModels.LogTypes
+﻿namespace All_in_One.DataModels.WarcraftLogsModels.LogTypes
 {
 
     public class Casts_Rootobject
@@ -68,6 +62,6 @@ namespace All_in_One.DataModels.WarcraftLogsModels.LogTypes
         public int setID { get; set; }
         public int temporaryEnchant { get; set; }
         public string temporaryEnchantName { get; set; }
-    } 
+    }
 
 }

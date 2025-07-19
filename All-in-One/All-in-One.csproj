@@ -10,8 +10,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="SchwarzerDrachenschwarmLogo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Aspose.Cells" Version="23.1.1" />
     <PackageReference Include="Google.Apis.Sheets.v4" Version="1.61.0.3113" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="SchwarzerDrachenschwarmLogo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Extern Data\SchwarzerDrachenschwarmLogo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace All_in_One.DataModels.DKPModels
 {
+    /// <summary>
+    /// Eine Verzauberung verbessert ein oder mehrer Stats um einen bestimmten absoluten oder Prozentwert
+    /// </summary>
     internal class Enchantment
     {
-        public List<EnchantmentBaseClass> EnchantmentStatImprove {  get; set; }
+        public List<EnchantmentBaseClass> EnchantmentStatImprove { get; set; }
         public int ID;
 
         public Enchantment(List<EnchantmentBaseClass> StatsImprove, int iD)
@@ -17,7 +16,9 @@ namespace All_in_One.DataModels.DKPModels
             ID = iD;
         }
     }
-
+    /// <summary>
+    /// Basisklasse für eine Verzauberung.
+    /// </summary>
     internal class EnchantmentBaseClass
     {
         public Enchantments.EnchantmentStat StatImprove { get; set; }
@@ -28,7 +29,7 @@ namespace All_in_One.DataModels.DKPModels
         {
             StatImprove = Stat;
             ImproveValue = Value;
-            IsPercent = isPercent; 
+            IsPercent = isPercent;
         }
     }
 }

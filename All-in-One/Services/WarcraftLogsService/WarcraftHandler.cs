@@ -1,13 +1,6 @@
-﻿using All_in_One.DataModels.DKPModels;
-using All_in_One.DataModels.WarcraftlogsModels;
-using All_in_One.DataModels.WarcraftLogsModels;
+﻿using All_in_One.DataModels.WarcraftlogsModels;
 using All_in_One.DataModels.WarcraftLogsModels.LogTypes;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace All_in_One.Services.WarcraftLogsService
@@ -16,17 +9,24 @@ namespace All_in_One.Services.WarcraftLogsService
     {
         LoadFunctions loadFunctions;
 
-        public WarcraftHandler() 
+        public WarcraftHandler()
         {
             loadFunctions = new LoadFunctions();
         }
-        
 
+        /// <summary>
+        /// Fragt eine Liste der letzten Raids ab.
+        /// </summary>
+        /// <returns>Eine Liste der letzten Raids als Json Datei</returns>
         public async Task<List<Guild_Rootobject>> GetLastRaids()
         {
             return await loadFunctions.GetGuildLogs();
         }
-
+        /// <summary>
+        /// Liest den Log mit der angegebenen ID aus
+        /// </summary>
+        /// <param name="LogID"></param>
+        /// <returns>Gibt einen Task zurück, dessen Ergebnis die Logs als DataObject enthält</returns>
         public async Task<LogsDataObject> GetLogfromWarcraftLogs(string LogID)
         {
             return await loadFunctions.LoadLogs(LogID);

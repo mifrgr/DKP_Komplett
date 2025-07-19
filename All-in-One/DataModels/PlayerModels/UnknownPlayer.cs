@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace All_in_One.DataModels.PlayerModels
 {
+    /// <summary>
+    /// Basisklasse für unbekannte Spieler
+    /// Name, Abfrage ob Spieler neu hinzugefügt werden soll, oder ob die Daten einem anderem Char des Spielers zugewiesen werden soll.
+    /// </summary>
     public class UnknownPlayer : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

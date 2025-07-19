@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace All_in_One.DataModels.SpreadSheetModels
 {
+    /// <summary>
+    /// Basisklasse für einen Eintrag in Google Sheets
+    /// </summary>
     public class SpreadsheetEntry : INotifyPropertyChanged
     {
         string _spieler;
@@ -19,7 +17,7 @@ namespace All_in_One.DataModels.SpreadSheetModels
         string _stand;
         string _datum;
 
-        public bool GetDKP =false;
+        public bool GetDKP = false;
 
         public event PropertyChangedEventHandler PropertyChanged;
 

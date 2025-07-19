@@ -1,15 +1,7 @@
-﻿using All_in_One.VisualLogic.Data;
+﻿using All_in_One.DataModels.SpreadSheetModels;
 using All_in_One.VisualLogic.Functions;
 using All_in_One.VisualLogic.Windows;
-using Google.Apis.Sheets.v4.Data;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Linq;
-using All_in_One.DataModels.PlayerModels;
-using All_in_One.DataModels.SpreadSheetModels;
-using All_in_One.DataModels.WarcraftLogsModels.LogTypes;
 
 
 namespace All_in_One.VisualLogic
@@ -24,7 +16,7 @@ namespace All_in_One.VisualLogic
         PleaseWait window = new PleaseWait();
 
         public void ShowWaitWindow()
-        {          
+        {
             window.Show();
             window.Focus();
         }
@@ -41,7 +33,7 @@ namespace All_in_One.VisualLogic
         }
 
 
-        
+
 
     }
 }

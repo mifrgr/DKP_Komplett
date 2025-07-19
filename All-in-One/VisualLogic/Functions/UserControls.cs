@@ -1,19 +1,18 @@
 ﻿using All_in_One.DataModels.SpreadSheetModels;
-using Aspose.Cells.Drawing;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 
 namespace All_in_One.VisualLogic.Functions
 {
     public class UserControls
     {
+        /// <summary>
+        /// Liest die Titel der Spreadsheettabellen aus, die in der GUI als Checkboxen erstellt werden.
+        /// </summary>
+        /// <param name="SpreadSheetAsJson">Die Liste aller Spreadsheet als Json Datei</param>
+        /// <returns>Gibt eine Liste mit der Checkbox-Basisklasse aus</returns>
         public ObservableCollection<RaidSelection> GetUserControl(List<JsonSheetEntry> SpreadSheetAsJson)
         {
             ObservableCollection<RaidSelection> result = new ObservableCollection<RaidSelection>();
@@ -28,6 +27,10 @@ namespace All_in_One.VisualLogic.Functions
 
     }
 
+    /// <summary>
+    /// Die Raids in denen DKP verwendet werden, sind als jeweils eigenes Tabellenblatt vorhanden.
+    /// Jedes Tabellenblatt ist als Checkbox in der GUI auswählbar. Dies ist die Basisklasse
+    /// </summary>
     public class RaidSelection : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

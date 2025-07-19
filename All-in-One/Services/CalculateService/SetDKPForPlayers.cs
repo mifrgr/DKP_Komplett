@@ -1,16 +1,17 @@
 ﻿using All_in_One.DataModels.DKPModels;
 using All_in_One.DataModels.SpreadSheetModels;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace All_in_One.Services.CalculateService
 {
     internal class SetDKPForPlayers
     {
+        /// <summary>
+        /// Wandelt die DKP Daten der Spieler in entsprechende Spreadsheet Daten.
+        /// </summary>
+        /// <param name="playerDKPs"></param>
+        /// <returns>Gibt eine Liste mit den Daten der Spieler in Spreadsheetform zurück</returns>
         public List<SpreadsheetEntry> SetDKPForPlayersFromLog(ObservableCollection<PlayerDKPEntry> playerDKPs)
         {
             List<SpreadsheetEntry> result = new List<SpreadsheetEntry>();
@@ -22,7 +23,7 @@ namespace All_in_One.Services.CalculateService
                 entry.Verzauberungen = item.Enchantment;
                 entry.Consumables1 = item.Consumable1;
                 entry.Consumable2 = item.Consumable2;
-                if(item.CountOfNotEnchantetItems <= 2 && item.Consumable1 != "" && item.Consumable2 != "" && item.CountPerMinutes >= 10)
+                if (item.CountOfNotEnchantetItems <= 2 && item.Consumable1 != null && item.Consumable2 != null && item.CountPerMinutes >= 10)
                 {
                     entry.GetDKP = true;
                 }

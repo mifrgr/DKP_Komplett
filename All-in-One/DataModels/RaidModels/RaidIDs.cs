@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace All_in_One.DataModels.RaidModels
+﻿namespace All_in_One.DataModels.RaidModels
 {
     public enum RaidIDs
     {

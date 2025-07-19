@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace All_in_One.DataModels.DKPModels
 {
     internal class Enchantments
     {
+        /// <summary>
+        /// Liste aller Verzauberungen. Einige Verzauberungen betreffen mehrere Stats.
+        /// </summary>
         public static List<Enchantment> AcceptedEnchantments = new List<Enchantment>()
         {
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Angriffstempo,1,true)},2543),
@@ -36,6 +35,7 @@ namespace All_in_One.DataModels.DKPModels
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Zauberschaden,18)},2605),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Heilungsbonus,33)},2604),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Verteidigung,3)},2503),
+            new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Rüstung,70)},1889),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Werte,4)},1891),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Werte,3)},928),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Ausweichen,1,true)},2622),
@@ -88,6 +88,11 @@ namespace All_in_One.DataModels.DKPModels
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Trefferchance,3,true)},2523),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Naturwiderstand,10)},2681),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Schattenwiderstand,10)},2683),
+            new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Schattenwiderstand,5)},2487),
+            new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Naturwiderstand,5)},2486),
+            new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Feuerwiderstand,5)},2483),
+            new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Frostwiderstand,5)},2484),
+            new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Feuerwiderstand,20)},1505),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Sonstiges,0)},2613),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Nahkampftempo,1,true)},931),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Sonstiges,0)},1704),
@@ -132,6 +137,6 @@ namespace All_in_One.DataModels.DKPModels
             Nahkampfcrit,
             Nahkampftempo,
         }
-      
+
     }
 }

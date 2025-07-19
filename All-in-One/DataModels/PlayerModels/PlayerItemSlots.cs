@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace All_in_One.DataModels.PlayerModels
+﻿namespace All_in_One.DataModels.PlayerModels
 {
     internal class PlayerItemSlots
     {
+        /// <summary>
+        /// Die Slots sind in den Logdaten nummeriert
+        /// </summary>
         public enum ItemSlots
         {
             Kopf = 0,

@@ -1,16 +1,8 @@
-﻿using Google.Apis.Sheets.v4.Data;
-using Google.Apis.Sheets.v4;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Google.Apis.Auth.OAuth2;
+﻿using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
-using System.IO;
-using System.Windows;
-using System.Text.Json;
-using All_in_One.DataModels.SpreadSheetModels;
+using Google.Apis.Sheets.v4;
+using Google.Apis.Sheets.v4.Data;
+using System.Threading.Tasks;
 
 namespace All_in_One.Services.SpreadSheetService
 {
@@ -28,8 +20,11 @@ namespace All_in_One.Services.SpreadSheetService
                 ApplicationName = "DKP-Project0.1",
             });
         }
-        
 
+        /// <summary>
+        /// Liest alle Spreadsheets aus
+        /// </summary>
+        /// <returns>Gibt einen Task zurück, dessen Ergebnis die Spreadsheetdaten enthält</returns>
         public async Task<Spreadsheet> GetSpreadSheets()
         {
             SpreadsheetsResource.GetRequest request = sheetsService.Spreadsheets.Get(spreadId);

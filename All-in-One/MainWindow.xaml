@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:All_in_One" 
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="1600">
-    <Grid>
+        Title="DKP-Tool" Height="800" Width="1600" Closing="Window_Closing">
+    <Grid Background="GhostWhite">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="3*" />
@@ -18,7 +18,8 @@
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <StackPanel>
-            <Button Height="30" Width="100" Content="Berechnen" Click="Calculate_Click" />
+            <TextBlock Text="Schwarzer Drachenschwarm" FontFamily="Informal Roman" FontWeight="ExtraBold" HorizontalAlignment="Center" FontSize="25" Margin="5"></TextBlock>
+            <Image Source="/SchwarzerDrachenschwarmLogo.png" Height="150" Width="300" ></Image>
         </StackPanel>
         <DockPanel Grid.Row="1">
             <DataGrid x:Name="PlayersFromSpreadsheet" ItemsSource="{Binding DKPListFromSpreadSheet}" AutoGenerateColumns="True"/>
@@ -26,7 +27,7 @@
         <StackPanel Grid.Column="1">
             <Label FontSize="14" Content="{Binding LoadingDataMessage}" Margin="20"></Label>
             <ProgressBar IsIndeterminate="True" Visibility="{Binding ShowProgressBar}" Height="20" Margin="20"></ProgressBar>
-            <Label Content="Spieler aus den Logs:" Margin="20"/>
+            <Label Content="Spieler aus den Logs:" Margin="0,60" />
         </StackPanel>
         <DockPanel Grid.Row="1" Grid.Column="1">
             <DataGrid x:Name="PlayersFromLogs" AutoGenerateColumns="True" ItemsSource="{Binding PlayersDKPRequirement}"/>
@@ -38,7 +39,7 @@
             <DataGrid Name="NewUnknownPlayers" ItemsSource="{Binding UnknownPlayers}" >
             </DataGrid>
         </DockPanel>
-        <StackPanel x:Name="PrepareLogs" Grid.Column="3">
+        <StackPanel x:Name="PrepareLogs" Grid.Column="3" Margin="5">
             <ItemsControl x:Name="CheckBoxRaidSelection" ItemsSource="{Binding RaidCheckBoxCollection}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>

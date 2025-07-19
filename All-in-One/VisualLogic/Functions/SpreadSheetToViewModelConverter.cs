@@ -1,20 +1,21 @@
 ﻿using All_in_One.DataModels.SpreadSheetModels;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace All_in_One.VisualLogic.Functions
 {
     class SpreadSheetToViewModelConverter
     {
+        /// <summary>
+        /// Wandelt ein Sheet im Jsonformat in die ViewModell-Klasse um
+        /// </summary>
+        /// <param name="Sheet">Das Sheet im Jsonformat</param>
+        /// <returns>Gibt eine Liste mit Spreadsheetdaten im ViewModellformat zurück</returns>
         public ObservableCollection<SpreadsheetEntry> ConvertSpreadSheetToViewModel(JsonSheetEntry Sheet)
         {
             ObservableCollection<SpreadsheetEntry> entries = new ObservableCollection<SpreadsheetEntry>();
 
-            foreach(Rowdata data in Sheet.Data[0].RowData)
+            foreach (Rowdata data in Sheet.Data[0].RowData)
             {
                 int i = data.Values.Length;
                 int j = data.Values.Count();

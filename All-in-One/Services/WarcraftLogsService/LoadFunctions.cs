@@ -1,13 +1,10 @@
-﻿using All_in_One.DataModels.WarcraftLogsModels.LogTypes;
-using All_in_One.DataModels.WarcraftLogsModels;
+﻿using All_in_One.DataModels.WarcraftlogsModels;
+using All_in_One.DataModels.WarcraftLogsModels.LogTypes;
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
-using All_in_One.DataModels.WarcraftlogsModels;
 
 namespace All_in_One.Services.WarcraftLogsService
 {
