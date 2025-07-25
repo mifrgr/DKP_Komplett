@@ -59,16 +59,16 @@ namespace All_in_One
             mainService.SetDKPForPlayers();
         }
 
-        private void LastRaids_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void LastRaids_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            mainService.GetDataFromLog(((ComboBox)sender).SelectedValue.ToString()).Start();
+            await mainService.GetDataFromLog(((ComboBox)sender).SelectedValue.ToString());
         }
 
 
 
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        private async void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            mainService.GetDKPFromSpreadSheet((e.Source as CheckBox).Content.ToString()).Start();
+            await mainService.GetDKPFromSpreadSheet((e.Source as CheckBox).Content.ToString());
         }
 
 
