@@ -1,4 +1,4 @@
-﻿using All_in_One.DataModels.SpreadSheetModels;
+﻿using All_in_One.Services.SpreadSheetService.DataModels;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -13,11 +13,11 @@ namespace All_in_One.VisualLogic.Functions
         /// </summary>
         /// <param name="SpreadSheetAsJson">Die Liste aller Spreadsheet als Json Datei</param>
         /// <returns>Gibt eine Liste mit der Checkbox-Basisklasse aus</returns>
-        public ObservableCollection<RaidSelection> GetUserControl(List<JsonSheetEntry> SpreadSheetAsJson)
+        public ObservableCollection<RaidSelection> GetCheckBoxItems(List<JsonSheetEntry> JsonSheetData)
         {
             ObservableCollection<RaidSelection> result = new ObservableCollection<RaidSelection>();
 
-            foreach (var Sheet in SpreadSheetAsJson)
+            foreach (var Sheet in JsonSheetData)
             {
                 result.Add(new RaidSelection(Sheet.Properties.Title));
 

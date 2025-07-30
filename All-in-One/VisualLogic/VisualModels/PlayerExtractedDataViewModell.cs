@@ -1,0 +1,49 @@
+﻿using All_in_One.Services;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace All_in_One.VisualLogic.VisualModels
+{
+    public class PlayerExtractedDataViewModell : INotifyPropertyChanged
+    {
+        string _PlayerName;
+        string CountOfNotEnchantetItems;
+        string _Enchantment;
+        string _Consumable1;
+        string _Consumable2;
+        string _CountPerMinutes;
+
+
+        public string PlayerName
+        {
+            get { return _PlayerName; }
+            set { _PlayerName = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PlayerName))); }
+        }
+        public string Enchantment
+        {
+            get { return _Enchantment; }
+            set { _Enchantment = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Enchantment))); }
+        }
+        public string Consumable1
+        {
+            get { return _Consumable1; }
+            set { _Consumable1 = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Consumable1))); }
+        }
+        public string Consumable2
+        {
+            get { return _Consumable2; }
+            set { _Consumable2 = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Consumable2))); }
+        }
+        public string CountPerMinutes
+        {
+            get { return _CountPerMinutes; }
+            set { _CountPerMinutes = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CountPerMinutes))); }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+    }
+}

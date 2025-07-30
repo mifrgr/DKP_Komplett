@@ -1,5 +1,5 @@
-﻿using All_in_One.DataModels.WarcraftlogsModels;
-using All_in_One.DataModels.WarcraftLogsModels.LogTypes;
+﻿using All_in_One.Services.WarcraftLogsService.WarcraftlogsModels;
+using All_in_One.Services.WarcraftLogsService.WarcraftlogsModels.LogTypes;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;

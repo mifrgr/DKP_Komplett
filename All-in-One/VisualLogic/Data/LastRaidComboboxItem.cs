@@ -1,4 +1,4 @@
-﻿using All_in_One.DataModels.WarcraftLogsModels.LogTypes;
+﻿using All_in_One.Services.WarcraftLogsService.WarcraftlogsModels.LogTypes;
 
 namespace All_in_One.VisualLogic.Data
 {

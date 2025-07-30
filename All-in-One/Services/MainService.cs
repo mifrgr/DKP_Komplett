@@ -1,9 +1,12 @@
-﻿using All_in_One.DataModels.DKPModels;
-using All_in_One.DataModels.PlayerModels;
-using All_in_One.DataModels.RaidModels;
-using All_in_One.DataModels.SpreadSheetModels;
-using All_in_One.DataModels.WarcraftlogsModels;
+﻿using All_in_One.DataModels.PlayerModels;
+using All_in_One.Services.CalculateService.DataModels;
+using All_in_One.Services.SpreadSheetService.DataModels;
+using All_in_One.Services.WarcraftLogsService.WarcraftlogsModels;
+using All_in_One.Services.WarcraftLogsService.WarcraftlogsModels.LogTypes;
+using All_in_One.Static.Data;
 using All_in_One.VisualLogic.Functions;
+using All_in_One.VisualLogic.VisualModels;
+using Google.Apis.Sheets.v4.Data;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,85 +19,41 @@ using System.Windows;
 
 namespace All_in_One.Services
 {
-    class MainService : INotifyPropertyChanged
+    class MainService
     {
-        private VisualLogic.Handler visualLogicHandler = new VisualLogic.Handler();
-        private CalculateService.Handler calculateHandler = new CalculateService.Handler();
-        private SpreadSheetService.SpreadSheetHandler spreadSheetHandler = new SpreadSheetService.SpreadSheetHandler();
+        public VisualLogic.ViewModell visualViewModeel { get; private set; } = new VisualLogic.ViewModell();
+        private CalculateService.CalculateService calculateHandler = new CalculateService.CalculateService();
+        private SpreadSheetService.SpreadSheetService spreadSheetHandler = new SpreadSheetService.SpreadSheetService();
         private WarcraftLogsService.WarcraftHandler logsHandler = new WarcraftLogsService.WarcraftHandler();
 
-        /// <summary>
-        /// Liste aller Sheets zum Erstellen der CheckBoxen
-        /// </summary>
-        public ObservableCollection<RaidSelection> RaidCheckBoxCollection { get; set; } = new ObservableCollection<RaidSelection>();
-        /// <summary>
-        /// Liste der letzten Gild-Logs. Angezeigt werden 10
-        /// </summary>
-        public ObservableCollection<string> LastGuildsRaids { get; set; } = new ObservableCollection<string>();
-
-        /// <summary>
-        /// Liste aller Spieler, die in den Logs vorkommen, aber nicht in der DKP-Liste
-        /// </summary>
-        public ObservableCollection<UnknownPlayer> UnknownPlayers { get; set; } = new ObservableCollection<UnknownPlayer>();
-
+       
+        public static MainService Instance { get; private set; } = new MainService();
         /// <summary>
         /// Aktuelle DKP-Liste des aktuellen Raids
         /// </summary>
-        public ObservableCollection<SpreadsheetEntry> DKPListFromSpreadSheet { get; set; } = new ObservableCollection<SpreadsheetEntry>();
+        public List<PlayerData> DKPListFromSpreadSheet { get; set; } = new();
 
-        public ObservableCollection<PlayerDKPEntry> PlayersDKPRequirement { get; set; } = new ObservableCollection<PlayerDKPEntry> { };
+        public List<UnknownPlayer> UnknownPlayers { get; set; } = new List<UnknownPlayer>();
 
-        public ObservableCollection<string> ListOfMains { get; set; } = new ObservableCollection<string> { };
+        public List<PlayerExtractedData> PlayerExtractedDatas { get; set; } = new List<PlayerExtractedData> { };
+
+        public List<Guild_Rootobject> LastRaids {  get; set; }
 
         LogsDataObject logs;
-        private List<Task> TaskPool = new();
-
         string selectedRaid = "";
 
         public List<JsonSheetEntry> SpreadsheetAsJson = new();
-
-        string _message = "";
-        Visibility _show = Visibility.Hidden;
-        /// <summary>
-        /// Anzuzeigender Text über dem Fortschrittsbalken
-        /// </summary>
-        public string LoadingDataMessage { get => _message; set { _message = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LoadingDataMessage))); } }
-        public Visibility ShowProgressBar { get => _show; set { _show = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowProgressBar))); } }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Startet die DKP-Auswertung für jeden Spieler. Aktualisiert das Datum und entfernt inaktive Spieler
         /// </summary>
         public void CalculateDKP()
         {
-            DKPListFromSpreadSheet[0].Stand = selectedRaid.Split("|")[1].Trim();
-            foreach (var item in DKPListFromSpreadSheet)
-            {
-                item.Punkte = calculateHandler.CalculateDKPPoints(item).ToString();
-            }
+            DKPListFromSpreadSheet[0].Date = selectedRaid.Split("|")[1].Trim();
             TidyUp();
         }
 
-        /// <summary>
-        /// Steuert den Fortschrittsbalken. Die Anzeige ist konstant durchlaufend.
-        /// </summary>
-        /// <param name="Show">Balken ein- oder ausblenden</param>
-        /// <param name="memberName">Der Wert wird als Text über dem Fortschrittsbalken angezeigt</param>
-        void ProgressBarControll(bool Show = false, [CallerMemberName] string memberName = "")
-        {
-            if (Show)
-            {
-                ShowProgressBar = Visibility.Visible;
-                LoadingDataMessage = memberName;
-            }
-            else
-            {
-                ShowProgressBar = Visibility.Hidden;
-                LoadingDataMessage = "";
-            }
 
-        }
 
         /// <summary>
         /// Initialisiert das Programm.
@@ -103,72 +62,60 @@ namespace All_in_One.Services
         /// </summary>
         public async Task Init()
         {
-            ProgressBarControll(true);
-            SpreadsheetAsJson = await spreadSheetHandler.GetSpreadSheets();
-            RaidCheckBoxCollection.Clear();
-            foreach (var item in visualLogicHandler.UserControls.GetUserControl(SpreadsheetAsJson))
+            try
             {
-                RaidCheckBoxCollection.Add(item);
-            }
-            var LastRaids = await logsHandler.GetLastRaids();
-            LastGuildsRaids.Clear();
-            foreach (var item in LastRaids)
-            {
-                if (LastGuildsRaids.Count < 10)
-                {
-                    LastGuildsRaids.Add(item.title + " | " + DateTimeOffset.FromUnixTimeMilliseconds(item.start).Date.ToShortDateString() + " | " + item.id);
-                }
-                else
-                {
-                    break;
-                }
+                visualViewModeel.ProgressBarControll(true);
 
+                LastRaids = await logsHandler.GetLastRaids();
+                SpreadsheetAsJson = await spreadSheetHandler.GetSpreadSheets();
+                visualViewModeel.Init(SpreadsheetAsJson);
+                               
+                visualViewModeel.ProgressBarControll();
             }
-            ProgressBarControll();
+            catch(Exception ex) 
+            {
+                visualViewModeel.ProgressBarControll(true, ex.Message);
+            }
         }
 
         /// <summary>
         /// Die DKPs werden aus dem ausgewählten Spreadsheet ausgelesen. DKPs sind Raidgebunden. Für jeden Raid existiert ein eigenes Sheet.
         /// 
-        /// Die Daten werden als Grid in der GUI angezeigt.
+        /// <para>Die Daten werden als Grid in der GUI angezeigt.</para>
         /// 
         /// Es werden unbekannte Spieler ermittelt und angezeigt.
         /// </summary>
         /// <param name="SelectedRaid"></param>
         public async Task GetDKPFromSpreadSheet(string SelectedRaid)
         {
-            ProgressBarControll(true);
-            foreach (var item in RaidCheckBoxCollection)
-            {
-                if (item.Content != SelectedRaid)
-                {
-                    item.IsChecked = false;
-                }
-            }
+            visualViewModeel.ProgressBarControll(true);
+            //foreach (var item in RaidCheckBoxCollection)
+            //{
+            //    if (item.Content != SelectedRaid)
+            //    {
+            //        item.IsChecked = false;
+            //    }
+            //}
             SpreadsheetAsJson = await spreadSheetHandler.GetSpreadSheets();
             DKPListFromSpreadSheet.Clear();
-            foreach (var item in visualLogicHandler.ConvertSpreadsheetToDataGrid(SpreadsheetAsJson.Find(entry => entry.Properties.Title == SelectedRaid)))
+
+            foreach (var item in spreadSheetHandler.GetSpreadSheetConvertedData(SpreadsheetAsJson.Find(entry => entry.Properties.Title == SelectedRaid)))
             {
-                if (item.Spieler != null)
+                if (item.Name != null)
                 {
                     DKPListFromSpreadSheet.Add(item);
                 }
-
-            };
+            }
             DKPListFromSpreadSheet.RemoveAt(0);
 
             List<string> mains = new List<string>();
 
             foreach (var item in DKPListFromSpreadSheet)
             {
-                mains.Add(item.Spieler);
+                mains.Add(item.Name);
             }
             mains.Sort();
 
-            foreach (var item in mains)
-            {
-                ListOfMains.Add(item);
-            }
 
             if (logs != null)
             {
@@ -179,8 +126,53 @@ namespace All_in_One.Services
                     UnknownPlayers.Add(player);
                 };
             }
-            ProgressBarControll();
+            visualViewModeel.ProgressBarControll();
         }
+
+        /// <summary>
+        /// ToDo: In richtigen Bereich verschieben
+        /// </summary>
+        /// <returns></returns>
+        public CellData MapToValue(string s,FormatConditions conditions)
+        {
+            CellData retVal =  new CellData
+            {
+                UserEnteredValue = new ExtendedValue() { StringValue = s }             
+            };
+            switch (conditions)
+            {
+                case FormatConditions.Bad:
+                {
+                        retVal.UserEnteredFormat = new CellFormat() { BackgroundColorStyle = new ColorStyle() { RgbColor = new Google.Apis.Sheets.v4.Data.Color() { Red = 234f/255f, Green = 153f/255f, Blue = 153f/ 255f } } };
+                        break;
+                }
+                case FormatConditions.Neutral:
+                {
+                        retVal.UserEnteredFormat = new CellFormat() { BackgroundColorStyle = new ColorStyle() { RgbColor = new Google.Apis.Sheets.v4.Data.Color() { Red = 1, Green = 1, Blue = 1 } } };
+                        break;
+                }
+                case FormatConditions.Good:
+                {
+                        retVal.UserEnteredFormat = new CellFormat() { BackgroundColorStyle = new ColorStyle() { RgbColor = new Google.Apis.Sheets.v4.Data.Color() { Red = 182f / 255f, Green = 215f / 255f, Blue = 168f / 255f } } };
+                        break;
+                }
+                case FormatConditions.Gold:
+                    {
+                        retVal.UserEnteredFormat = new CellFormat() { BackgroundColorStyle = new ColorStyle() { RgbColor = new Google.Apis.Sheets.v4.Data.Color() { Red = 255 / 255f, Green = 215f / 255f, Blue = 0 / 255f } } };
+
+                        break;
+                    }
+
+            }
+            return retVal;
+        }
+
+        public CellData MapToValue(float d, FormatConditions conditions)
+        {
+            return MapToValue(d.ToString(),conditions);
+        }
+
+
 
         /// <summary>
         /// Es werden die Daten des ausgewählten Raids aus den Logs ausgelesen, die zur Berechnung erforderlich sind.
@@ -188,17 +180,10 @@ namespace All_in_One.Services
         /// <param name="SelectedRaid"></param>
         public async Task GetDataFromLog(string SelectedRaid)
         {
-            ProgressBarControll(true);
+            visualViewModeel.ProgressBarControll(true);
             selectedRaid = SelectedRaid;
             logs = await logsHandler.GetLogfromWarcraftLogs(SelectedRaid.Split("|")[2].Trim());
 
-            foreach (var item in DKPListFromSpreadSheet)
-            {
-                item.CountsPerMinutes = "";
-                item.Consumables1 = "";
-                item.Consumable2 = "";
-                item.Verzauberungen = "";
-            }
             UnknownPlayers.Clear();
 
             foreach (var player in calculateHandler.FindNewPlayers(DKPListFromSpreadSheet, logs))
@@ -206,13 +191,13 @@ namespace All_in_One.Services
                 UnknownPlayers.Add(player);
             };
 
-            PlayersDKPRequirement.Clear();
+            PlayerExtractedDatas.Clear();
 
             foreach (var player in calculateHandler.GetPlayerDKPRequirement(logs))
             {
-                PlayersDKPRequirement.Add(player);
+                PlayerExtractedDatas.Add(player);
             }
-            ProgressBarControll();
+            visualViewModeel.ProgressBarControll();
             GetLocalLogTextFile(SelectedRaid.Split("|")[1].Trim());
         }
         /// <summary>
@@ -240,17 +225,17 @@ namespace All_in_One.Services
         /// <param name="path"></param>
         public void GetDataFromLogTextFile(string path)
         {
-            ProgressBarControll(true);
+            visualViewModeel.ProgressBarControll(true);
             if (logs == null)
             {
                 MessageBox.Show("Erst Log-Analyse einlesen!");
                 return;
             }
 
-            List<PlayerDKPEntry> dkpPlayers = calculateHandler.GetPlayerDKPRequirements(path);
+            List<PlayerExtractedData> dkpPlayers = calculateHandler.GetPlayerDKPRequirements(path);
             foreach (var player in dkpPlayers)
             {
-                foreach (var entry in PlayersDKPRequirement)
+                foreach (var entry in PlayerExtractedDatas)
                 {
                     if (entry.PlayerName == player.PlayerName)
                     {
@@ -259,11 +244,11 @@ namespace All_in_One.Services
                     }
                 }
             }
-            ProgressBarControll();
+            visualViewModeel.ProgressBarControll();
 
             foreach (var playerAddon in GetDataFromWoWAddon())
             {
-                foreach (var entry in PlayersDKPRequirement)
+                foreach (var entry in PlayerExtractedDatas)
                 {
                     if (entry.PlayerName == playerAddon.Name)
                     {
@@ -299,7 +284,7 @@ namespace All_in_One.Services
         /// <returns>Gibt eine Liste </returns>
         private List<PlayerWoWAddon> GetDataFromWoWAddon()
         {
-            ProgressBarControll(true);
+            visualViewModeel.ProgressBarControll(true);
 
             List<PlayerWoWAddon> players = new List<PlayerWoWAddon>();
             StreamReader sr = new StreamReader(File.Open("C:\\Program Files (x86)\\World of Warcraft\\_classic_era_\\WTF\\Account\\496316485#1\\SavedVariables\\NovaRaidCompanion.lua", FileMode.Open));
@@ -386,7 +371,7 @@ namespace All_in_One.Services
                     }
                 }
             }
-            ProgressBarControll();
+            visualViewModeel.ProgressBarControll();
             sr.Close();
             return players;
         }
@@ -395,46 +380,27 @@ namespace All_in_One.Services
         /// Die Spreadsheetliste wird mit den ermitteln Daten aktualisiert.
         /// Die versäumten IDs der Spieler werden aktualisiert.
         /// </summary>
-        public void SetDKPForPlayers()
+        public async Task SetDKPForPlayers()
         {
-            ProgressBarControll(true);
-            foreach (var newEntry in UnknownPlayers)
+            visualViewModeel.ProgressBarControll(true);
+            //foreach (var newEntry in UnknownPlayers)
+            //{
+            //    if (newEntry.AddNewPlayer)
+            //    {
+            //        DKPListFromSpreadSheet.Add(new SpreadsheetEntry() { Spieler = newEntry.TwinkName, VersäumteIDs = new Value1 { UserEnteredValue = "0" }});
+            //    }
+            //}
+            var UpdatedSpreadsheetList = calculateHandler.SetExtractedDataToSheet(PlayerExtractedDatas, DKPListFromSpreadSheet);
+            DKPListFromSpreadSheet.Clear();
+            foreach (var entry in UpdatedSpreadsheetList)
             {
-                if (newEntry.AddNewPlayer)
-                {
-                    DKPListFromSpreadSheet.Add(new SpreadsheetEntry() { Spieler = newEntry.TwinkName, VersäumteIDs = 0.ToString(), Punkte = "0" });
-                }
+                DKPListFromSpreadSheet.Add(entry);
+                visualViewModeel.UpdateViewModellData(new VisualLogic.Data.VisualUpdateDataObject(entry, typeof(PlayerData), entry.Name));
             }
-
-            foreach (var item in DKPListFromSpreadSheet)
-            {
-                bool playerFound = false;
-                foreach (var player in calculateHandler.SetDKPForPlayers(PlayersDKPRequirement))
-                {
-                    if (player.Spieler == item.Spieler || (item.VersäumteIDs != null && item.Spieler.Contains("-> " + player.Spieler)))
-                    {
-                        item.VersäumteIDs = 0.ToString();
-                        playerFound = true;
-                        item.Verzauberungen = player.Verzauberungen;
-                        item.Consumables1 = player.Consumables1;
-                        item.Consumable2 = player.Consumable2;
-                        item.CountsPerMinutes = player.CountsPerMinutes;
-                        item.GetDKP = player.GetDKP;
-                    }
-                }
-                if (!playerFound)
-                {
-                    item.VersäumteIDs = (int.Parse(item.VersäumteIDs) + 1).ToString();
-                }
-            }
-
-
-            foreach (var player in calculateHandler.SetDKPForPlayers(PlayersDKPRequirement))
-            {
-
-            }
-            ProgressBarControll();
+            var result = await spreadSheetHandler.UpdateSpreadSheetData(DKPListFromSpreadSheet);
+            visualViewModeel.ProgressBarControll();
             CalculateDKP();
+            calculateHandler.SetAddonData(DKPListFromSpreadSheet);
         }
         /// <summary>
         /// Aktualisiert die Liste der Spreadsheetdaten für unbekannte Spieler 
@@ -443,24 +409,24 @@ namespace All_in_One.Services
         /// <param name="SelectedTwink"></param>
         public void AddMainPlayerToTwink(string SelectedMain, UnknownPlayer SelectedTwink)
         {
-            ProgressBarControll(true);
+            visualViewModeel.ProgressBarControll(true);
             foreach (var item in DKPListFromSpreadSheet)
             {
-                if (item.Spieler == SelectedMain)
+                if (item.Name == SelectedMain)
                 {
-                    string playername = item.Spieler;
+                    string playername = item.Name;
                     if (playername.Contains(" | "))
                     {
-                        item.Spieler = playername.Remove(item.Spieler.IndexOf(" | "));
+                        item.Name = playername.Remove(item.Name.IndexOf(" | "));
                     }
-                    if (item.Spieler == SelectedTwink.TwinkName)
+                    if (item.Name == SelectedTwink.TwinkName)
                     {
 
                     }
                     else
                     {
-                        item.Spieler += " | Umgeloggt -> " + SelectedTwink.TwinkName;
-                        ListOfMains[ListOfMains.IndexOf(playername)] = item.Spieler;
+                        item.Name += " | Umgeloggt -> " + SelectedTwink.TwinkName;
+                        //ListOfMains[ListOfMains.IndexOf(playername)] = item.Spieler;
                     }
 
                 }
@@ -473,22 +439,16 @@ namespace All_in_One.Services
                     item.AssociatedMain = SelectedMain;
                 }
             }
-            ProgressBarControll();
+            visualViewModeel.ProgressBarControll();
         }
         /// <summary>
         /// Löscht Spieler, die 10 IDs nicht am Raid teilgenommen haben
         /// </summary>
         private void TidyUp()
         {
-            var Worklist = DKPListFromSpreadSheet.Where(entry =>
-            {
-                var ids = 0;
-                if (int.TryParse(entry.VersäumteIDs, out ids))
-                {
-                    return ids >= 10;
-                }
-                return false;
-            }).ToList();
+            var Worklist = DKPListFromSpreadSheet.Where(entry =>        
+             entry.IDs_Missed_Count >= 10)
+            .ToList();
 
             foreach (var item in Worklist)
             {

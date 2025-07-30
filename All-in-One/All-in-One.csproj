@@ -6,7 +6,7 @@
     <RootNamespace>All_in_One</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <Configurations>Debug;Release;DKP_Requirement</Configurations>
+    <Configurations>Debug;Release;DKP_Requirement;NewLootSystem</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,7 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Extern Data\SchwarzerDrachenschwarmLogo.png">
+    <None Update="Static\Extern Data\dkp-evershire-rids-9397f0d50e94.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Static\Extern Data\SchwarzerDrachenschwarmLogo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -12,14 +12,11 @@ namespace All_in_One
     /// </summary>
     public partial class MainWindow : Window
     {
-        MainService mainService = new MainService();
-
-
         public MainWindow()
         {
             InitializeComponent();
-            Dispatcher.Invoke(mainService.Init);
-            DataContext = mainService;
+            Dispatcher.Invoke(MainService.Instance.Init);
+            DataContext = MainService.Instance.visualViewModeel;
         }
 
 
@@ -49,38 +46,38 @@ namespace All_in_One
         {
             if (DrapAndDropBox.Text.Length > 0)
             {
-                mainService.GetDataFromLog(DrapAndDropBox.Text).Start();
+                MainService.Instance.GetDataFromLog(DrapAndDropBox.Text).Start();
                 DrapAndDropBox.Text = "";
             }
         }
 
         private void MarkPlayerForDKP_Click(object sender, RoutedEventArgs e)
         {
-            mainService.SetDKPForPlayers();
+            MainService.Instance.SetDKPForPlayers();
         }
 
         private async void LastRaids_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            await mainService.GetDataFromLog(((ComboBox)sender).SelectedValue.ToString());
+            await MainService.Instance.GetDataFromLog(((ComboBox)sender).SelectedValue.ToString());
         }
 
 
 
         private async void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            await mainService.GetDKPFromSpreadSheet((e.Source as CheckBox).Content.ToString());
+            await MainService.Instance.GetDKPFromSpreadSheet((e.Source as CheckBox).Content.ToString());
         }
 
 
         private void ConfirmTwinkAsMain_Click(object sender, RoutedEventArgs e)
         {
-            mainService.AddMainPlayerToTwink(ListPotentialMain.SelectedValue.ToString(), (UnknownPlayer)NewUnknownPlayers.SelectedValue);
+            MainService.Instance.AddMainPlayerToTwink(ListPotentialMain.SelectedValue.ToString(), (UnknownPlayer)NewUnknownPlayers.SelectedValue);
         }
 
-        private void LogFileDropBox_Drop(object sender, DragEventArgs e)
+        private void CLMDataDropBox_Drop(object sender, DragEventArgs e)
         {
-            string[] fileName = (string[])e.Data.GetData(DataFormats.FileDrop);
-            mainService.GetDataFromLogTextFile(fileName[0]);
+            //string[] fileName = (string[])e.Data.GetData(DataFormats.FileDrop);
+            //MainService.Instance.GetDataFromLogTextFile(fileName[0]);
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
