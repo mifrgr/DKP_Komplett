@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace All_in_One.VisualLogic.Functions
 {
-    public class UserControls
+    public class GetRaidSheetsAsComboBox
     {
         /// <summary>
         /// Liest die Titel der Spreadsheettabellen aus, die in der GUI als Checkboxen erstellt werden.

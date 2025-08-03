@@ -42,7 +42,7 @@ namespace All_in_One.Services.SpreadSheetService
             return JsonSerializer.Deserialize<List<JsonSheetEntry>>(JsonSerializer.Serialize(Sheets));
         }
 
-        public ObservableCollection<PlayerData> GetSpreadSheetConvertedData(JsonSheetEntry sheets)
+        public List<PlayerData> GetSpreadSheetConvertedData(JsonSheetEntry sheets)
         {
             return SpreadSheetToDataListConverter.ConvertSpreadSheetToDataList(sheets);
         }

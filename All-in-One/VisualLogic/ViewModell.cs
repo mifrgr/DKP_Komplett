@@ -17,6 +17,7 @@ using System.Diagnostics.Eventing.Reader;
 using Aspose.Cells.Drawing;
 using All_in_One.Services.CalculateService.DataModels;
 using All_in_One.Services.SpreadSheetService.DataModels;
+using System.Windows.Controls;
 
 
 namespace All_in_One.VisualLogic
@@ -32,16 +33,11 @@ namespace All_in_One.VisualLogic
         /// </summary>
         public ObservableCollection<string> LastGuildsRaids { get; set; } = new ObservableCollection<string>();
 
-        /// <summary>
-        /// Liste aller Spieler, die in den Logs vorkommen, aber nicht in der DKP-Liste
-        /// </summary>
-        public ObservableCollection<UnknownPlayer> UnknownPlayers { get; set; } = new ObservableCollection<UnknownPlayer>();
-
         public ObservableCollection<SpreadSheetViewModell> DKPListFromSpreadSheetViewModell { get; set; } = new ObservableCollection<SpreadSheetViewModell>();
 
         public ObservableCollection<PlayerExtractedDataViewModell> PlayerExtractedDatas { get; set; } = new ObservableCollection<PlayerExtractedDataViewModell> { };
 
-        public ObservableCollection<string> ListOfMains { get; set; } = new ObservableCollection<string> { };
+        public ObservableCollection<TwinkMainViewModell> TwinkMains { get; set; } = new();
 
         string _message = "";
         Visibility _show = Visibility.Hidden;
@@ -71,6 +67,31 @@ namespace All_in_One.VisualLogic
                 LoadingDataMessage = "";
             }
 
+        }
+
+        public void UpdateMainTwinkList(List<PlayerData> PlayersSheet, List<PlayerExtractedData> NewPlayers)
+        {
+            TwinkMains.Clear();
+            var MainList = PlayersSheet.Select(p => p.Name).ToList();
+            MainList.Sort();
+            NewPlayers.ForEach(unknownPlayer =>
+            {
+                TwinkMains.Add(new TwinkMainViewModell(unknownPlayer.PlayerName,new ObservableCollection<string>(MainList)));
+            });
+        }
+
+        public List<PlayerMainTwink> GetMainTwinkList()
+        {
+            var MainTwinkAsList = new List<PlayerMainTwink>();
+            foreach (var mainTwink in TwinkMains)
+            {
+                MainTwinkAsList.Add(new PlayerMainTwink()
+                {
+                    TwinkName = mainTwink.Name,
+                    MainName = mainTwink.SelectedMain,
+                });
+            }
+            return MainTwinkAsList;
         }
 
         public void UpdateViewModellData(VisualUpdateDataObject data)
@@ -141,7 +162,7 @@ namespace All_in_One.VisualLogic
 
 
 
-        public UserControls UserControls = new UserControls();
+        public GetRaidSheetsAsComboBox UserControls = new GetRaidSheetsAsComboBox();
 
         PleaseWait window = new PleaseWait();
 

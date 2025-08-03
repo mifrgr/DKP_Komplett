@@ -13,9 +13,9 @@ namespace All_in_One.Services.SpreadSheetService.Functions
 {
     public class SpreadSheetToDataListConverter
     {
-        public static ObservableCollection<PlayerData> ConvertSpreadSheetToDataList(JsonSheetEntry Sheet)
+        public static List<PlayerData> ConvertSpreadSheetToDataList(JsonSheetEntry Sheet)
         {
-            ObservableCollection<PlayerData> entries = new();
+            List<PlayerData> entries = new();
 
             foreach (Rowdata data in Sheet.Data[0].RowData)
             {

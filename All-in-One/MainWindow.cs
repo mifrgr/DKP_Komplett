@@ -20,40 +20,18 @@ namespace All_in_One
         }
 
 
-        private void NewUnknownPlayers_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (NewUnknownPlayers.SelectedItem != null)
-            {
-                UnknownPlayer clickedPlayer = NewUnknownPlayers.SelectedItem as UnknownPlayer;
-                SelectedTwink.Text = clickedPlayer.TwinkName;
-            }
-
-        }
-
-        private void Calculate_Click(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show("Alle Sonderpunkte vergeben?" + Environment.NewLine + "Hexertank / Magetank...", "Achtung", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-                //mainService.CalculateDKP();
-            }
-
-        }
-
-        string reportCode;
-
-
-        private void DrapAndDropBox_TextChanged(object sender, TextChangedEventArgs e)
+        private async void DrapAndDropBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (DrapAndDropBox.Text.Length > 0)
             {
-                MainService.Instance.GetDataFromLog(DrapAndDropBox.Text).Start();
+                await MainService.Instance.GetDataFromLog(DrapAndDropBox.Text);
                 DrapAndDropBox.Text = "";
             }
         }
 
-        private void MarkPlayerForDKP_Click(object sender, RoutedEventArgs e)
+        private async void SetDKPForPlayers_Click(object sender, RoutedEventArgs e)
         {
-            MainService.Instance.SetDKPForPlayers();
+            await MainService.Instance.SetDKPForPlayers();
         }
 
         private async void LastRaids_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -65,13 +43,7 @@ namespace All_in_One
 
         private async void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            await MainService.Instance.GetDKPFromSpreadSheet((e.Source as CheckBox).Content.ToString());
-        }
-
-
-        private void ConfirmTwinkAsMain_Click(object sender, RoutedEventArgs e)
-        {
-            MainService.Instance.AddMainPlayerToTwink(ListPotentialMain.SelectedValue.ToString(), (UnknownPlayer)NewUnknownPlayers.SelectedValue);
+            await MainService.Instance.GetDKPFromSpreadSheet((e.Source as CheckBox)?.Content.ToString());
         }
 
         private void CLMDataDropBox_Drop(object sender, DragEventArgs e)

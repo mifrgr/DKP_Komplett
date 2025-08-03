@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using All_in_One.Services;
 
 namespace All_in_One.Services.CalculateService.DataModels
@@ -7,7 +9,7 @@ namespace All_in_One.Services.CalculateService.DataModels
     /// Die Basisklasse für einen Spieler.
     /// Name, Anzahl un- oder ungenügend verzauberter Gegenstände , Consumables und CPM-Wert
     /// </summary>
-    public class PlayerExtractedData
+    public class PlayerExtractedData : IComparable<PlayerExtractedData>
     {
         string _PlayerName = string.Empty;
         public int CountOfNotEnchantetItems = 0;
@@ -16,6 +18,10 @@ namespace All_in_One.Services.CalculateService.DataModels
         string _Consumable2 = string.Empty;
         float _CountPerMinutes;
 
+        public int CompareTo(PlayerExtractedData p2)
+        {
+            return PlayerName.CompareTo(p2.PlayerName);
+        }
 
         public string PlayerName
         {

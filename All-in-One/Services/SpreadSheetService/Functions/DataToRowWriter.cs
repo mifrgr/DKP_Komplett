@@ -17,15 +17,15 @@ namespace All_in_One.Services.SpreadSheetService.Functions
 
             List<CellData> cellData = new()
             {
-                MainService.Instance.MapToValue(player.Name,FormatConditions.Neutral),
-                MainService.Instance.MapToValue(player.IDs_Count,player.IDs_Count >= BonusConditions.NumberOfRaids ? FormatConditions.Good : FormatConditions.Bad),
-                MainService.Instance.MapToValue(player.IDs_Golddrache_Count,player.IDs_Golddrache_Count >= BonusConditions.NumberOfRaidsGold ? FormatConditions.Gold : FormatConditions.Neutral),
-                MainService.Instance.MapToValue(player.IDs_Missed_Count,player.IDs_Missed_Count <= BonusConditions.AcceptedMissedRaid ? FormatConditions.Neutral : FormatConditions.Bad),
-                MainService.Instance.MapToValue(player.Enchantment,player.Enchantment == "" ? FormatConditions.Neutral : FormatConditions.Bad),
-                MainService.Instance.MapToValue(player.Consumable1,player.Consumable1 != "" ? FormatConditions.Neutral : FormatConditions.Bad),
-                MainService.Instance.MapToValue(player.Consumable2,player.Consumable2 != "" ? FormatConditions.Neutral : FormatConditions.Bad),
-                MainService.Instance.MapToValue(player.CountsPerMinute,player.CountsPerMinute >= BonusConditions.CountsPerMinuteReq ? FormatConditions.Neutral : FormatConditions.Bad),
-                 MainService.Instance.MapToValue(player.Date,FormatConditions.Neutral),
+                MapDataToCellData.MapToValue(player.Name,FormatConditions.Neutral),
+                MapDataToCellData.MapToValue(player.IDs_Count,player.IDs_Count >= BonusConditions.NumberOfRaids ? FormatConditions.Good : FormatConditions.Bad),
+                MapDataToCellData.MapToValue(player.IDs_Golddrache_Count,player.IDs_Golddrache_Count >= BonusConditions.NumberOfRaidsGold ? FormatConditions.Gold : FormatConditions.Neutral),
+                MapDataToCellData.MapToValue(player.IDs_Missed_Count,player.IDs_Missed_Count <= BonusConditions.AcceptedMissedRaid ? FormatConditions.Neutral : FormatConditions.Bad),
+                MapDataToCellData.MapToValue(player.Enchantment,player.Enchantment == "" ? FormatConditions.Neutral : FormatConditions.Bad),
+                MapDataToCellData.MapToValue(player.Consumable1,player.Consumable1 != "" ? FormatConditions.Neutral : FormatConditions.Bad),
+                MapDataToCellData.MapToValue(player.Consumable2,player.Consumable2 != "" ? FormatConditions.Neutral : FormatConditions.Bad),
+                MapDataToCellData.MapToValue(player.CountsPerMinute,player.CountsPerMinute >= BonusConditions.CountsPerMinuteReq ? FormatConditions.Neutral : FormatConditions.Bad),
+                MapDataToCellData.MapToValue(player.Date,FormatConditions.Neutral),
             };
             return cellData;
             

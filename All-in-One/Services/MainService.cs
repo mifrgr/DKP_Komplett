@@ -33,7 +33,6 @@ namespace All_in_One.Services
         /// </summary>
         public List<PlayerData> DKPListFromSpreadSheet { get; set; } = new();
 
-        public List<UnknownPlayer> UnknownPlayers { get; set; } = new List<UnknownPlayer>();
 
         public List<PlayerExtractedData> PlayerExtractedDatas { get; set; } = new List<PlayerExtractedData> { };
 
@@ -52,7 +51,6 @@ namespace All_in_One.Services
             DKPListFromSpreadSheet[0].Date = selectedRaid.Split("|")[1].Trim();
             TidyUp();
         }
-
 
 
         /// <summary>
@@ -97,79 +95,13 @@ namespace All_in_One.Services
             //    }
             //}
             SpreadsheetAsJson = await spreadSheetHandler.GetSpreadSheets();
-            DKPListFromSpreadSheet.Clear();
 
-            foreach (var item in spreadSheetHandler.GetSpreadSheetConvertedData(SpreadsheetAsJson.Find(entry => entry.Properties.Title == SelectedRaid)))
-            {
-                if (item.Name != null)
-                {
-                    DKPListFromSpreadSheet.Add(item);
-                }
-            }
-            DKPListFromSpreadSheet.RemoveAt(0);
-
-            List<string> mains = new List<string>();
-
-            foreach (var item in DKPListFromSpreadSheet)
-            {
-                mains.Add(item.Name);
-            }
-            mains.Sort();
-
+            DKPListFromSpreadSheet = spreadSheetHandler.GetSpreadSheetConvertedData(SpreadsheetAsJson.Find(entry => entry.Properties.Title == SelectedRaid));
 
             if (logs != null)
             {
-                UnknownPlayers.Clear();
-
-                foreach (var player in calculateHandler.FindNewPlayers(DKPListFromSpreadSheet, logs))
-                {
-                    UnknownPlayers.Add(player);
-                };
             }
             visualViewModeel.ProgressBarControll();
-        }
-
-        /// <summary>
-        /// ToDo: In richtigen Bereich verschieben
-        /// </summary>
-        /// <returns></returns>
-        public CellData MapToValue(string s,FormatConditions conditions)
-        {
-            CellData retVal =  new CellData
-            {
-                UserEnteredValue = new ExtendedValue() { StringValue = s }             
-            };
-            switch (conditions)
-            {
-                case FormatConditions.Bad:
-                {
-                        retVal.UserEnteredFormat = new CellFormat() { BackgroundColorStyle = new ColorStyle() { RgbColor = new Google.Apis.Sheets.v4.Data.Color() { Red = 234f/255f, Green = 153f/255f, Blue = 153f/ 255f } } };
-                        break;
-                }
-                case FormatConditions.Neutral:
-                {
-                        retVal.UserEnteredFormat = new CellFormat() { BackgroundColorStyle = new ColorStyle() { RgbColor = new Google.Apis.Sheets.v4.Data.Color() { Red = 1, Green = 1, Blue = 1 } } };
-                        break;
-                }
-                case FormatConditions.Good:
-                {
-                        retVal.UserEnteredFormat = new CellFormat() { BackgroundColorStyle = new ColorStyle() { RgbColor = new Google.Apis.Sheets.v4.Data.Color() { Red = 182f / 255f, Green = 215f / 255f, Blue = 168f / 255f } } };
-                        break;
-                }
-                case FormatConditions.Gold:
-                    {
-                        retVal.UserEnteredFormat = new CellFormat() { BackgroundColorStyle = new ColorStyle() { RgbColor = new Google.Apis.Sheets.v4.Data.Color() { Red = 255 / 255f, Green = 215f / 255f, Blue = 0 / 255f } } };
-
-                        break;
-                    }
-
-            }
-            return retVal;
-        }
-
-        public CellData MapToValue(float d, FormatConditions conditions)
-        {
-            return MapToValue(d.ToString(),conditions);
         }
 
 
@@ -183,35 +115,22 @@ namespace All_in_One.Services
             visualViewModeel.ProgressBarControll(true);
             selectedRaid = SelectedRaid;
             logs = await logsHandler.GetLogfromWarcraftLogs(SelectedRaid.Split("|")[2].Trim());
-
-            UnknownPlayers.Clear();
-
-            foreach (var player in calculateHandler.FindNewPlayers(DKPListFromSpreadSheet, logs))
-            {
-                UnknownPlayers.Add(player);
-            };
-
-            PlayerExtractedDatas.Clear();
-
-            foreach (var player in calculateHandler.GetPlayerDKPRequirement(logs))
-            {
-                PlayerExtractedDatas.Add(player);
-            }
+            PlayerExtractedDatas = calculateHandler.GetPlayerDKPRequirement(logs);
             visualViewModeel.ProgressBarControll();
-            GetLocalLogTextFile(SelectedRaid.Split("|")[1].Trim());
+            await GetLocalLogTextFile(SelectedRaid.Split("|")[1].Trim());
         }
         /// <summary>
         /// Liest die vom WoW-Client mitgeschriebenen Logdaten aus.
         /// </summary>
         /// <param name="date">Das Datum des Raids</param>
-        public void GetLocalLogTextFile(string date)
+        public async Task GetLocalLogTextFile(string date)
         {
             //try
             //{
             var logTextFiles = Directory.GetFiles("C:\\Program Files (x86)\\World of Warcraft\\_classic_era_\\Logs");
             var subpath = date.Split(".")[1] + date.Split(".")[0] + date.Split(".")[2][2] + date.Split(".")[2][3];
             var path = logTextFiles.Where(localpath => localpath.Contains(subpath)).First();
-            GetDataFromLogTextFile(path);
+            await GetDataFromLogTextFile(path);
             //}
             //catch (Exception ex) 
             //{
@@ -223,7 +142,7 @@ namespace All_in_One.Services
         /// Es werden die Daten vom WoW Logger ausgelesen, sowie die Daten aus dem WoW-Addon NovaRaidCompanion, da diese einige Consumables erfasst, die in den Logs nicht geschrieben werden.
         /// </summary>
         /// <param name="path"></param>
-        public void GetDataFromLogTextFile(string path)
+        public async Task GetDataFromLogTextFile(string path)
         {
             visualViewModeel.ProgressBarControll(true);
             if (logs == null)
@@ -233,47 +152,48 @@ namespace All_in_One.Services
             }
 
             List<PlayerExtractedData> dkpPlayers = calculateHandler.GetPlayerDKPRequirements(path);
-            foreach (var player in dkpPlayers)
+
+            dkpPlayers.ForEach(dkpPlayer =>
             {
-                foreach (var entry in PlayerExtractedDatas)
+                var playerfound = DKPListFromSpreadSheet.Find(sheetPlayer => sheetPlayer.Name == dkpPlayer.PlayerName);
+                if (playerfound != null)
                 {
-                    if (entry.PlayerName == player.PlayerName)
-                    {
-                        entry.Consumable1 = player.Consumable1;
-                        entry.Consumable2 = player.Consumable2;
-                    }
+                    playerfound.Consumable1 = dkpPlayer.Consumable1;
+                    playerfound.Consumable2 = dkpPlayer.Consumable2;
                 }
-            }
+            });
             visualViewModeel.ProgressBarControll();
 
-            foreach (var playerAddon in GetDataFromWoWAddon())
-            {
-                foreach (var entry in PlayerExtractedDatas)
+            var PlayerDataWowAddon = await GetDataFromWoWAddon();
+            PlayerExtractedDatas.Where(player => player.Consumable1 == null || player.Consumable2 == null).ToList().ForEach(
+                playerFound =>
                 {
-                    if (entry.PlayerName == playerAddon.Name)
+                    var playerInAddonFound = PlayerDataWowAddon.Find(playerInAddon => playerInAddon.Name == playerFound.PlayerName);
+                    if (playerInAddonFound != null)
                     {
-                        foreach (KeyValuePair<DateTime, string> pair in playerAddon.TimeStamp)
+                        foreach(var item in playerInAddonFound.TimeStamp)
                         {
-                            if (pair.Key.Date == DateTime.Parse(selectedRaid.Split("|")[1]).Date)
+                            if(item.Key.Date == DateTime.Parse(selectedRaid.Split("|")[1]).Date)
                             {
-                                if (entry.Consumable1 == null)
+                                if (playerFound.Consumable1 == "")
                                 {
-                                    entry.Consumable1 = pair.Value;
+                                    playerFound.Consumable1 = item.Value;
                                 }
-                                else if (entry.Consumable2 == null)
+                                else if (playerFound.Consumable2 == "")
                                 {
-                                    entry.Consumable2 = pair.Value;
+                                    playerFound.Consumable2 = item.Value;
                                 }
+
                             }
-
                         }
-
                     }
-                }
-            }
-            if (UnknownPlayers.Count == 0)
+                });
+            var UnknownPlayers = PlayerExtractedDatas.ExceptBy(DKPListFromSpreadSheet.Select(playersheet => playersheet.Name), playerData => playerData.PlayerName).ToList();
+            UnknownPlayers.Sort();
+            visualViewModeel.UpdateMainTwinkList(DKPListFromSpreadSheet, UnknownPlayers);
+            if (!UnknownPlayers.Any())
             {
-                SetDKPForPlayers();
+                await SetDKPForPlayers();
             }
         }
         /// <summary>
@@ -282,14 +202,14 @@ namespace All_in_One.Services
         /// TODO: Die Umwandlung erfordert einige schwer nachvollziehbare Einschränkungen. Dies muss noch verbessert werden
         /// </summary>
         /// <returns>Gibt eine Liste </returns>
-        private List<PlayerWoWAddon> GetDataFromWoWAddon()
+        private async Task<List<PlayerWoWAddon>> GetDataFromWoWAddon()
         {
             visualViewModeel.ProgressBarControll(true);
 
             List<PlayerWoWAddon> players = new List<PlayerWoWAddon>();
             StreamReader sr = new StreamReader(File.Open("C:\\Program Files (x86)\\World of Warcraft\\_classic_era_\\WTF\\Account\\496316485#1\\SavedVariables\\NovaRaidCompanion.lua", FileMode.Open));
 
-            string data = sr.ReadToEnd();
+            string data = await sr.ReadToEndAsync();
 
             string RaidName = selectedRaid.Split("|")[0].Trim() == "Naxx" ? "Naxxramas" : selectedRaid.Split("|")[0];
 
@@ -338,7 +258,7 @@ namespace All_in_One.Services
                         }
                         else if (players.Exists(p => p.ID == playerID) && startindex - searchvalue.Length != -1)
                         {
-                            players.Find(p => p.ID == playerID).TimeStamp.Add(DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(double.Parse(timestamp.Replace('.', ',')))).DateTime, "Magierbluttrank");
+                            players.Find(p => p.ID == playerID)?.TimeStamp.Add(DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(double.Parse(timestamp.Replace('.', ',')))).DateTime, "Magierbluttrank");
                         }
                     }
                     if (player.Contains("[25941") && player.Contains("endTime"))
@@ -361,7 +281,7 @@ namespace All_in_One.Services
                         }
                         else if (players.Exists(p => p.ID == playerID && !p.TimeStamp.ContainsKey(timestampDT) && startindex - searchvalue.Length != -1))
                         {
-                            players.Find(p => p.ID == playerID).TimeStamp.Add(timestampDT, "Weisenfisch");
+                            players.Find(p => p.ID == playerID)?.TimeStamp.Add(timestampDT, "Weisenfisch");
                         }
                     }
 
@@ -383,13 +303,17 @@ namespace All_in_One.Services
         public async Task SetDKPForPlayers()
         {
             visualViewModeel.ProgressBarControll(true);
-            //foreach (var newEntry in UnknownPlayers)
-            //{
-            //    if (newEntry.AddNewPlayer)
-            //    {
-            //        DKPListFromSpreadSheet.Add(new SpreadsheetEntry() { Spieler = newEntry.TwinkName, VersäumteIDs = new Value1 { UserEnteredValue = "0" }});
-            //    }
-            //}
+
+            var MainTwinkList = visualViewModeel.GetMainTwinkList();
+            foreach (var mainTwink in MainTwinkList)
+            {
+                if(mainTwink.MainName != "")
+                {
+                    DKPListFromSpreadSheet.Find(player => player.Name == mainTwink.MainName).Name = mainTwink.MainName + " [-> " + mainTwink.TwinkName + " <-]";
+                    PlayerExtractedDatas.Find(player => player.PlayerName == mainTwink.TwinkName).PlayerName = mainTwink.MainName + " [-> " + mainTwink.TwinkName + " <-]";
+                }
+            }
+            
             var UpdatedSpreadsheetList = calculateHandler.SetExtractedDataToSheet(PlayerExtractedDatas, DKPListFromSpreadSheet);
             DKPListFromSpreadSheet.Clear();
             foreach (var entry in UpdatedSpreadsheetList)
@@ -401,45 +325,6 @@ namespace All_in_One.Services
             visualViewModeel.ProgressBarControll();
             CalculateDKP();
             calculateHandler.SetAddonData(DKPListFromSpreadSheet);
-        }
-        /// <summary>
-        /// Aktualisiert die Liste der Spreadsheetdaten für unbekannte Spieler 
-        /// </summary>
-        /// <param name="SelectedMain"></param>
-        /// <param name="SelectedTwink"></param>
-        public void AddMainPlayerToTwink(string SelectedMain, UnknownPlayer SelectedTwink)
-        {
-            visualViewModeel.ProgressBarControll(true);
-            foreach (var item in DKPListFromSpreadSheet)
-            {
-                if (item.Name == SelectedMain)
-                {
-                    string playername = item.Name;
-                    if (playername.Contains(" | "))
-                    {
-                        item.Name = playername.Remove(item.Name.IndexOf(" | "));
-                    }
-                    if (item.Name == SelectedTwink.TwinkName)
-                    {
-
-                    }
-                    else
-                    {
-                        item.Name += " | Umgeloggt -> " + SelectedTwink.TwinkName;
-                        //ListOfMains[ListOfMains.IndexOf(playername)] = item.Spieler;
-                    }
-
-                }
-            }
-
-            foreach (var item in UnknownPlayers)
-            {
-                if (item.TwinkName == SelectedTwink.TwinkName)
-                {
-                    item.AssociatedMain = SelectedMain;
-                }
-            }
-            visualViewModeel.ProgressBarControll();
         }
         /// <summary>
         /// Löscht Spieler, die 10 IDs nicht am Raid teilgenommen haben

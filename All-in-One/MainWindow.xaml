@@ -36,7 +36,22 @@
             <Label Content="Neue oder unbekannte Spieler:" VerticalAlignment="Bottom" />
         </DockPanel>
         <DockPanel Grid.Row="1" Grid.Column="2">
-            <DataGrid Name="NewUnknownPlayers" ItemsSource="{Binding UnknownPlayers}" >
+            <DataGrid Name="NewUnknownPlayers" ItemsSource="{Binding TwinkMains}" AutoGenerateColumns="False" CanUserAddRows="False" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Unbekannter Spieler" Binding="{Binding Name}" ></DataGridTextColumn>
+                    <DataGridTemplateColumn Header="Mains">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding SelectedMain}"></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding Mains}" SelectedItem="{Binding SelectedMain, Mode=TwoWay}" SelectedValuePath="."></ComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
         <StackPanel x:Name="PrepareLogs" Grid.Column="3" Margin="5">
@@ -55,12 +70,7 @@
             <Rectangle x:Name="CLMDataDropBox" Width="250" Height="50" Margin="10" AllowDrop="True" Fill="AliceBlue" Drop="CLMDataDropBox_Drop"></Rectangle>
             <Label Content="Oder hier aus der Liste auswählen:"/>
             <ComboBox x:Name="LastRaids" SelectionChanged="LastRaids_SelectionChanged" ItemsSource="{Binding LastGuildsRaids}"/>
-            <Button x:Name="MarkPlayerForDKP" Content="Verteile DKP" Width="100" Height="30" Margin="10" Click="MarkPlayerForDKP_Click" />
-            <Separator></Separator>
-            <TextBlock Name="SelectedTwink"></TextBlock>
-            <ComboBox Name="ListPotentialMain" ItemsSource="{Binding ListOfMains}">
-            </ComboBox>
-            <Button Name="ConfirmTwinkAsMain" Content="Übernehme Twink als Main" Click="ConfirmTwinkAsMain_Click" Height="30" Width="100" Margin="10"></Button>
+            <Button x:Name="SetDKPForPlayers" Content="Verteile DKP" Width="100" Height="30" Margin="10" Click="SetDKPForPlayers_Click" />
         </StackPanel>
     </Grid>
 </Window>
