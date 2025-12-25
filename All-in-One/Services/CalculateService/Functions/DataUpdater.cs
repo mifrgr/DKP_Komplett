@@ -40,54 +40,23 @@ namespace All_in_One.Services.CalculateService.Functions
         {
             PlayerData entry = new();
             entry.Name = playerLogData.PlayerName;
-            entry.IDs_Count = 1;
-            entry.IDs_Golddrache_Count = 0;
             entry.IDs_Missed_Count = 0;
             entry.Enchantment = playerLogData.Enchantment;
             entry.Consumable1 = playerLogData.Consumable1;
             entry.Consumable2 = playerLogData.Consumable2;
             entry.CountsPerMinute = playerLogData.CountPerMinutes;
             entry.Date = "";
-            entry.MaxPoints = 50;
             return entry;
         }
         PlayerData HandleAbsentPlayer(PlayerData absentPlayer)
         {
             absentPlayer.IDs_Missed_Count = absentPlayer.IDs_Missed_Count + 1;
-            if (absentPlayer.IDs_Missed_Count >= 3)
-            {
-                absentPlayer.IDs_Golddrache_Count = 0;
-                absentPlayer.MaxPoints = 200;
-            }
-            if (absentPlayer.IDs_Count >= 3)
-            {
-                absentPlayer.MaxPoints = 200;
-            }
-            if(absentPlayer.IDs_Golddrache_Count >0)
-            {
-                absentPlayer.MaxPoints = 301;
-            }
-
             return absentPlayer;
         }
 
         PlayerData HandleOldPlayer(PlayerData oldPlayer, List<PlayerExtractedData> playerExtractedDatas)
         {
             var playerLogData = playerExtractedDatas.Find(player => player.PlayerName == oldPlayer.Name);
-
-            oldPlayer.IDs_Count = oldPlayer.IDs_Count + 1;
-            if (oldPlayer.IDs_Count >= 3 && playerLogData?.Enchantment == "" && playerLogData?.Consumable1 != "" && playerLogData?.Consumable2 != "" && playerLogData?.CountPerMinutes >= 10)
-            {
-                oldPlayer.IDs_Golddrache_Count = oldPlayer.IDs_Golddrache_Count + 1;
-            }
-            if (oldPlayer.IDs_Count >= 3)
-            {
-                oldPlayer.MaxPoints = 200;
-            }
-            if (oldPlayer.IDs_Golddrache_Count > 0)
-            {
-                oldPlayer.MaxPoints = 301;
-            }
 
             oldPlayer.IDs_Missed_Count = 0;
             oldPlayer.Enchantment = playerLogData.Enchantment;

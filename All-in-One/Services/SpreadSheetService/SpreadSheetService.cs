@@ -38,7 +38,6 @@ namespace All_in_One.Services.SpreadSheetService
         {
             var result = await dataHandler.GetSpreadSheets(sheetsService,spreadId);
             List<Sheet> Sheets = result.Sheets.ToList();
-            Sheets.RemoveAt(6);
             return JsonSerializer.Deserialize<List<JsonSheetEntry>>(JsonSerializer.Serialize(Sheets));
         }
 

@@ -5,6 +5,7 @@ using All_in_One.Static.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace All_in_One.Services.CalculateService
 {
@@ -13,13 +14,13 @@ namespace All_in_One.Services.CalculateService
         /// <summary>
         /// Liest die Spielerdaten aus den Warcraftlogs. Überprüft auf unverzauberte Gegenstände, Berechnet die Fähigkeiten pro Minute.
         /// 
-        ///
         /// </summary>
         /// <param name="logs">Die Daten als werden als Dataobject übergeben</param>
         /// <returns>Gibt eine Liste aller Spieler mit den ausgelesenen Daten zurück</returns>
         public List<PlayerExtractedData> GetPlayerDataFromLogs(LogsDataObject logs)
         {
             List<PlayerExtractedData> result = new List<PlayerExtractedData>();
+            float bossFightsCount = logs.baseLogs.fights.Where(fight => fight.boss != 0).Count();
 
             foreach (var logentry in logs.castsLogs.entries)
             {
@@ -53,6 +54,39 @@ namespace All_in_One.Services.CalculateService
                             {
                                 entry.Enchantment += item.name + " [" + item.permanentEnchantName + "]" + Environment.NewLine;
                                 entry.CountOfNotEnchantetItems++;
+                            }
+                            if(Consumables.AcceptedWeaponEnchants.ContainsKey(item.temporaryEnchant))
+                            {
+                                entry.Consumable1 = item.temporaryEnchantName;
+                            }
+                        }
+                    }
+                }
+                foreach(var buff in logs.buffsLogs)
+                {
+                    if(buff.Value.auras.ToList().Exists(aura => aura.name == entry.PlayerName))
+                    {
+                        var filteredBuffs = buff.Value.auras.ToList().Single(aura => aura.name == entry.PlayerName);
+                        if((float)filteredBuffs.totalUses / bossFightsCount >= 0.8)
+                        {
+                            if(entry.Consumable1 == "" || entry.Consumable1.Contains("["))
+                            {
+                                entry.Consumable1 = Consumables.AcceptedConsumables[buff.Key];
+                            }
+                            else if (entry.Consumable2 == "" || entry.Consumable2.Contains("["))
+                            {
+                                entry.Consumable2 = Consumables.AcceptedConsumables[buff.Key];
+                            }
+                        }
+                        else
+                        {
+                            if (entry.Consumable1 == "")
+                            {
+                                entry.Consumable1 = Consumables.AcceptedConsumables[buff.Key] + " [" + filteredBuffs.totalUses + "/" + bossFightsCount + "]";
+                            }
+                            else if (entry.Consumable2 == "" || entry.Consumable2.Contains("["))
+                            {
+                                entry.Consumable2 = Consumables.AcceptedConsumables[buff.Key] + " [" + filteredBuffs.totalUses + "/" + bossFightsCount + "]";
                             }
                         }
                     }

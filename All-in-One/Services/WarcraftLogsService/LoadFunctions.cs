@@ -31,12 +31,21 @@ namespace All_in_One.Services.WarcraftLogsService
 
             result.baseLogs = (Base_Rootobject)JsonSerializer.Deserialize(await Get_Client.GetStreamAsync(Get_Client.BaseAddress), typeof(Base_Rootobject));
 
-
+            //CastLogs
             Get_Client = new HttpClient()
             {
                 BaseAddress = new Uri("https://www.warcraftlogs.com/v1/report/tables/casts/" + LogID + "?end=" + result.baseLogs.end + "&api_key=28bcab4294b92c0fac4df90ea4c3c59a"),
             };
             result.castsLogs = (Casts_Rootobject)JsonSerializer.Deserialize(await Get_Client.GetStreamAsync(Get_Client.BaseAddress), typeof(Casts_Rootobject));
+
+            foreach(var consum in Static.Data.Consumables.AcceptedConsumables)
+            {
+                Get_Client = new HttpClient()
+                {
+                    BaseAddress = new Uri("https://www.warcraftlogs.com/v1/report/tables/buffs/" + LogID + "?end=" + result.baseLogs.end + "&abilityid=" + consum.Key +  "&api_key=28bcab4294b92c0fac4df90ea4c3c59a"),
+                };
+                result.buffsLogs.Add(consum.Key,(Buffs_Rootobject)JsonSerializer.Deserialize(await Get_Client.GetStreamAsync(Get_Client.BaseAddress),typeof(Buffs_Rootobject)));
+            }
 
             return result;
         }

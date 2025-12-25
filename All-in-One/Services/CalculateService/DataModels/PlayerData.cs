@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace All_in_One.Services.CalculateService.DataModels
 {
+    /// <summary>
+    /// Basisklasse für einen Player. Enthält alle Informationen über Verzauberungen, Consumables und CPM
+    /// </summary>
     public class PlayerData
     {
         string _name = string.Empty;
-        float _idscount;
-        float _idsgold;
         float _idmissed;
         string _enchantment = string.Empty;
         string _consum1 = string.Empty;
@@ -32,30 +33,7 @@ namespace All_in_One.Services.CalculateService.DataModels
                 MainService.Instance.visualViewModeel.UpdateViewModellData(new VisualLogic.Data.VisualUpdateDataObject(this, typeof(PlayerData), _name));
             }
         }
-        public float IDs_Count
-        {
-            get
-            {
-                return _idscount;
-            }
-            set
-            {
-                _idscount = value;
-                MainService.Instance.visualViewModeel.UpdateViewModellData(new VisualLogic.Data.VisualUpdateDataObject(this, typeof(PlayerData), _name));
-            }
-        }
-        public float IDs_Golddrache_Count 
-        {
-            get
-            {
-                return _idsgold;
-            } 
-            set
-            {
-                _idsgold = value;
-                MainService.Instance.visualViewModeel.UpdateViewModellData(new VisualLogic.Data.VisualUpdateDataObject(this, typeof(PlayerData), _name));
-            } 
-        }
+
         public float IDs_Missed_Count 
         { 
             get
@@ -128,9 +106,16 @@ namespace All_in_One.Services.CalculateService.DataModels
                 MainService.Instance.visualViewModeel.UpdateViewModellData(new VisualLogic.Data.VisualUpdateDataObject(this, typeof(PlayerData), _name));
             }
         }
-        public float MaxPoints
+        public bool IsGoldDrache
         {
-            get;set;
+            get
+            {
+                return _enchantment == "" && (_consum1 != "" && !_consum1.Contains("[")) && (_consum2 !="" && !_consum2.Contains("[")) && _cpm >= Static.Data.BonusConditions.CountsPerMinuteReq;
+            }
+            set
+            {
+
+            }
         }
 
 

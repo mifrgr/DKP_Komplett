@@ -10,6 +10,7 @@ Global
 		Debug|Any CPU = Debug|Any CPU
 		DKP_Requirement|Any CPU = DKP_Requirement|Any CPU
 		NewLootSystem|Any CPU = NewLootSystem|Any CPU
+		OpenDKPSystem|Any CPU = OpenDKPSystem|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
@@ -19,6 +20,8 @@ Global
 		{B3CF9D0F-402C-4A2C-8A69-97AC279B74E2}.DKP_Requirement|Any CPU.Build.0 = DKP_Requirement|Any CPU
 		{B3CF9D0F-402C-4A2C-8A69-97AC279B74E2}.NewLootSystem|Any CPU.ActiveCfg = NewLootSystem|Any CPU
 		{B3CF9D0F-402C-4A2C-8A69-97AC279B74E2}.NewLootSystem|Any CPU.Build.0 = NewLootSystem|Any CPU
+		{B3CF9D0F-402C-4A2C-8A69-97AC279B74E2}.OpenDKPSystem|Any CPU.ActiveCfg = OpenDKPSystem|Any CPU
+		{B3CF9D0F-402C-4A2C-8A69-97AC279B74E2}.OpenDKPSystem|Any CPU.Build.0 = OpenDKPSystem|Any CPU
 		{B3CF9D0F-402C-4A2C-8A69-97AC279B74E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3CF9D0F-402C-4A2C-8A69-97AC279B74E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

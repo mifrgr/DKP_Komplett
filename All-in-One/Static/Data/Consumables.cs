@@ -4,45 +4,40 @@ namespace All_in_One.Static.Data
 {
     internal class Consumables
     {
-        public static List<string> AcceptedDoubleConsumables = new List<string>()
+        public static Dictionary<int,string> AcceptedConsumables = new()
         {
-            "Destillierte Weisheit",
-            "Oberste Macht",
-            "Fläschchen der Titanen"
-        };
-        public static List<string> AcceptedConsumables = new List<string>()
-        {
-            "Elixier des Mungos",
-            "Elixier der großen Beweglichkeit",
-            "Großes Arkanelixier",
-            "Manaregeneration",
-            "Zanza",
-            "Frostmacht",
-            "Arkanes Elixier",
-            "Fläschchen der Titanen",
-            "Destillierte Weisheit",
-            "Gesegnete Sonnenfrucht",
-            "Feuerwasser der Winterfelle",
-            "Juju",
-            "kotellets",
-            "Runn Tum",
-            "Kalmar",
-            "knödel",
-            "Feuermacht",
-            "Schattenmacht",
-            "Elixier der Riesen",
-            "Wut der Zeiten",
-            "Stoß des Skorpoks",
-            "Große Rüstung",
-            "Oberste Macht"
+            {17538, "Elixier des Mungos" },
+            //{ 17538, "Elixier der großen Beweglichkeit" },
+            { 17539, "Großes Arkanelixier" },
+            { 18194, "Manaregeneration" },
+            {24363,"Magierblut" },
+            //"Zanza",
+            { 21920, "Frostmacht" },
+            //{ 17538, "Arkanes Elixier" },
+            { 17626, "Fläschchen der Titanen" },
+            { 17627, "Destillierte Weisheit" },
+            //"Gesegnete Sonnenfrucht",
+            { 17038, "Feuerwasser der Winterfelle" },
+            { 16323, "Juju" },
+            //"kotellets",
+            //"Runn Tum",
+            { 18192, "Kalmar" },
+            //"knödel",
+            { 26276, "Feuermacht" },
+            { 11474, "Schattenmacht" },
+            { 11405, "Elixier der Riesen" },
+            //{ 17538, "Wut der Zeiten" },
+            //{ 17538, "Stoß des Skorpoks" },
+            //"Große Rüstung",
+            { 17628, "Oberste Macht" }
         };
 
-        public static List<string> AcceptedWeaponEnchants = new List<string>()
+        public static Dictionary<int,string> AcceptedWeaponEnchants = new()
         {
-            "wirkendes Gift",
-            "Manaöl",
-            "Zauberöl",
-            "schärfen",
+            {2629, "Hervorragendes Manaöl" },
+            {2628, "Hervorragendes Zauberöl" },
+            {2506, "Waffe schärfen - Kritisch" },
+            {1643, "Verdichteter Wetzstein" }
         };
 
     }

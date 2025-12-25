@@ -1,4 +1,5 @@
 ﻿using All_in_One.Services.WarcraftLogsService.WarcraftlogsModels.LogTypes;
+using System.Collections.Generic;
 
 namespace All_in_One.Services.WarcraftLogsService.WarcraftlogsModels
 {
@@ -10,5 +11,6 @@ namespace All_in_One.Services.WarcraftLogsService.WarcraftlogsModels
     {
         public Casts_Rootobject castsLogs;
         public Base_Rootobject baseLogs;
+        public Dictionary<int,Buffs_Rootobject> buffsLogs = new();
     }
 }

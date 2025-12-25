@@ -130,8 +130,6 @@ namespace All_in_One.VisualLogic
                     playerToChange = new SpreadSheetViewModell()
                     {
                         Spieler = data.name,
-                        GesamtIDs = DataObject.IDs_Count.ToString(),
-                        IDsGolddrache = DataObject.IDs_Golddrache_Count.ToString(),
                         VersäumteIDs = DataObject.IDs_Missed_Count.ToString(),
                         Verzauberungen = DataObject.Enchantment,
                         Consumables1 = DataObject.Consumable1,
@@ -144,8 +142,6 @@ namespace All_in_One.VisualLogic
                 else
                 {
                     playerToChange.Spieler = data.name;
-                    playerToChange.GesamtIDs = DataObject.IDs_Count.ToString();
-                    playerToChange.IDsGolddrache = DataObject.IDs_Golddrache_Count.ToString();
                     playerToChange.VersäumteIDs = DataObject.IDs_Missed_Count.ToString();
                     playerToChange.Verzauberungen = DataObject.Enchantment;
                     playerToChange.Consumables1 = DataObject.Consumable1;

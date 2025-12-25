@@ -6,7 +6,7 @@
     <RootNamespace>All_in_One</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <Configurations>Debug;Release;DKP_Requirement;NewLootSystem</Configurations>
+    <Configurations>Debug;Release;DKP_Requirement;NewLootSystem;OpenDKPSystem</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

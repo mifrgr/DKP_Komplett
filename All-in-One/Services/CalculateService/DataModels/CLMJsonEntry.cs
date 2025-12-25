@@ -21,18 +21,10 @@ namespace All_in_One.Services.CalculateService.DataModels
     {
         public int uid { get; set; }
         public string name { get; set; }
-        public Fieldnames fieldNames { get; set; }
+        public object[] fieldNames { get; set; }
         public Standings1 standings { get; set; }
         public Config config { get; set; }
         public int type { get; set; }
-    }
-
-    public class Fieldnames
-    {
-        public string m { get; set; }
-        public string l { get; set; }
-        public string s { get; set; }
-        public string b { get; set; }
     }
 
     public class Standings1
@@ -95,5 +87,6 @@ namespace All_in_One.Services.CalculateService.DataModels
         public int tax { get; set; }
         public int roundDecimals { get; set; }
     }
+
 
 }

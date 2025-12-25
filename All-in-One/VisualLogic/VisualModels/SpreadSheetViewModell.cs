@@ -10,8 +10,6 @@ namespace All_in_One.VisualLogic.VisualModels
     public class SpreadSheetViewModell : INotifyPropertyChanged
     {
         string _spieler;
-        string _gesamtIds;
-        string _IdsGolddrache;
         string _versäumteIds;
         string _enchants;
         string _consumable1;
@@ -33,32 +31,6 @@ namespace All_in_One.VisualLogic.VisualModels
             {
                 _spieler = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Spieler)));
-            }
-        }
-
-        public string GesamtIDs
-        {
-            get
-            {
-                return _gesamtIds;
-            }
-            set
-            {
-                _gesamtIds = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GesamtIDs)));
-            }
-        }
-
-        public string IDsGolddrache
-        {
-            get
-            {
-                return _IdsGolddrache;
-            }
-            set
-            {
-                _IdsGolddrache = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IDsGolddrache)));
             }
         }
 
