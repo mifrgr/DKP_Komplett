@@ -1,5 +1,4 @@
-﻿using All_in_One.DataModels.PlayerModels;
-using All_in_One.Services.CalculateService.DataModels;
+﻿using All_in_One.Services.CalculateService.DataModels;
 using All_in_One.Services.CalculateService.Functions;
 using All_in_One.Services.SpreadSheetService.DataModels;
 using All_in_One.Services.WarcraftLogsService.WarcraftlogsModels;
@@ -26,14 +25,19 @@ namespace All_in_One.Services.CalculateService
             return loganalyser.GetPlayerDataFromLogs(logs);
         }
 
+        public void BackupData()
+        {
+            addonDataHandler.ReadAddonData();
+        }
+
         public List<PlayerData> SetExtractedDataToSheet(List<PlayerExtractedData> playerExtractedDatas, List<PlayerData> spreadsheetEntries)
         {
             return dataWriter.UpdateDKPData(playerExtractedDatas, spreadsheetEntries);
         }
 
-        public void SetAddonData(List<PlayerData> players)
+        public List<PlayerData> SetAddonData(List<PlayerData> players, int bossDKP)
         {
-             addonDataHandler.SetAddonData(players);
+             return addonDataHandler.SetAddonData(players,bossDKP);
         }
     }
 }

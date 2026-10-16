@@ -1,6 +1,7 @@
 ﻿using All_in_One.Services.CalculateService.DataModels;
 using All_in_One.Services.SpreadSheetService.DataModels;
 using All_in_One.Services.SpreadSheetService.Functions;
+using All_in_One.Static.Data;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
@@ -44,6 +45,11 @@ namespace All_in_One.Services.SpreadSheetService
         public List<PlayerData> GetSpreadSheetConvertedData(JsonSheetEntry sheets)
         {
             return SpreadSheetToDataListConverter.ConvertSpreadSheetToDataList(sheets);
+        }
+
+        public List<BossDKPBaseClass> GetSpreadSheetConvertedBossData(JsonSheetEntry sheets)
+        {
+            return SpreadSheetToBossDKPValueConverter.ConvertSpreadsheetDataToBossDKP(sheets);
         }
 
         public Task<BatchUpdateSpreadsheetResponse> UpdateSpreadSheetData(List<PlayerData> SheetData)

@@ -17,6 +17,7 @@ namespace All_in_One.Services.CalculateService.DataModels
         string _Consumable1 = string.Empty;
         string _Consumable2 = string.Empty;
         float _CountPerMinutes;
+        string _Worldbuffs = string.Empty;
 
         public int CompareTo(PlayerExtractedData p2)
         {
@@ -47,6 +48,11 @@ namespace All_in_One.Services.CalculateService.DataModels
         {
             get { return _CountPerMinutes; }
             set { _CountPerMinutes = value; MainService.Instance.visualViewModeel.UpdateViewModellData(new VisualLogic.Data.VisualUpdateDataObject(this, typeof(PlayerExtractedData), PlayerName)); }
+        }
+        public string Worldbuffs
+        {
+            get { return _Worldbuffs; }
+            set { _Worldbuffs = value; MainService.Instance.visualViewModeel.UpdateViewModellData(new VisualLogic.Data.VisualUpdateDataObject(this, typeof(PlayerExtractedData), PlayerName)); }
         }
 
     }

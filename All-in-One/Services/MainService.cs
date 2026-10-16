@@ -1,7 +1,9 @@
-﻿using All_in_One.Services.CalculateService.DataModels;
+﻿using All_in_One.DataModels;
+using All_in_One.Services.CalculateService.DataModels;
 using All_in_One.Services.SpreadSheetService.DataModels;
 using All_in_One.Services.WarcraftLogsService.WarcraftlogsModels;
 using All_in_One.Services.WarcraftLogsService.WarcraftlogsModels.LogTypes;
+using All_in_One.Static.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,9 +31,12 @@ namespace All_in_One.Services
         public List<Guild_Rootobject> LastRaids {  get; set; }
 
         LogsDataObject logs;
-        string selectedRaid = "";
+        RaidEntry selectedRaidEntry;
 
         public List<JsonSheetEntry> SpreadsheetAsJson = new();
+
+        List<BossDKPBaseClass> bossDKPsBaseValue = new List<BossDKPBaseClass>();
+        int bossDKP;
 
 
 
@@ -48,6 +53,7 @@ namespace All_in_One.Services
 
                 LastRaids = await logsHandler.GetLastRaids();
                 SpreadsheetAsJson = await spreadSheetHandler.GetSpreadSheets();
+                bossDKPsBaseValue = spreadSheetHandler.GetSpreadSheetConvertedBossData(SpreadsheetAsJson.Find(entry => entry.Properties.Title == "Bosspunkte"));
                 visualViewModeel.Init(SpreadsheetAsJson);
                                
                 visualViewModeel.ProgressBarControll();
@@ -56,6 +62,11 @@ namespace All_in_One.Services
             {
                 visualViewModeel.ProgressBarControll(true, ex.Message);
             }
+        }
+
+        public async Task Backup()
+        {
+            calculateHandler.BackupData();
         }
 
         /// <summary>
@@ -91,14 +102,23 @@ namespace All_in_One.Services
         public async Task GetDataFromLog(string SelectedRaid)
         {
             visualViewModeel.ProgressBarControll(true);
-            selectedRaid = SelectedRaid;
-            if(selectedRaid.Contains("|"))
+            if(SelectedRaid.Contains("|"))
             {
-                logs = await logsHandler.GetLogfromWarcraftLogs(SelectedRaid.Split("|")[2].Trim());
+                selectedRaidEntry = new()
+                { 
+                    ID = SelectedRaid.Split("|")[2].Trim() 
+                };
+                logs = await logsHandler.GetLogfromWarcraftLogs(selectedRaidEntry.ID);
+                selectedRaidEntry.Date = DateTimeOffset.FromUnixTimeMilliseconds(LastRaids.Find(item => item.id == selectedRaidEntry.ID).start).Date.ToShortDateString();
             }
             else
             {
-                logs = await logsHandler.GetLogfromWarcraftLogs(selectedRaid);
+                logs = await logsHandler.GetLogfromWarcraftLogs(SelectedRaid);
+                selectedRaidEntry = new()
+                {
+                    ID = SelectedRaid
+                };
+                selectedRaidEntry.Date = DateTimeOffset.FromUnixTimeMilliseconds(logs.baseLogs.start).Date.ToShortDateString();
             }
 
             PlayerExtractedDatas = calculateHandler.GetPlayerDKPRequirement(logs);
@@ -125,7 +145,7 @@ namespace All_in_One.Services
                     PlayerExtractedDatas.Find(player => player.PlayerName == mainTwink.TwinkName).PlayerName = mainTwink.MainName;
                 }
             }
-            
+
             var UpdatedSpreadsheetList = calculateHandler.SetExtractedDataToSheet(PlayerExtractedDatas, DKPListFromSpreadSheet);
             DKPListFromSpreadSheet.Clear();
             foreach (var entry in UpdatedSpreadsheetList)
@@ -133,20 +153,30 @@ namespace All_in_One.Services
                 DKPListFromSpreadSheet.Add(entry);
                 visualViewModeel.UpdateViewModellData(new VisualLogic.Data.VisualUpdateDataObject(entry, typeof(PlayerData), entry.Name));
             }
-            DKPListFromSpreadSheet[0].Date = selectedRaid.Split("|")[1].Trim();
+            DKPListFromSpreadSheet[0].Date = selectedRaidEntry.Date;
             TidyUp();
+
+            foreach(var fight in logs.baseLogs.fights)
+            {
+                if(fight.boss != 0)
+                {
+                    bossDKP += bossDKPsBaseValue.Find(entry => entry.BossName == fight.name).BossDKPVal;
+                }
+            }
+            calculateHandler.SetAddonData(DKPListFromSpreadSheet,bossDKP);
+
             var result = await spreadSheetHandler.UpdateSpreadSheetData(DKPListFromSpreadSheet);
             visualViewModeel.ProgressBarControll();
 
-            calculateHandler.SetAddonData(DKPListFromSpreadSheet);
+
         }
         /// <summary>
-        /// Löscht Spieler, die 10 IDs nicht am Raid teilgenommen haben
+        /// Löscht Spieler, die 40 IDs (3 Monate) nicht am Raid teilgenommen haben
         /// </summary>
         private void TidyUp()
         {
             var Worklist = DKPListFromSpreadSheet.Where(entry =>        
-             entry.IDs_Missed_Count >= 10)
+             entry.IDs_Missed_Count >= 40)
             .ToList();
 
             foreach (var item in Worklist)

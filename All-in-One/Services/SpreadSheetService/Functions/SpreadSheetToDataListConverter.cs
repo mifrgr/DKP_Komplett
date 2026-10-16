@@ -27,12 +27,14 @@ namespace All_in_One.Services.SpreadSheetService.Functions
                 entries.Add(new PlayerData()
                 {
                     Name = data.Values?[0]?.FormattedValue ?? "",
-                    IDs_Missed_Count = float.Parse(data.Values?[1]?.FormattedValue ?? "0"),
-                    Enchantment = data.Values?[2]?.FormattedValue ?? "",
-                    Consumable1 = data.Values?[3]?.FormattedValue ?? "",
-                    Consumable2 = data.Values?[4]?.FormattedValue ?? "",
-                    CountsPerMinute = float.Parse(data.Values?[5]?.FormattedValue ?? "0"),
-                    Date = data?.Values?.Length == 9 ? data.Values[6].FormattedValue : "",
+                    Punktestand = int.Parse(data.Values?[1]?.FormattedValue ?? "0"),
+                    IDs_Missed_Count = float.Parse(data.Values?[2]?.FormattedValue ?? "0"),
+                    Enchantment = data.Values?[3]?.FormattedValue ?? "",
+                    Consumable1 = data.Values?[4]?.FormattedValue ?? "",
+                    Consumable2 = data.Values?[5]?.FormattedValue ?? "",
+                    CountsPerMinute = float.Parse(data.Values?[6]?.FormattedValue ?? "0"),
+                    Worldbuffs = data.Values?[7]?.FormattedValue ?? string.Empty,
+                    Date = data.Values?[8]?.FormattedValue ?? "",
                 });
             }
 

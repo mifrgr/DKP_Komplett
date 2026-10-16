@@ -1,5 +1,4 @@
-﻿using All_in_One.DataModels.PlayerModels;
-using All_in_One.Services;
+﻿using All_in_One.Services;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -50,6 +49,11 @@ namespace All_in_One
         {
             //string[] fileName = (string[])e.Data.GetData(DataFormats.FileDrop);
             //MainService.Instance.GetDataFromLogTextFile(fileName[0]);
+        }
+
+        private async void Backup_Click(object sender, RoutedEventArgs e)
+        {
+            MainService.Instance.Backup();
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)

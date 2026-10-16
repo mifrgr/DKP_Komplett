@@ -11,6 +11,7 @@ namespace All_in_One.Services.WarcraftLogsService.WarcraftlogsModels
     {
         public Casts_Rootobject castsLogs;
         public Base_Rootobject baseLogs;
-        public Dictionary<int,Buffs_Rootobject> buffsLogs = new();
+        public Dictionary<int,Buffs_Rootobject> consumLogs = new();
+        public Dictionary<int,Buffs_Rootobject> worldbuffLogs = new();
     }
 }

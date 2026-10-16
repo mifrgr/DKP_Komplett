@@ -45,12 +45,14 @@ namespace All_in_One.Services.CalculateService.Functions
             entry.Consumable1 = playerLogData.Consumable1;
             entry.Consumable2 = playerLogData.Consumable2;
             entry.CountsPerMinute = playerLogData.CountPerMinutes;
+            entry.Worldbuffs = playerLogData.Worldbuffs;
             entry.Date = "";
             return entry;
         }
         PlayerData HandleAbsentPlayer(PlayerData absentPlayer)
         {
             absentPlayer.IDs_Missed_Count = absentPlayer.IDs_Missed_Count + 1;
+            absentPlayer.Worldbuffs = "";
             return absentPlayer;
         }
 
@@ -63,6 +65,7 @@ namespace All_in_One.Services.CalculateService.Functions
             oldPlayer.Consumable1 = playerLogData.Consumable1;
             oldPlayer.Consumable2 = playerLogData.Consumable2;
             oldPlayer.CountsPerMinute = playerLogData.CountPerMinutes;
+            oldPlayer.Worldbuffs = playerLogData.Worldbuffs;
             return oldPlayer;
         }
     }

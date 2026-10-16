@@ -1,5 +1,4 @@
-﻿using All_in_One.DataModels.PlayerModels;
-using All_in_One.VisualLogic.Data;
+﻿using All_in_One.VisualLogic.Data;
 using All_in_One.VisualLogic.Functions;
 using All_in_One.VisualLogic.VisualModels;
 using All_in_One.VisualLogic.Windows;
@@ -130,23 +129,27 @@ namespace All_in_One.VisualLogic
                     playerToChange = new SpreadSheetViewModell()
                     {
                         Spieler = data.name,
+                        Punktestand = DataObject.Punktestand.ToString(),
                         VersäumteIDs = DataObject.IDs_Missed_Count.ToString(),
                         Verzauberungen = DataObject.Enchantment,
                         Consumables1 = DataObject.Consumable1,
                         Consumable2 = DataObject.Consumable2,
                         CountsPerMinutes = DataObject.CountsPerMinute.ToString(),
-                        Stand = DataObject.Date,
+                        Worldbuffs = DataObject.Worldbuffs,
+                        Stand = DataObject.Date,                      
                     };
                     DKPListFromSpreadSheetViewModell.Add(playerToChange);
                 }
                 else
                 {
                     playerToChange.Spieler = data.name;
+                    playerToChange.Punktestand = DataObject.Punktestand.ToString();
                     playerToChange.VersäumteIDs = DataObject.IDs_Missed_Count.ToString();
                     playerToChange.Verzauberungen = DataObject.Enchantment;
                     playerToChange.Consumables1 = DataObject.Consumable1;
                     playerToChange.Consumable2 = DataObject.Consumable2;
                     playerToChange.CountsPerMinutes = DataObject.CountsPerMinute.ToString();
+                    playerToChange.Worldbuffs = DataObject.Worldbuffs;
                     playerToChange.Stand = DataObject.Date;
                 }
                 

@@ -10,11 +10,13 @@ namespace All_in_One.VisualLogic.VisualModels
     public class SpreadSheetViewModell : INotifyPropertyChanged
     {
         string _spieler;
+        string _punktestand;
         string _versäumteIds;
         string _enchants;
         string _consumable1;
         string _consumable2;
         string _countsPerMinute;
+        string _worldbuffs;
         string _stand;
 
         public bool GetDKP = false;
@@ -31,6 +33,19 @@ namespace All_in_One.VisualLogic.VisualModels
             {
                 _spieler = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Spieler)));
+            }
+        }
+
+        public string Punktestand
+        {
+            get
+            {
+                return _punktestand;
+            }
+            set
+            {
+                _punktestand = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Punktestand)));
             }
         }
 
@@ -93,6 +108,19 @@ namespace All_in_One.VisualLogic.VisualModels
             {
                 _countsPerMinute = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CountsPerMinutes)));
+            }
+        }
+
+        public string Worldbuffs
+        {
+            get
+            {
+                return _worldbuffs;
+            }
+            set
+            {
+                _worldbuffs = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Worldbuffs)));
             }
         }
         public string Stand

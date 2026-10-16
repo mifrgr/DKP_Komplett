@@ -71,6 +71,7 @@
             <Label Content="Oder hier aus der Liste auswählen:"/>
             <ComboBox x:Name="LastRaids" SelectionChanged="LastRaids_SelectionChanged" ItemsSource="{Binding LastGuildsRaids}"/>
             <Button x:Name="SetDKPForPlayers" Content="Verteile DKP" Width="100" Height="30" Margin="10" Click="SetDKPForPlayers_Click" />
+            <Button x:Name="Backup" Content="Backup" Width="100" Height="30" Margin="10" Click="Backup_Click" />
         </StackPanel>
     </Grid>
 </Window>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using All_in_One.Static.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -13,12 +14,15 @@ namespace All_in_One.Services.CalculateService.DataModels
     public class PlayerData
     {
         string _name = string.Empty;
+        int _punktestand = 0;
         float _idmissed;
         string _enchantment = string.Empty;
         string _consum1 = string.Empty;
         string _consum2 = string.Empty;
         float _cpm;
+        string _worldbuffs = string.Empty;
         string _date = string.Empty;
+        int _bossDKP = 0;
 
 
         public string Name
@@ -31,6 +35,19 @@ namespace All_in_One.Services.CalculateService.DataModels
             {
                 _name = value;
                 MainService.Instance.visualViewModeel.UpdateViewModellData(new VisualLogic.Data.VisualUpdateDataObject(this, typeof(PlayerData), _name));
+            }
+        }
+
+        public int Punktestand
+        {
+            get
+            {
+                return _punktestand;
+            }
+            set
+            {
+                _punktestand = value;
+                MainService.Instance.visualViewModeel.UpdateViewModellData(new VisualLogic.Data.VisualUpdateDataObject(this,typeof(PlayerData),_name));
             }
         }
 
@@ -94,6 +111,18 @@ namespace All_in_One.Services.CalculateService.DataModels
                 MainService.Instance.visualViewModeel.UpdateViewModellData(new VisualLogic.Data.VisualUpdateDataObject(this, typeof(PlayerData), _name));
             }
         }
+        public string Worldbuffs
+        {
+            get
+            {
+                return _worldbuffs;
+            }
+            set
+            {
+                _worldbuffs = value;
+                MainService.Instance.visualViewModeel.UpdateViewModellData(new VisualLogic.Data.VisualUpdateDataObject(this,typeof(PlayerData), _name));
+            }
+        }
         public string Date 
         { 
             get
@@ -106,11 +135,12 @@ namespace All_in_One.Services.CalculateService.DataModels
                 MainService.Instance.visualViewModeel.UpdateViewModellData(new VisualLogic.Data.VisualUpdateDataObject(this, typeof(PlayerData), _name));
             }
         }
+        
         public bool IsGoldDrache
         {
             get
             {
-                return _enchantment == "" && (_consum1 != "" && !_consum1.Contains("[")) && (_consum2 !="" && !_consum2.Contains("[")) && _cpm >= Static.Data.BonusConditions.CountsPerMinuteReq;
+                return IDs_Missed_Count == 0 && _enchantment == "" && (_consum1 != "" && !_consum1.Contains("[")) && (_consum2 !="" && !_consum2.Contains("[")) && _cpm >= Static.Data.BonusConditions.CountsPerMinuteReq && HasPlayerWorldbuffs;
             }
             set
             {
@@ -118,7 +148,26 @@ namespace All_in_One.Services.CalculateService.DataModels
             }
         }
 
+        public bool HasPlayerWorldbuffs
+        {
+            get
+            {
+                var splitArray = _worldbuffs.Split(Environment.NewLine).ToList();
+                return splitArray.Count == 0 || splitArray.Where(line => line != "" && !line.Contains(ClassEnums.Alternative.ToString())).Count() == 0;
+            }
+        }
 
+        public int BossDKP
+        { 
+            get 
+            { 
+                return _bossDKP; 
+            } 
+            set 
+            { 
+                _bossDKP = value; 
+            }
+        }
             
 
     }

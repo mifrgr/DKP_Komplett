@@ -44,7 +44,15 @@ namespace All_in_One.Services.WarcraftLogsService
                 {
                     BaseAddress = new Uri("https://www.warcraftlogs.com/v1/report/tables/buffs/" + LogID + "?end=" + result.baseLogs.end + "&abilityid=" + consum.Key +  "&api_key=28bcab4294b92c0fac4df90ea4c3c59a"),
                 };
-                result.buffsLogs.Add(consum.Key,(Buffs_Rootobject)JsonSerializer.Deserialize(await Get_Client.GetStreamAsync(Get_Client.BaseAddress),typeof(Buffs_Rootobject)));
+                result.consumLogs.Add(consum.Key,(Buffs_Rootobject)JsonSerializer.Deserialize(await Get_Client.GetStreamAsync(Get_Client.BaseAddress),typeof(Buffs_Rootobject)));
+            }
+            foreach(var worldbuff in Static.Data.Worldbuffs.RequiredWorldbuffs)
+            {
+                Get_Client = new HttpClient()
+                {
+                    BaseAddress = new Uri("https://www.warcraftlogs.com/v1/report/tables/buffs/" + LogID + "?end=" + result.baseLogs.end + "&abilityid=" + worldbuff.Key + "&api_key=28bcab4294b92c0fac4df90ea4c3c59a"),
+                };
+                result.worldbuffLogs.Add(worldbuff.Key, (Buffs_Rootobject)JsonSerializer.Deserialize(await Get_Client.GetStreamAsync(Get_Client.BaseAddress), typeof(Buffs_Rootobject)));
             }
 
             return result;

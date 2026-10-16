@@ -62,8 +62,13 @@ namespace All_in_One.Services.CalculateService
                         }
                     }
                 }
-                foreach(var buff in logs.buffsLogs)
-                {
+                float combinedConsum1Used = 0;
+                string combinedConsums1 = string.Empty;
+                float combinedConsum2Used = 0;
+                string combinedConsums2 = string.Empty;
+
+                foreach (var buff in logs.consumLogs)
+                {                   
                     if(buff.Value.auras.ToList().Exists(aura => aura.name == entry.PlayerName))
                     {
                         var filteredBuffs = buff.Value.auras.ToList().Single(aura => aura.name == entry.PlayerName);
@@ -82,16 +87,67 @@ namespace All_in_One.Services.CalculateService
                         {
                             if (entry.Consumable1 == "")
                             {
-                                entry.Consumable1 = Consumables.AcceptedConsumables[buff.Key] + " [" + filteredBuffs.totalUses + "/" + bossFightsCount + "]";
+                                combinedConsum1Used += filteredBuffs.totalUses;
+                                combinedConsums1 += Consumables.AcceptedConsumables[buff.Key] + " ";
+                                entry.Consumable1 += Consumables.AcceptedConsumables[buff.Key] + " [" + filteredBuffs.totalUses + "/" + bossFightsCount + "]" + Environment.NewLine;
                             }
                             else if (entry.Consumable2 == "" || entry.Consumable2.Contains("["))
                             {
-                                entry.Consumable2 = Consumables.AcceptedConsumables[buff.Key] + " [" + filteredBuffs.totalUses + "/" + bossFightsCount + "]";
+                                combinedConsum2Used += filteredBuffs.totalUses;
+                                combinedConsums2 += Consumables.AcceptedConsumables[buff.Key] + " ";
+                                entry.Consumable2 += Consumables.AcceptedConsumables[buff.Key] + " [" + filteredBuffs.totalUses + "/" + bossFightsCount + "]" + Environment.NewLine;
                             }
                         }
                     }
                 }
+                if (entry.Consumable1.Contains("[") && (combinedConsum1Used / bossFightsCount) > 0.8)
+                {
+                    entry.Consumable1 = combinedConsums1;
+                }
+                if (entry.Consumable2.Contains("[") && (combinedConsum2Used / bossFightsCount) > 0.8)
+                {
+                    entry.Consumable2 = combinedConsums2;
+                }
 
+                bool FoundAlter = false;
+                string thisClass = "";
+                foreach(var worldbuff in logs.worldbuffLogs)
+                {
+                    if(worldbuff.Value.auras.Length == 0) continue;
+
+                    var worldbuffData = Worldbuffs.RequiredWorldbuffs[worldbuff.Key];
+
+                    if(worldbuffData.ReqForClasses.Contains(PlayerClasses.Classes[ClassEnums.All]))
+                    {
+                        thisClass = ClassEnums.All.ToString();
+                    }
+                    else
+                    {
+                        thisClass = logentry.type;
+                    }
+
+                    if(!Worldbuffs.RequiredWorldbuffs[worldbuff.Key].ReqForClasses.Contains(thisClass) || !Worldbuffs.RequiredWorldbuffs[worldbuff.Key].ReqForRaid.Contains(logs.baseLogs.title)) continue;
+
+                    if(!worldbuff.Value.auras.ToList().Exists(aura => aura.name == entry.PlayerName))
+                    {
+                        if (worldbuffData.ReqForClasses.Contains(PlayerClasses.Classes[ClassEnums.Alternative]))
+                        {
+                            if (!FoundAlter)
+                            {
+                                FoundAlter = true;
+                                continue;
+                            }
+                            else
+                            {
+                                entry.Worldbuffs += worldbuffData.Name + " [" + ClassEnums.Alternative + "]" + Environment.NewLine;
+                            }                            
+                        }
+                        else
+                        {
+                            entry.Worldbuffs += worldbuffData.Name + Environment.NewLine;
+                        }
+                    }
+                }
                 result.Add(entry);
             }
 

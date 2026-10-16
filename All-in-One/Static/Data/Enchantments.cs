@@ -68,7 +68,8 @@ namespace All_in_One.DataModels.DKPModels
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Schattenwiderstand,10)},804),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Intelligenz,22)},2568),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Willenskraft,20)},2567),
-            new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Sonstiges,0)},1900),
+            new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Sonstiges,0)},1900), // Kreuzfahrer
+            new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Sonstiges,0)},1894), // Eisiger Hauch
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Zauberschaden,30)},2504),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Heilungsbonus,55)},2505),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Waffenschaden,5)},804),
@@ -88,6 +89,7 @@ namespace All_in_One.DataModels.DKPModels
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Waffenschaden,5)},663),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Trefferchance,3,true)},2523),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Naturwiderstand,10)},2681),
+            new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Frostwiderstand,10)},2682),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Schattenwiderstand,10)},2683),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Schattenwiderstand,5)},2487),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Naturwiderstand,5)},2486),
@@ -100,7 +102,7 @@ namespace All_in_One.DataModels.DKPModels
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Ausdauer,16),new EnchantmentBaseClass(EnchantmentStat.Rüstung,100)},2716),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Zauberschaden,15),new EnchantmentBaseClass(EnchantmentStat.Zaubercrit,1,true)},2721),
             new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Heilungsbonus,31),new EnchantmentBaseClass(EnchantmentStat.Manaregeneration,5)},2715),
-            new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Angriffskraft,26),new EnchantmentBaseClass(EnchantmentStat.Nahkampfcrit,1,true)},2721),
+            new Enchantment(new List<EnchantmentBaseClass>(){new EnchantmentBaseClass(EnchantmentStat.Angriffskraft,26),new EnchantmentBaseClass(EnchantmentStat.Nahkampfcrit,1,true)},2717),
         };
         public enum EnchantmentStat
         {
